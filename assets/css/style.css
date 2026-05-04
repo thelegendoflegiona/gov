@@ -1,4 +1,3 @@
-  <style>
     :root {
       --gold: #C9A84C;
       --gold-light: #fbbf24;
@@ -727,4 +726,3 @@
       .footer-top { grid-template-columns: 1fr; }
       .hero-btns { flex-direction: column; align-items: center; }
     }
-  </style>
