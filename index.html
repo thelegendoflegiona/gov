@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The Legend of Legiona — Government</title>
+  <link rel="icon" type="image/png" href="/gov/assets/images/logo.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=DM+Mono:wght@300;400;500&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/gov/assets/css/style.css">
+  <script src="/gov/assets/js/script.js"></script>
+</head>
+<body>
+
+  <!-- TOPBAR -->
+  <div id="topbar">
+    <div class="topbar-inner">
+      <a href="/main/">HUB</a>
+      <a href="/gov/about/">ABOUT</a>
+      <a href="/gov/systems/citizenship/">CITIZENSHIP</a>
+      <a href="/gov/systems/archives/">ARCHIVES</a>
+      <a href="/isc/">ISC</a>
+    </div>
+  </div>
+
+  <!-- NOTICE BANNER -->
+  <div class="notice-banner">
+    <span class="tag">NOTICE</span>
+    <span>
+      The official Government Policy Framework of The Legend of Legiona (The LoL) is now published and available for reference. All governance, security, and administrative matters are defined within this document. —
+      <a href="/gov/systems/archives/">
+        VIEW OFFICIAL DOCUMENTS →
+      </a>
+    </span>
+  </div>
+
+  <!-- NAV WRAPPER: sticky container keeps nav + mobile menu together -->
+  <div class="nav-wrapper">
+    <nav>
+      <div class="nav-logo">THELOL.GOV</div>
+      <ul class="nav-links">
+        <li><a href="#home">Home</a></li>
+        <li><a href="#proclamation">Proclamation</a></li>
+        <li><a href="#history">History</a></li>
+        <li><a href="#departments">Departments</a></li>
+        <li><a href="#megaprojects">Megaprojects</a></li>
+        <li><a href="#founders">Founders</a></li>
+      </ul>
+      <button class="hamburger" onclick="toggleMenu()" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </nav>
+    <div class="mobile-menu" id="mobileMenu">
+      <a href="#home" onclick="toggleMenu()">Home</a>
+      <a href="#proclamation" onclick="toggleMenu()">Proclamation</a>
+      <a href="#history" onclick="toggleMenu()">History</a>
+      <a href="#departments" onclick="toggleMenu()">Departments</a>
+      <a href="#megaprojects" onclick="toggleMenu()">Megaprojects</a>
+      <a href="#founders" onclick="toggleMenu()">Founders</a>
+    </div>
+  </div>
+
+  <!-- HERO -->
+  <div id="home" style="position:relative;">
+    <div class="hero-bg"></div>
+    <img src="/gov/assets/images/logo.png" alt="The LoL Government Logo" class="hero-seal" />
+    <div class="hero-overline">This is The LoL</div>
+    <h1 class="hero-title">The Legend of <em>Legiona</em></h1>
+    <p class="hero-sub">Official Government Portal &nbsp;·&nbsp; THELOL.GOV &nbsp;·&nbsp; Est. 2023</p>
+    <div class="live-badge" style="opacity:0;animation:fadeUp 0.8s ease 0.75s forwards;">
+      <span class="live-dot"></span> Portal Live &nbsp;·&nbsp; Active Governance 2026
+    </div>
+    <div class="hero-btns">
+      <a href="#proclamation" class="btn-primary">Read the Proclamation</a>
+      <a href="#history" class="btn-outline">National History</a>
+    </div>
+  </div>
+
+  <!-- ANNOUNCEMENTS -->
+  <div class="full-bg-dark2">
+    <div style="max-width:1200px;margin:0 auto;padding:60px 24px;">
+      <div class="section-tag">Latest Announcements</div>
+      <div style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:0.1em;color:var(--text-dim);">2026 // CURRENT</div>
+      <div class="ann-grid">
+        <div class="ann-card">
+          <div class="meta">2026 // CURRENT</div>
+          <div class="tag-pill tag-security">SECURITY</div>
+          <h4>Internal Security Control (ISC) Formally Assumes Intelligence Mandate from TLIO</h4>
+        </div>
+        <div class="ann-card">
+          <div class="meta">2026 // ONGOING</div>
+          <div class="tag-pill tag-governance">GOVERNANCE</div>
+          <h4>Egalitarian Governance Model — Oversight Continues</h4>
+        </div>
+        <div class="ann-card">
+          <div class="meta">2023 // HISTORIC</div>
+          <div class="tag-pill tag-foundational">FOUNDATIONAL</div>
+          <h4>Proclamation of Sovereignty Signed by Three Founders</h4>
+        </div>
+        <div class="ann-card">
+          <div class="meta">2023 // ARCHIVED</div>
+          <div class="tag-pill tag-infrastructure">INFRASTRUCTURE</div>
+          <h4>Post-Chaos Recovery — Rebuilding Phase Completed</h4>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PROCLAMATION -->
+  <section id="proclamation">
+    <div class="section-tag">Founding Document</div>
+    <div class="proc-card">
+      <img src="/gov/assets/images/TheLoL.png" alt="Seal" class="proc-seal" />
+      <div class="proc-title">The LoL Proclamation of Sovereignty</div>
+      <div class="proc-motto">"In the Name of Unity, Legacy, and Glory"</div>
+      <p class="proc-body">
+        We, the Founders and People of The Legend of Legiona, hereby proclaim to all realms — from the Overworld to the Nether and the End — the establishment of a sovereign and unified nation forged by vision, courage, and camaraderie.<br /><br />
+        This Declaration marks the dawn of an era where the values of justice, prosperity, and fellowship reign supreme. The Legend of Legiona (formerly known as The Sus) was founded through the combined efforts and dreams of its three visionary Founders.
+      </p>
+      <div class="proc-signers">
+        <div class="proc-signer">
+          <div class="name">Faiz4224</div>
+          <div class="role">First President &amp; Founding Leader</div>
+        </div>
+        <div class="proc-signer">
+          <div class="name">Imii Kun</div>
+          <div class="role">Co-Founder &amp; Visionary</div>
+        </div>
+        <div class="proc-signer">
+          <div class="name">Dyno</div>
+          <div class="role">Co-Founder &amp; Strategist</div>
+        </div>
+      </div>
+      <div class="proc-downloads">
+        <a href="/gov/assets/documents/The_LoL_Proclamation.pdf" class="btn-primary">↓ Proclamation (EN)</a>
+        <a href="/gov/assets/documents/Proklamasi_The_LoL.pdf" class="btn-outline">↓ Proklamasi (BM)</a>
+        <a href="/gov/systems/archives/" class="btn-outline">📂 Legal Archive</a>
+      </div>
+    </div>
+
+    <!-- PILLARS -->
+    <div style="margin-top:80px;">
+      <div class="section-tag">Our Founding Principles</div>
+      <p class="section-desc">As decreed in the original Proclamation, The Legend of Legiona is built upon four enduring pillars that guide every act of governance and citizenship.</p>
+      <div class="pillars-grid">
+        <div class="pillar-card">
+          <div class="pillar-num">01 // PILLAR</div>
+          <h4>Unity</h4>
+          <p>Where all players — builders, warriors, and adventurers — stand as one, striving for collective greatness.</p>
+        </div>
+        <div class="pillar-card">
+          <div class="pillar-num">02 // PILLAR</div>
+          <h4>Freedom</h4>
+          <p>Ensuring the right of every citizen to explore, create, and thrive within our borders.</p>
+        </div>
+        <div class="pillar-card">
+          <div class="pillar-num">03 // PILLAR</div>
+          <h4>Innovation</h4>
+          <p>Harnessing the limitless possibilities of the Minecraft world to build a nation unlike any other.</p>
+        </div>
+        <div class="pillar-card">
+          <div class="pillar-num">04 // PILLAR</div>
+          <h4>Defence &amp; Honour</h4>
+          <p>Protecting our lands from griefers, raiders, and threats while holding true to our principles of fairness.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- HISTORY -->
+  <div class="full-bg-dark2">
+    <div id="history" class="inner" style="max-width:1200px;margin:0 auto;padding:100px 24px;">
+      <div class="section-tag">Official Record</div>
+      <h2 class="section-title">National <em>History</em></h2>
+      <div class="timeline">
+
+        <div class="tl-item">
+          <div class="tl-date">2023 — Early</div>
+          <div class="tl-badge badge-founding">Founding Era</div>
+          <h4>The Founding — "The Sus"</h4>
+          <p>The LoL was originally called "The Sus", founded by Faiz4224, ItzDynozz, and Imii Kun. Small but visionary, the three founders laid the groundwork for what would become the most powerful nation in Skyxion. During this era, EhekSquad — led by PhoenixAiman, PandaPutih, and Kagee — joined The Sus, though their exact status as citizens, allies, or simply residents was never formally defined, as The Sus had no policy or governance structure. EhekSquad later departed and re-established independently.</p>
+        </div>
+
+        <div class="tl-item">
+          <div class="tl-date">2023</div>
+          <div class="tl-badge badge-expansion">Expansion</div>
+          <h4>Renaming &amp; Expansion — The Legend of Legiona</h4>
+          <p>The nation was renamed "The Legend of Legiona" and rapidly became the most modern and wealthiest nation in Skyxion. Under President Faiz4224, The LoL thrived in economy, infrastructure, and innovation.</p>
+        </div>
+
+        <div class="tl-item">
+          <div class="tl-date">May 6, 2023</div>
+          <div class="tl-badge badge-democratic">Democratic Milestone</div>
+          <h4>First Presidential Election</h4>
+          <p>The LoL held its first democratic election. UltraX2020 and the Parti Harapan Rakyat The LoL (PHRTL) party won, becoming the 2nd President of The LoL — marking a significant turning point in its governance.</p>
+        </div>
+
+        <div class="tl-item">
+          <div class="tl-date">2023 — Crisis</div>
+          <div class="tl-badge badge-conflict">Conflict Era</div>
+          <h4>UltraX2020 Presidency — Division &amp; Chaos</h4>
+          <p>Internal strife surfaced under UltraX2020's rule. The LoL City sign was bombed, TLCC was attacked by drones, and political conflicts gripped the nation. UltraX2020 eventually resigned, returning power to Faiz4224.</p>
+        </div>
+
+        <div class="tl-item">
+          <div class="tl-date">Nov 8, 2023</div>
+          <div class="tl-badge badge-rebuilding">Rebuilding</div>
+          <h4>Post-Chaos Recovery &amp; TLIO Formation</h4>
+          <p>Faiz4224 resumed leadership. Infrastructure projects launched, security reinforced. The intelligence body TLIO (now known as ISC) was established to defend The LoL from future threats and preserve national stability.</p>
+        </div>
+
+        <div class="tl-item">
+          <div class="tl-date">2025–2026</div>
+          <div class="tl-badge badge-current">Current Era</div>
+          <h4>Modern Era — ISC &amp; Skyxion: Altaer</h4>
+          <p>TLIO was reborn as the Internal Security Control (ISC) — a formal, intelligence agency. The LoL stands today as a symbol of perseverance and innovation under overworld, in the Skyxion: Altaer era.</p>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- DEPARTMENTS -->
+  <section id="departments">
+    <div class="section-tag">Branches of The LoL</div>
+    <h2 class="section-title">Government <em>Departments</em></h2>
+    <div class="dept-grid">
+      <a href="/isc/" class="dept-card">
+        <div class="dept-id">DEPT-01 // Security</div>
+        <h4>Internal Security Control</h4>
+        <p>Successor to TLIO. Primary intelligence and defense agency protecting The LoL's sovereignty.</p>
+        <div class="dept-arrow">→ Visit Portal</div>
+      </a>
+      <div class="dept-card" style="opacity:0.6;cursor:default;">
+        <div class="dept-id">DEPT-02 // Justice</div>
+        <h4>Office of National Justice</h4>
+        <p>Upholding the Egalitarian Model. Resolution of internal disputes and enforcement of national law.</p>
+        <div class="dept-arrow" style="color:var(--text-dim);">— Coming Soon</div>
+      </div>
+      <div class="dept-card" style="opacity:0.6;cursor:default;">
+        <div class="dept-id">DEPT-03 // Lore</div>
+        <h4>Ministry of Lore &amp; Archives</h4>
+        <p>Preservation of national history, proclamation records, and the cultural heritage of Legiona.</p>
+        <div class="dept-arrow" style="color:var(--text-dim);">— Coming Soon</div>
+      </div>
+      <div class="dept-card" style="opacity:0.6;cursor:default;">
+        <div class="dept-id">DEPT-04 // Infrastructure</div>
+        <h4>Public Works Division</h4>
+        <p>Overseeing TLSRL railway, TLCC Twin Towers, farms, and all national construction projects.</p>
+        <div class="dept-arrow" style="color:var(--text-dim);">— Coming Soon</div>
+      </div>
+      <div class="dept-card" style="opacity:0.6;cursor:default;">
+        <div class="dept-id">DEPT-05 // Foreign</div>
+        <h4>Bureau of External Relations</h4>
+        <p>Managing diplomatic ties and inter-nation relations across Skyxion territories.</p>
+        <div class="dept-arrow" style="color:var(--text-dim);">— Coming Soon</div>
+      </div>
+      <div class="dept-card" style="opacity:0.6;cursor:default;">
+        <div class="dept-id">DEPT-06 // Comms</div>
+        <h4>The LoL Communications</h4>
+        <p>National broadcasting, The LoL News network, and public information services.</p>
+        <div class="dept-arrow" style="color:var(--text-dim);">— Coming Soon</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- MEGAPROJECTS -->
+  <div class="full-bg-dark2">
+    <div id="megaprojects" style="max-width:1200px;margin:0 auto;padding:100px 24px;">
+      <div class="section-tag">Infrastructure &amp; Development</div>
+      <h2 class="section-title">National <em>Megaprojects</em></h2>
+      <p class="section-desc">From twin towers to a 4,800-block railway, The LoL's infrastructure stands as proof of what a united people can build.</p>
+      <div class="mega-stats">
+        <div class="mega-stat"><div class="num">4,800+</div><div class="label">Blocks // TLSRL</div></div>
+        <div class="mega-stat"><div class="num">~10</div><div class="label">Min // Travel Time</div></div>
+        <div class="mega-stat"><div class="num">4</div><div class="label">Rail Lines</div></div>
+      </div>
+      <div class="mega-grid">
+        <div class="mega-card">
+          <div class="mega-id">MEGAPROJECT-01 // Transport</div>
+          <h4>The LoL – Spawn Railway Link (TLSRL)</h4>
+          <p>The crown jewel of The LoL's infrastructure. TLSRL spans 4,800+ blocks connecting The LoL to Spawn with regular, express, and cargo services.</p>
+          <span class="status-pill status-operational">Operational</span>
+          <div style="margin-top:14px;"><a href="https://faizzzlol.github.io/thelol/PaizCorp/tlsrl" style="font-family:'DM Mono',monospace;font-size:11px;color:var(--gold);text-decoration:none;letter-spacing:0.1em;">VIEW TLSRL PAGE →</a></div>
+        </div>
+        <div class="mega-card">
+          <div class="mega-id">MEGAPROJECT-02 // Architecture</div>
+          <h4>TLCC Twin Towers</h4>
+          <p>The LoL Convention Centre Twin Towers — the most iconic landmark in The LoL City and a symbol of national prosperity.</p>
+          <span class="status-pill status-completed">Completed</span>
+        </div>
+        <div class="mega-card">
+          <div class="mega-id">MEGAPROJECT-03 // Economy</div>
+          <h4>National Farm Complex</h4>
+          <p>A trio of automated resource farms — Iron Farm, Totem Farm, and Gold Farm — powering The LoL's economic engine and citizen welfare.</p>
+          <span class="status-pill status-operational">Operational</span>
+        </div>
+        <div class="mega-card">
+          <div class="mega-id">MEGAPROJECT-04 // Corporate</div>
+          <h4>Paiz® Corp</h4>
+          <p>The national conglomerate behind The LoL's construction and transport infrastructure. Parent company of TL Railways and Paiz™ Construction.</p>
+          <span class="status-pill status-active">Active</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FOUNDERS -->
+  <section id="founders">
+    <div class="section-tag">Signatories of the Proclamation</div>
+    <h2 class="section-title">The Three <em>Founders</em></h2>
+    <div class="founders-grid">
+      <div class="founder-card">
+        <div class="founder-avatar">F</div>
+        <h4>Faiz4224</h4>
+        <div class="role">First President // Founding Leader</div>
+        <p>Whose unwavering resolve and ingenuity laid the foundation of this great nation. Leader through both prosperity and crisis.</p>
+      </div>
+      <div class="founder-card">
+        <div class="founder-avatar">I</div>
+        <h4>Imii Kun</h4>
+        <div class="role">Co-Founder // Visionary</div>
+        <p>A pillar of strength whose dedication to the cause helped forge the bonds of unity that sustain the people of Legiona.</p>
+      </div>
+      <div class="founder-card">
+        <div class="founder-avatar">D</div>
+        <h4>Dyno</h4>
+        <div class="role">Co-Founder // Strategist</div>
+        <p>Whose wisdom and determination illuminated the path toward the nation's glorious future from its earliest days.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-top">
+        <div class="footer-brand">
+          <div class="name">The Legend of <em>Legiona</em></div>
+          <p>The official government of The LoL — a sovereign nation built on unity, equality, and the resilience of its people across the Skyxion world since 2023.</p>
+        </div>
+        <div class="footer-col">
+          <h5>Government</h5>
+          <a href="#proclamation">Proclamation</a>
+          <a href="#history">History</a>
+          <a href="#departments">Departments</a>
+          <a href="#founders">Founders</a>
+        </div>
+        <div class="footer-col">
+          <h5>Agencies</h5>
+          <a href="/isc/">ISC Portal</a>
+          <a href="/isc/national/">ISC Transparency</a>
+          <a href="/isc/search/">ISC Public Archive</a>
+        </div>
+        <div class="footer-col">
+          <h5>Documents</h5>
+          <a href="/gov/assets/documents/The_LoL_Proclamation.pdf">Proclamation (EN)</a>
+          <a href="/gov/assets/documents/Proklamasi_The_LoL.pdf">Proklamasi (BM)</a>
+          <a href="/gov/systems/archives/">Legal Archive</a>
+          <a href="/main/about/">About The LoL</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <div class="copy">© 2026 THE LEGEND OF LEGIONA // OFFICIAL GOVERNMENT</div>
+        <div class="era">SKYXION: ALTAER ERA // BUILT FOR PEACE // SOVEREIGNTY THROUGH UNITY</div>
+      </div>
+      <div style="margin-top: 25px; font-family: 'DM Mono', monospace; font-size: 9px; color: var(--text-dim); border-top: 1px solid rgba(255,255,255,0.05); padding-top: 15px; opacity: 0.8; line-height: 1.6;">
+        <strong>LEGAL DISCLAIMER:</strong> The Legend of Legiona (The LoL) is an independent community project within Minecraft. 
+        The terms "Skyxion" and "Altaer" used within this project and era designation are not affiliated with, or associated with Kawaiisho. 
+        This project is NOT AN OFFICIAL MINECRAFT PRODUCT. Not approved by or associated with Mojang AB or Microsoft Corporation.
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>
