@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>About Us — The Legend of Legiona Government</title>
+  <link rel="icon" type="image/png" href="/gov/assets/images/logo.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=DM+Mono:wght@300;400;500&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/gov/about/assets/css/style.css">
+</head>
+<body>
+
+  <!-- TOPBAR -->
+  <div id="topbar">
+    <div class="topbar-inner">
+      <a href="/gov/">GOVERNMENT</a>
+      <a href="/gov/systems/citizenship/">CITIZENSHIP</a>
+      <a href="/gov/systems/archives/">ARCHIVES</a>
+    </div>
+  </div>
+
+  <!-- NOTICE BANNER -->
+  <div class="notice-banner">
+    <span class="tag">NEW</span>
+    <span>
+      pAIz — our AI navigation assistant — is now live on this portal. Developed by Paiz Corp. —
+      <a href="#" onclick="openPaiz(); return false;">CHAT WITH pAIz →</a>
+    </span>
+  </div>
+
+  <!-- NAV WRAPPER -->
+  <div class="nav-wrapper">
+    <nav>
+      <div class="nav-logo">THELOL.GOV</div>
+      <ul class="nav-links">
+        <li><a href="#home">Overview</a></li>
+        <li><a href="#why" class="active">Why This Portal</a></li>
+        <li><a href="#navigate">Navigate</a></li>
+        <li><a href="#built">Built By</a></li>
+        <li><a href="/gov/">← Back to Gov</a></li>
+      </ul>
+      <button class="hamburger" onclick="toggleMenu()" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </nav>
+    <div class="mobile-menu" id="mobileMenu">
+      <a href="#home" onclick="toggleMenu()">Overview</a>
+      <a href="#why" onclick="toggleMenu()">Why This Portal</a>
+      <a href="#navigate" onclick="toggleMenu()">Navigate</a>
+      <a href="#built" onclick="toggleMenu()">Built By</a>
+      <a href="/gov/" onclick="toggleMenu()">← Back to Gov</a>
+    </div>
+  </div>
+
+  <!-- HERO -->
+  <div id="home" style="position:relative;">
+    <div class="hero-bg"></div>
+    <img src="/gov/assets/images/logo.png" alt="The LoL Government" class="hero-seal" />
+    <div class="hero-overline">About This Portal</div>
+    <h1 class="hero-title">Why the <em>Government</em> Portal?</h1>
+    <p class="hero-sub">The official portal for The Legend of Legiona's governance, transparency, and public record &nbsp;·&nbsp; Est. 2023</p>
+    <div class="live-badge" style="opacity:0;animation:fadeUp 0.8s ease 0.75s forwards;">
+      <span class="live-dot"></span> pAIz Online &nbsp;·&nbsp; Ask Anything Below
+    </div>
+    <div class="hero-btns">
+      <a href="#why" class="btn-primary">Read Our Mission</a>
+      <button class="btn-outline" onclick="openPaiz()">Chat with pAIz ↗</button>
+    </div>
+  </div>
+
+  <!-- WHY THIS PORTAL -->
+  <div class="full-bg-dark2" id="why">
+    <div style="max-width:1200px;margin:0 auto;padding:100px 24px;">
+      <div class="section-tag">Portal Purpose</div>
+      <h2 class="section-title">Why The LoL <em>Government</em> Website?</h2>
+      <p class="section-desc">
+        The Legend of Legiona is more than a Minecraft nation — it is a community with a history, a governance structure, and a vision for the future.
+        This portal exists to make that structure visible, accessible, and permanent. Here's why we built it.
+      </p>
+      <div class="why-grid">
+        <div class="why-card">
+          <div class="why-num">01 // PURPOSE</div>
+          <h4>Transparency in Governance</h4>
+          <p>Every nation, real or virtual, owes its citizens clarity. This portal publishes official proclamations, national history, legal documents, and governmental structure so every member of The LoL can understand how their nation operates and who is accountable for what.</p>
+        </div>
+        <div class="why-card">
+          <div class="why-num">02 // PURPOSE</div>
+          <h4>A Permanent Public Record</h4>
+          <p>Minecraft worlds reset. Discord messages get buried. But this portal preserves The LoL's official history — founding documents, election records, crisis timelines, and policy decisions — in a form that outlasts any server era, including the current Skyxion: Altaer Era.</p>
+        </div>
+        <div class="why-card">
+          <div class="why-num">03 // PURPOSE</div>
+          <h4>Legitimising Governance</h4>
+          <p>A government portal signals that The LoL operates with structure and seriousness. When the ISC publishes intelligence mandates, when the Legal Archive catalogues citizenship law, and when the Proclamation can be downloaded in PDF — it demonstrates that The LoL is a real institution, not just a group of players.</p>
+        </div>
+        <div class="why-card">
+          <div class="why-num">04 // PURPOSE</div>
+          <h4>Accessible to All Citizens</h4>
+          <p>Not everyone is in every Discord call or in-game when decisions are made. This portal ensures citizens can access official documents, understand their rights under the Rights Charter, and know where to go for information — at any time, from any device.</p>
+        </div>
+        <div class="why-card">
+          <div class="why-num">05 // PURPOSE</div>
+          <h4>Central Hub for All Branches</h4>
+          <p>The LoL government has multiple branches — the ISC, The Black House, citizen services, and a growing Legal Archive. This portal connects all of them under one domain, so citizens and visitors always have a reliable single point of entry regardless of which branch they need.</p>
+        </div>
+        <div class="why-card">
+          <div class="why-num">06 // PURPOSE</div>
+          <h4>Showcasing What We've Built</h4>
+          <p>The LoL has achieved extraordinary things — 4,800+ block railways, twin towers, democratic elections, crisis recovery. This portal is the place that tells that story with the dignity and presentation it deserves, designed to reflect the nation's pride and ambition.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MISSION STATEMENT -->
+  <section>
+    <div class="section-tag">Portal Mission Statement</div>
+    <div class="mission-block">
+      <span class="quote-mark">"</span>
+      <blockquote>
+        We built this portal because every act of governance deserves a record,
+        every citizen deserves transparency, and every nation — no matter its scale —
+        deserves to be taken seriously. The LoL Government Website is that commitment
+        made visible.
+      </blockquote>
+      <div class="attr">— The Black House // Office of the President</div>
+    </div>
+  </section>
+
+  <!-- NAVIGATE THE PORTAL -->
+  <div class="full-bg-dark2">
+    <div id="navigate" style="max-width:1200px;margin:0 auto;padding:100px 24px;">
+      <div class="section-tag">Sitemap</div>
+      <h2 class="section-title">Navigate the <em>Portal</em></h2>
+      <p class="section-desc">Every page on this portal has a specific purpose. Here's a guide to what you'll find and where to go.</p>
+      <div class="portal-grid">
+        <a href="/gov/" class="portal-card">
+          <div class="portal-id">PORTAL-01 // Home</div>
+          <h4>Government Home</h4>
+          <p>The main portal page. Contains the Proclamation of Sovereignty, national history timeline, all government departments, megaprojects, and the founding signatories.</p>
+          <div class="portal-arrow">→ thelol.gov</div>
+        </a>
+        <a href="/gov/systems/citizenship/" class="portal-card">
+          <div class="portal-id">PORTAL-02 // Citizenship</div>
+          <h4>Citizenship Portal</h4>
+          <p>Apply for citizenship, understand your rights under the Citizens' Rights Charter, and learn about the Citizenship Act. Includes the full membership process for new and returning citizens.</p>
+          <div class="portal-arrow">→ thelol.gov/systems/citizenship/</div>
+        </a>
+        <a href="/gov/systems/archives/" class="portal-card">
+          <div class="portal-id">PORTAL-03 // Legal Archive</div>
+          <h4>Legal Archive & Documents</h4>
+          <p>The searchable archive of all official LoL legal documents — citizenship acts, presidential proclamations, rights charters, and policy ordinances. Filterable by category.</p>
+          <div class="portal-arrow">→ thelol.gov/systems/archives/</div>
+        </a>
+        <a href="/isc/" class="portal-card">
+          <div class="portal-id">PORTAL-04 // ISC</div>
+          <h4>Internal Security Control</h4>
+          <p>The LoL's intelligence and national security agency. The ISC portal covers its mandate, public transparency reports, and the searchable ISC public archive. Successor to TLIO.</p>
+          <div class="portal-arrow">→ thelol.gov/isc/</div>
+        </a>
+        <a href="/main/" class="portal-card">
+          <div class="portal-id">PORTAL-05 // Nation</div>
+          <h4>The LoL Main Site</h4>
+          <p>The primary national website — not a government sub-site. Covers the nation's overview, Minecraft server status, TLSRL railway, and the broader Paiz Corp ecosystem.</p>
+          <div class="portal-arrow">→ /thelol/</div>
+        </a>
+        <a href="#home" class="portal-card">
+          <div class="portal-id">PORTAL-06 // Info</div>
+          <h4>About This Portal</h4>
+          <p>You are here. This page explains the purpose of the government portal, how to navigate it, who built it, and how to interact with pAIz — our AI navigation assistant.</p>
+          <div class="portal-arrow">→ You're here</div>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- BUILT BY / CREDITS -->
+  <section id="built">
+    <div class="section-tag">Development & Credits</div>
+    <h2 class="section-title">Built by <em>Paiz Corp</em></h2>
+    <p class="section-desc">
+      This portal was designed and developed under Paiz® Corp — The LoL's national conglomerate — as part of its digital infrastructure mandate.
+      Every page, component, and feature is handcrafted to meet the standard The LoL expects of its public-facing institutions.
+    </p>
+    <div class="credits-grid">
+      <div class="credit-card">
+        <div class="credit-id">DESIGN // Identity</div>
+        <h4>Design System</h4>
+        <p>Built around a unified dark aesthetic — pure dark backgrounds, single-pixel borders, and gold (#C9A84C) as the sole accent colour. Typography: Playfair Display for authority, DM Mono for technical precision, Outfit for readability.</p>
+      </div>
+      <div class="credit-card">
+        <div class="credit-id">TECH // Stack</div>
+        <h4>Technology</h4>
+        <p>Pure HTML, CSS, and vanilla JavaScript — no frameworks, no dependencies. Hosted on GitHub Pages for reliability, speed, and zero cost. Every page loads fast and works on any device.</p>
+      </div>
+      <div class="credit-card">
+        <div class="credit-id">FEATURE // AI</div>
+        <h4>pAIz — AI Assistant</h4>
+        <p>A smart navigation assistant developed by Paiz Corp Intelligence Division. pAIz is trained on The LoL's full knowledge base — history, departments, legal documents, and portal structure — to help citizens and visitors find exactly what they need.</p>
+      </div>
+      <div class="credit-card">
+        <div class="credit-id">STANDARD // Governance</div>
+        <h4>Document Standards</h4>
+        <p>All official documents follow the LoL reference number convention: THELOLGOV-YYYY-### for Government, BH-YYYY-### for The Black House, ISC-YYYY-### for the ISC, and PC-[SUB]-YYYY-### for Paiz Corp subsidiaries.</p>
+      </div>
+    </div>
+
+    <!-- Tech pills -->
+    <div style="margin-top:48px;">
+      <div class="section-tag">Technologies Used</div>
+      <div class="tech-row">
+        <span class="tech-pill">HTML5</span>
+        <span class="tech-pill">CSS3 + Custom Properties</span>
+        <span class="tech-pill">Vanilla JavaScript</span>
+        <span class="tech-pill">GitHub Pages</span>
+        <span class="tech-pill">Google Fonts</span>
+        <span class="tech-pill">Playfair Display</span>
+        <span class="tech-pill">DM Mono</span>
+        <span class="tech-pill">Outfit</span>
+        <span class="tech-pill">Responsive Grid</span>
+        <span class="tech-pill">CSS Animations</span>
+        <span class="tech-pill">pAIz Intelligence Engine</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-top">
+        <div class="footer-brand">
+          <div class="name">The Legend of <em>Legiona</em></div>
+          <p>The official government of The LoL — a sovereign nation built on unity, equality, and the resilience of its people across the Skyxion world since 2023.</p>
+        </div>
+        <div class="footer-col">
+          <h5>Government</h5>
+          <a href="/gov/#proclamation">Proclamation</a>
+          <a href="/gov/#history">History</a>
+          <a href="/gov/#departments">Departments</a>
+          <a href="/gov/#founders">Founders</a>
+        </div>
+        <div class="footer-col">
+          <h5>Agencies</h5>
+          <a href="/isc/">ISC Portal</a>
+          <a href="/isc/national/">ISC Transparency</a>
+          <a href="/isc/search/">ISC Public Archive</a>
+        </div>
+        <div class="footer-col">
+          <h5>Documents</h5>
+          <a href=" ">Proclamation (EN)</a>
+          <a href=" ">Proklamasi (BM)</a>
+          <a href="/gov/systems/archives/">Legal Archive</a>
+          <a href="#">About This Portal</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <div class="copy">© 2026 THE LEGEND OF LEGIONA // OFFICIAL GOVERNMENT</div>
+        <div class="era">SKYXION: ALTAËR ERA // BUILT FOR PEACE // SOVEREIGNTY THROUGH UNITY</div>
+      </div>
+      <div style="margin-top:25px;font-family:'DM Mono',monospace;font-size:9px;color:var(--text-dim);border-top:1px solid rgba(255,255,255,0.05);padding-top:15px;opacity:0.8;line-height:1.6;">
+        <strong>LEGAL DISCLAIMER:</strong> The Legend of Legiona (The LoL) is an independent community project within Minecraft.
+        The terms "Skyxion" and "Altaër" used within this project and era designation are not affiliated with, or associated with Kawaiisho.
+        This project is NOT AN OFFICIAL MINECRAFT PRODUCT. Not approved by or associated with Mojang AB or Microsoft Corporation.
+      </div>
+    </div>
+  </footer>
+
+  <!-- ════════════════════════════════════════════
+       pAIz CHATBOT WIDGET
+  ════════════════════════════════════════════ -->
+
+  <button id="paiz-toggle" onclick="togglePaiz()" aria-label="Open pAIz chatbot">
+    <span class="toggle-icon" id="paiz-icon">✦</span>
+    <span class="toggle-label">pAIz</span>
+  </button>
+
+  <div id="paiz-panel" role="dialog" aria-label="pAIz chat assistant">
+    <div class="paiz-header">
+      <div class="paiz-header-left">
+        <div class="paiz-avatar">p</div>
+        <div>
+          <div class="paiz-name">pAIz</div>
+          <div class="paiz-by">by Paiz Corp Intelligence</div>
+        </div>
+      </div>
+      <div style="display:flex;align-items:center;gap:14px;">
+        <div class="paiz-status">
+          <span class="paiz-status-dot"></span> Online
+        </div>
+        <button class="paiz-close" onclick="togglePaiz()" aria-label="Close">✕</button>
+      </div>
+    </div>
+
+    <div class="paiz-messages" id="paiz-messages"></div>
+    <div class="paiz-suggestions" id="paiz-suggestions"></div>
+
+    <div class="paiz-input-row">
+      <input type="text" id="paiz-input" placeholder="Ask me anything about The LoL…" autocomplete="off" />
+      <button id="paiz-send" onclick="paizSend()">SEND</button>
+    </div>
+    <div class="paiz-powered">pAIz // PAIZ CORP INTELLIGENCE DIVISION // SKYXION: ALTAËR ERA</div>
+  </div>
+
+  <script src="/gov/about/assets/js/script.js"></script>
+
+</body>
+</html>
