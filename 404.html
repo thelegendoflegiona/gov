@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>404 — Page Not Found · THELOL.GOV</title>
+  <link rel="icon" type="image/png" href="/gov/assets/images/logo.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=DM+Mono:wght@300;400;500&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --gold: #C9A84C;
+      --gold-dim: rgba(201,168,76,0.15);
+      --gold-border: rgba(201,168,76,0.3);
+      --bg: #0a0a0a;
+      --bg2: #0f0f0f;
+      --bg3: #141414;
+      --border: rgba(255,255,255,0.07);
+      --text: #f0ece4;
+      --text-dim: rgba(240,236,228,0.4);
+      --text-mid: rgba(240,236,228,0.65);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html, body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Outfit', sans-serif;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* ── TOPBAR ── */
+    #topbar {
+      background: rgba(0,0,0,0.6);
+      border-bottom: 1px solid var(--border);
+      font-family: 'DM Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 0.12em;
+      text-align: center;
+      padding: 8px 24px;
+    }
+    .topbar-inner { display: flex; justify-content: center; gap: 32px; flex-wrap: wrap; }
+    #topbar a { color: var(--text-dim); text-decoration: none; transition: color 0.2s; }
+    #topbar a:hover { color: var(--gold); }
+
+    /* ── NAV ── */
+    .nav-wrapper {
+      position: sticky; top: 0; z-index: 100;
+      background: rgba(10,10,10,0.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+    }
+    nav {
+      max-width: 1200px; margin: 0 auto;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 24px; height: 60px;
+    }
+    .nav-logo {
+      font-family: 'DM Mono', monospace;
+      font-size: 13px; letter-spacing: 0.15em;
+      color: var(--gold); font-weight: 500;
+    }
+    .nav-links { list-style: none; display: flex; gap: 28px; }
+    .nav-links a {
+      font-family: 'Outfit', sans-serif; font-size: 13px;
+      color: var(--text-mid); text-decoration: none; letter-spacing: 0.03em;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--text); }
+
+    /* ── 404 HERO ── */
+    .page-404 {
+      min-height: calc(100vh - 200px);
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      padding: 80px 24px;
+      position: relative; text-align: center;
+      overflow: hidden;
+    }
+
+    /* Decorative grid bg */
+    .page-404::before {
+      content: '';
+      position: absolute; inset: 0;
+      background-image:
+        linear-gradient(rgba(201,168,76,0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(201,168,76,0.04) 1px, transparent 1px);
+      background-size: 60px 60px;
+      mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 30%, transparent 100%);
+    }
+
+    /* Glowing orb behind the number */
+    .glow-orb {
+      position: absolute;
+      width: 500px; height: 500px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(201,168,76,0.06) 0%, transparent 70%);
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+    }
+
+    .code-tag {
+      font-family: 'DM Mono', monospace;
+      font-size: 10px; letter-spacing: 0.2em;
+      color: var(--gold); opacity: 0.8;
+      margin-bottom: 20px;
+      animation: fadeUp 0.6s ease 0.1s both;
+    }
+
+    .error-number {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(100px, 20vw, 180px);
+      font-weight: 900;
+      line-height: 1;
+      color: transparent;
+      -webkit-text-stroke: 1px rgba(201,168,76,0.4);
+      letter-spacing: -0.02em;
+      animation: fadeUp 0.7s ease 0.2s both;
+      position: relative;
+    }
+
+    /* Subtle gold fill on the 4s, hollow on the 0 */
+    .error-number .gold-char {
+      color: var(--gold);
+      -webkit-text-stroke: 0;
+    }
+
+    .error-divider {
+      width: 60px; height: 1px;
+      background: linear-gradient(90deg, transparent, var(--gold), transparent);
+      margin: 24px auto;
+      animation: fadeUp 0.6s ease 0.35s both;
+    }
+
+    .error-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(22px, 4vw, 32px);
+      font-weight: 700; font-style: italic;
+      margin-bottom: 16px;
+      animation: fadeUp 0.6s ease 0.4s both;
+    }
+
+    .error-desc {
+      font-family: 'Outfit', sans-serif;
+      font-size: 15px; line-height: 1.7;
+      color: var(--text-mid);
+      max-width: 500px; margin: 0 auto 36px;
+      animation: fadeUp 0.6s ease 0.5s both;
+    }
+
+    /* Reference code */
+    .error-ref {
+      font-family: 'DM Mono', monospace;
+      font-size: 10px; letter-spacing: 0.12em;
+      color: var(--text-dim);
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      padding: 8px 16px; border-radius: 2px;
+      margin-bottom: 40px;
+      animation: fadeUp 0.6s ease 0.55s both;
+    }
+
+    /* Buttons */
+    .error-btns {
+      display: flex; gap: 14px; flex-wrap: wrap; justify-content: center;
+      animation: fadeUp 0.6s ease 0.65s both;
+    }
+    .btn-primary {
+      background: var(--gold); color: #0a0a0a;
+      font-family: 'DM Mono', monospace;
+      font-size: 11px; letter-spacing: 0.12em;
+      font-weight: 500; padding: 13px 28px;
+      border: none; border-radius: 2px;
+      text-decoration: none; cursor: pointer;
+      transition: opacity 0.2s, transform 0.15s;
+    }
+    .btn-primary:hover { opacity: 0.88; transform: translateY(-1px); }
+    .btn-outline {
+      background: transparent;
+      color: var(--text);
+      font-family: 'DM Mono', monospace;
+      font-size: 11px; letter-spacing: 0.12em;
+      padding: 13px 28px;
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 2px;
+      text-decoration: none; cursor: pointer;
+      transition: border-color 0.2s, transform 0.15s;
+    }
+    .btn-outline:hover { border-color: var(--gold-border); transform: translateY(-1px); }
+
+    /* ── QUICK LINKS ── */
+    .quick-links {
+      background: var(--bg2);
+      border-top: 1px solid var(--border);
+      padding: 60px 24px;
+    }
+    .quick-inner {
+      max-width: 900px; margin: 0 auto; text-align: center;
+    }
+    .section-tag {
+      font-family: 'DM Mono', monospace;
+      font-size: 9px; letter-spacing: 0.2em;
+      color: var(--gold); text-transform: uppercase;
+      margin-bottom: 28px; opacity: 0.8;
+    }
+    .quick-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 12px; margin-top: 16px;
+    }
+    .quick-card {
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      padding: 20px; text-align: left;
+      text-decoration: none; color: var(--text);
+      transition: border-color 0.2s, background 0.2s;
+      position: relative;
+    }
+    .quick-card:hover {
+      border-color: var(--gold-border);
+      background: var(--gold-dim);
+    }
+    .quick-card .qid {
+      font-family: 'DM Mono', monospace;
+      font-size: 9px; letter-spacing: 0.15em;
+      color: var(--text-dim); margin-bottom: 8px;
+    }
+    .quick-card h4 {
+      font-family: 'Outfit', sans-serif;
+      font-size: 14px; font-weight: 600;
+      margin-bottom: 6px;
+    }
+    .quick-card p {
+      font-size: 12px; color: var(--text-mid); line-height: 1.5;
+    }
+    .quick-card .arrow {
+      font-family: 'DM Mono', monospace;
+      font-size: 10px; color: var(--gold);
+      margin-top: 12px; display: block;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      background: #050505;
+      border-top: 1px solid var(--border);
+      padding: 48px 24px 32px;
+    }
+    .footer-inner { max-width: 1200px; margin: 0 auto; }
+    .footer-bottom {
+      display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px;
+      border-top: 1px solid var(--border); padding-top: 20px; margin-top: 32px;
+    }
+    .copy, .era {
+      font-family: 'DM Mono', monospace;
+      font-size: 9px; letter-spacing: 0.1em;
+      color: var(--text-dim);
+    }
+    .disclaimer {
+      margin-top: 20px;
+      font-family: 'DM Mono', monospace;
+      font-size: 9px; color: var(--text-dim);
+      border-top: 1px solid rgba(255,255,255,0.05);
+      padding-top: 14px; line-height: 1.6;
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(18px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (max-width: 600px) {
+      .nav-links { display: none; }
+      .error-btns { flex-direction: column; align-items: center; }
+      .footer-bottom { flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- TOPBAR -->
+  <div id="topbar">
+    <div class="topbar-inner">
+      <a href="/gov/">GOVERNMENT</a>
+      <a href="/gov/systems/citizenship/">CITIZENSHIP</a>
+      <a href="/gov/systems/archives/">ARCHIVES</a>
+      <a href="/isc/">ISC</a>
+      <a href="/main/">HUB</a>
+    </div>
+  </div>
+
+  <!-- NAV -->
+  <div class="nav-wrapper">
+    <nav>
+      <div class="nav-logo">THELOL.GOV</div>
+      <ul class="nav-links">
+        <li><a href="/gov/">Home</a></li>
+        <li><a href="/gov/systems/citizenship/">Citizenship</a></li>
+        <li><a href="/gov/systems/archives/">Archives</a></li>
+        <li><a href="/isc/">ISC</a></li>
+        <li><a href="/gov/about/">About</a></li>
+      </ul>
+    </nav>
+  </div>
+
+  <!-- 404 MAIN -->
+  <div class="page-404">
+    <div class="glow-orb"></div>
+
+    <div class="code-tag">THELOL.GOV // ERROR CODE</div>
+
+    <div class="error-number">
+      <span class="gold-char">4</span>0<span class="gold-char">4</span>
+    </div>
+
+    <div class="error-divider"></div>
+
+    <h1 class="error-title">Page Not Found</h1>
+
+    <p class="error-desc">
+      The page you are looking for does not exist, has been moved, or is no longer part of this portal.
+      All active portals and documents remain accessible via the links below.
+    </p>
+
+    <div class="error-ref">
+      REF // THELOLGOV-404 &nbsp;·&nbsp; SKYXION: ALTAËR ERA &nbsp;·&nbsp; PORTAL INTEGRITY MAINTAINED
+    </div>
+
+    <div class="error-btns">
+      <a href="/gov/" class="btn-primary">← RETURN TO GOVERNMENT HOME</a>
+      <a href="/gov/about/" class="btn-outline">ABOUT THIS PORTAL</a>
+    </div>
+  </div>
+
+  <!-- QUICK LINKS -->
+  <div class="quick-links">
+    <div class="quick-inner">
+      <div class="section-tag">Portal Directory // Active Pages</div>
+      <div class="quick-grid">
+
+        <a href="/gov/" class="quick-card">
+          <div class="qid">PORTAL-01 // HOME</div>
+          <h4>Government Home</h4>
+          <p>Proclamation, history, departments, megaprojects, and founders.</p>
+          <span class="arrow">→ thelol.gov/gov/</span>
+        </a>
+
+        <a href="/gov/systems/citizenship/" class="quick-card">
+          <div class="qid">PORTAL-02 // CITIZENSHIP</div>
+          <h4>Citizenship Portal</h4>
+          <p>Apply for citizenship and review your rights under the Citizens' Rights Charter.</p>
+          <span class="arrow">→ /gov/systems/citizenship/</span>
+        </a>
+
+        <a href="/gov/systems/archives/" class="quick-card">
+          <div class="qid">PORTAL-03 // ARCHIVES</div>
+          <h4>Legal Archive</h4>
+          <p>All official proclamations, acts, and policy documents of The LoL.</p>
+          <span class="arrow">→ /gov/systems/archives/</span>
+        </a>
+
+        <a href="/isc/" class="quick-card">
+          <div class="qid">PORTAL-04 // SECURITY</div>
+          <h4>ISC Portal</h4>
+          <p>Internal Security Control — intelligence, mandate, and public transparency.</p>
+          <span class="arrow">→ /isc/</span>
+        </a>
+
+        <a href="/main/" class="quick-card">
+          <div class="qid">PORTAL-05 // HUB</div>
+          <h4>The LoL Main Hub</h4>
+          <p>The national homepage — server info, Paiz Corp, and community resources.</p>
+          <span class="arrow">→ /main/</span>
+        </a>
+
+        <a href="/gov/about/" class="quick-card">
+          <div class="qid">PORTAL-06 // INFO</div>
+          <h4>About This Portal</h4>
+          <p>Why this portal exists, who built it, and how to use pAIz.</p>
+          <span class="arrow">→ /gov/about/</span>
+        </a>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-bottom">
+        <div class="copy">© 2026 THE LEGEND OF LEGIONA // OFFICIAL GOVERNMENT</div>
+        <div class="era">SKYXION: ALTAËR ERA // BUILT FOR PEACE // SOVEREIGNTY THROUGH UNITY</div>
+      </div>
+      <div class="disclaimer">
+        <strong>LEGAL DISCLAIMER:</strong> The Legend of Legiona (The LoL) is an independent community project within Minecraft.
+        The terms "Skyxion" and "Altaër" used within this project and era designation are not affiliated with, or associated with Kawaiisho.
+        This project is NOT AN OFFICIAL MINECRAFT PRODUCT. Not approved by or associated with Mojang AB or Microsoft Corporation.
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>
