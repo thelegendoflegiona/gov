@@ -831,7 +831,7 @@
       fd.append('Minecraft IGN',    ign);
       fd.append('Contact Method',   contactMethodVal === 'discord' ? 'Discord' : 'WhatsApp');
       fd.append('Contact Details',  contact);
-      fd.append('Era',              'SKYXION: ALTAER ERA');
+      fd.append('Era',              'SKYXION: ALTAËR ERA');
       fd.append('_subject',         `[${type === 'renew' ? 'RENEWAL' : 'NEW APPLICATION'}] The LoL Citizenship — ${callName} (${ign}) // ${ref}`);
 
       try {
@@ -848,7 +848,7 @@
           document.getElementById('successRef').textContent = ref;
           // Update status link with pre-filled ref
           document.getElementById('statusLink').href =
-            `/thelol/gov/citizenship/status?ref=${encodeURIComponent(ref)}`;
+            `/gov/systems/citizenship/status?ref=${encodeURIComponent(ref)}`;
           document.getElementById('panelSuccess').classList.add('show');
           window.scrollTo({ top: 0, behavior: 'smooth' });
         } else {
