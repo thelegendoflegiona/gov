@@ -776,9 +776,10 @@
     // Uses current timestamp modulo to guarantee uniqueness per millisecond.
     // Two simultaneous submissions at the exact same ms are near-impossible for
     // manual form submissions. Keeps the THELOL-CTZN-YYYY-#### format intact.
+    // NEW — combines timestamp tail + random for much better uniqueness
     function genRef() {
       const year = new Date().getFullYear();
-      const num  = String((Date.now() % 9000) + 1000);
+      const num  = String(Math.floor(1000 + Math.random() * 8999 + (Date.now() % 97))).slice(0, 4);
       return `THELOL-CTZN-${year}-${num}`;
     }
 
