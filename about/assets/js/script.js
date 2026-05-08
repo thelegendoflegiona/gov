@@ -50,10 +50,10 @@ All three are signatories of the <a href="https://drive.google.com/file/d/1yzijC
 
   history: {
     text: `The Legend of Legiona's history spans several distinct eras:<br><br>
-<strong>The Sus Era (2023)</strong> — Founded by Faiz4224, ItzDynozz, and Imii Kun as "The Sus". EhekSquad (led by PhoenixAiman, PandaPutih, Kagee) joined but held no formal status, later departing independently.<br><br>
-<strong>Renaming &amp; Expansion</strong> — Renamed to "The Legend of Legiona" and rapidly became the most advanced nation in Skyxion.<br><br>
+<strong>The Sus Era (24 Dec 2021)</strong> — Founded as a WhatsApp group by Faiz4224, ItzDynozz, and Imii Kun under the name "The Sus". EhekSquad (led by PhoenixAiman, PandaPutih, Kagee) joined but held no formal status, later departing independently.<br><br>
+<strong>Renaming &amp; Expansion (Late 2021)</strong> — Renamed to "The Legend of Legiona" later that same year and rapidly became the most advanced nation in Skyxion.<br><br>
 <strong>First Election (6 May 2023)</strong> — UltraX2020 and the PHRTL party won The LoL's first democratic election, becoming the 2nd President.<br><br>
-<strong>Crisis Era</strong> — Internal strife: The LoL City sign was bombed, the TLCC was attacked by drones. UltraX2020 eventually resigned, returning power to Faiz4224.<br><br>
+<strong>Crisis Era (2023)</strong> — Internal strife: The LoL City sign was bombed, the TLCC was attacked with TNT. UltraX2020 eventually resigned, returning power to Faiz4224.<br><br>
 <strong>Rebuilding (Nov 2023)</strong> — Faiz4224 resumed leadership. TLIO (now ISC) was established. Infrastructure expanded.<br><br>
 <strong>Skyxion: Altaër Era (Current)</strong> — TLIO reborn as the ISC, full citizenship system live, National ID Portal launched.<br><br>
 <a href="/gov/#history">→ Full timeline on Government Home</a>`,
@@ -63,7 +63,7 @@ All three are signatories of the <a href="https://drive.google.com/file/d/1yzijC
   election: {
     text: `The LoL's <strong>first democratic election</strong> was held on <strong>6 May 2023</strong>.<br><br>
 <strong>UltraX2020</strong>, running under the <strong>Parti Harapan Rakyat The LoL (PHRTL)</strong>, won and became the <strong>2nd President</strong> of The Legend of Legiona — a significant milestone in The LoL's democratic governance.<br><br>
-His presidency later descended into crisis: internal strife, the bombing of The LoL City sign, and drone attacks on the TLCC Twin Towers. UltraX2020 resigned, returning power to <strong>Faiz4224</strong>.`,
+His presidency later descended into crisis: internal strife, the bombing of The LoL City sign, and a TNT attack on the TLCC Twin Towers. UltraX2020 resigned, returning power to <strong>Faiz4224</strong>.`,
     chips: ['UltraX2020 crisis', 'Who is Faiz4224?', 'The LoL history', 'Government departments']
   },
 
@@ -71,7 +71,7 @@ His presidency later descended into crisis: internal strife, the bombing of The 
     text: `The <strong>UltraX2020 Crisis</strong> was one of the most turbulent periods in The LoL's history.<br><br>
 During his presidency, significant internal strife emerged. Key events included:<br><br>
 • The <strong>bombing of The LoL City sign</strong><br>
-• <strong>Drone attacks on the TLCC Twin Towers</strong> — The LoL's most iconic landmark<br>
+• A <strong>TNT attack on the TLCC Twin Towers</strong> — The LoL's most iconic landmark<br>
 • Political conflict that fractured governance<br><br>
 UltraX2020 ultimately resigned. Power returned to <strong>Faiz4224</strong>, who led the post-chaos rebuilding phase — restoring the TLCC and establishing TLIO (now the ISC) to prevent future threats.`,
     chips: ['What is the ISC?', 'TLCC Twin Towers', 'The LoL history', 'Rebuilding era']
@@ -251,7 +251,7 @@ The full document is pending upload to the <a href="/gov/systems/archives/">Lega
   megaprojects: {
     text: `The LoL's national megaprojects stand as proof of what a united people can build:<br><br>
 <strong>TLSRL</strong> — The LoL–Spawn Railway Link. 4,800+ block railway. ~10 min travel time. Operated by TL Railways under Paiz® Corp.<br><br>
-<strong>TLCC Twin Towers</strong> — The most iconic landmark in The LoL City. Attacked during the UltraX2020 crisis, fully restored.<br><br>
+<strong>TLCC Twin Towers</strong> — The most iconic landmark in The LoL City. Attacked with TNT during the UltraX2020 crisis, fully restored.<br><br>
 <strong>National Farm Complex</strong> — Iron Farm, Totem Farm, and Gold Farm — all operational.<br><br>
 <strong>Paiz® Corp</strong> — The national conglomerate behind construction and transport infrastructure.<br><br>
 <a href="/gov/#megaprojects">→ View all megaprojects on Government Home</a>`,
@@ -270,7 +270,7 @@ It is one of the most ambitious construction projects in Skyxion's history, conn
 
   tlcc: {
     text: `The <strong>TLCC Twin Towers</strong> (The LoL Convention Centre) are the most iconic landmark in The LoL City.<br><br>
-During the <strong>UltraX2020 crisis</strong>, the towers were attacked by drones — one of the most dramatic events in The LoL's history. Following Faiz4224's return to power, the towers were fully restored and stand today as a symbol of national resilience.<br><br>
+During the <strong>UltraX2020 crisis</strong>, the towers were attacked with TNT — one of the most dramatic events in The LoL's history. Following Faiz4224's return to power, the towers were fully restored and stand today as a symbol of national resilience.<br><br>
 <a href="/gov/#megaprojects">→ Megaprojects on Government Home</a>`,
     chips: ['UltraX2020 crisis', 'National megaprojects', 'The LoL history', 'TLSRL railway']
   },
@@ -384,11 +384,11 @@ const INTENTS = [
   },
   {
     id: 'crisis',
-    patterns: ['crisis','chaos','conflict','bombed','bomb','drone','attack','strife','resign','resigned','unstable','ultrax crisis','sign bombing','rebuilding','rebuild']
+    patterns: ['crisis','chaos','conflict','bombed','bomb','tnt','attack','strife','resign','resigned','unstable','ultrax crisis','sign bombing','rebuilding','rebuild']
   },
   {
     id: 'history',
-    patterns: ['history','historical','timeline','past','origin','beginning','the sus','sus era','renamed','renaming','early','2023','old days','background','story','altaer','altaër','current era','skyxion era','when was','how did','what happened','tell me about the lol']
+    patterns: ['history','historical','timeline','past','origin','beginning','the sus','sus era','renamed','renaming','early','2021','2023','old days','background','story','altaer','altaër','current era','skyxion era','when was','how did','what happened','tell me about the lol','whatsapp','whatsapp group']
   },
   {
     id: 'proclamation',
