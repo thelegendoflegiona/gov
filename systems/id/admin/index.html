@@ -550,8 +550,8 @@
 
   <!-- NETBAR -->
   <nav class="netbar">
-    <a href="/main/" class="active">THE LOL</a>
-    <a href="/gov/">GOVERNMENT</a>
+    <a href="/main/">THE LOL</a>
+    <a href="/gov/" class="active">GOVERNMENT</a>
     <a href="/isc/">ISC</a>
   </nav>
 
@@ -685,6 +685,13 @@
                 <div class="form-field">
                   <label class="form-label">Minecraft Username *</label>
                   <input class="form-input" id="f_username" type="text" placeholder="e.g. lyvwiz" maxlength="30" />
+                </div>
+                <div class="form-field">
+                  <label class="form-label">Platform *</label>
+                  <select class="form-select" id="f_platform">
+                    <option value="java">Java Edition</option>
+                    <option value="bedrock">Bedrock Edition</option>
+                  </select>
                 </div>
                 <div class="form-field">
                   <label class="form-label">Citizenship Tier *</label>
@@ -1090,6 +1097,7 @@ async function issueID() {
   const fb  = document.getElementById('issueFeedback');
 
   const username  = document.getElementById('f_username').value.trim();
+  const platform = document.getElementById('f_platform').value;
   const tier      = document.getElementById('f_tier').value;
   const issued    = document.getElementById('f_issued').value.trim();
   const territory = document.getElementById('f_territory').value.trim() || 'Mainland Legiona';
@@ -1118,6 +1126,7 @@ async function issueID() {
       tx.set(counterRef, { lastSequence: newSeq, lastYear: String(year) });
       tx.set(doc(db, 'citizens', newID), {
         username, tier, issuedDate: issued, territory, status,
+        platform,
         walletLinked: false,
         publicNote: note || '',
         issuedYear: year,
@@ -1152,6 +1161,7 @@ function clearForm() {
     const el = document.getElementById(id);
     if (el) el.value = '';
   });
+  document.getElementById('f_platform').value = 'java';
   document.getElementById('f_tier').value   = 'citizen';
   document.getElementById('f_status').value = 'active';
   const fb = document.getElementById('issueFeedback');
