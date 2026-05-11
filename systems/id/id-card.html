@@ -875,10 +875,15 @@
       const mrz = `THELOL${uname.padEnd(10,'<').slice(0,10)}${year}${seq}<<${tCfg.label.replace(/ /g,'<').toUpperCase()}`;
       document.getElementById('cardMrz').textContent = mrz + '<'.repeat(Math.max(0, 80 - mrz.length));
 
-      // Avatar — try Minotar (Minecraft skin face)
+      // Avatar — Java via Minotar, Bedrock via Crafthead
       if (data.username) {
         const img = document.getElementById('cardAvatarImg');
-        img.src = `https://minotar.net/avatar/${encodeURIComponent(data.username)}/80`;
+        const isJava = !data.platform || data.platform === 'java';
+      
+        img.src = isJava
+          ? `https://minotar.net/avatar/${encodeURIComponent(data.username)}/80`
+          : `https://crafthead.net/avatar/*${encodeURIComponent(data.username)}/80`;
+      
         img.onload = () => {
           img.style.display = 'block';
           document.getElementById('cardAvatarPlaceholder').style.display = 'none';
