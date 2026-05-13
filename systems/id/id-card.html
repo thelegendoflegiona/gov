@@ -881,8 +881,8 @@
         const isJava = !data.platform || data.platform === 'java';
       
         img.src = isJava
-          ? `https://tabavatars.net/avatar/?username=${encodeURIComponent(data.username)}&type=bust`
-          : `https://tabavatars.net/avatar/?username=${encodeURIComponent(data.username)}&type=bust&platform=bedrock`;
+          ? `https://tabavatars.net/avatar/?username=${encodeURIComponent(data.username)}&type=helm`
+          : `https://tabavatars.net/avatar/?username=${encodeURIComponent(data.username)}&type=helm&platform=bedrock`;
       
         img.onload = () => {
           img.style.display = 'block';
