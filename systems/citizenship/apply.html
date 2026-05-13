@@ -835,8 +835,8 @@
 
     // ── IGN DUPLICATE CHECK ──────────────────────────────────────────────
     let ignCheckTimer   = null;
-    let ignBlocked      = false;   // true = active citizen found, block submit
-    let ignFoundRecord  = null;    // the Firestore citizen record if found
+    let ignBlocked      = false;
+    let ignFoundRecord  = null;
     
     const ignInput      = document.getElementById('ign');
     const ignResult     = document.getElementById('ignCheckResult');
@@ -849,14 +849,12 @@
         return;
       }
     
-      // Show checking state
       ignResult.style.display = 'block';
       ignResult.innerHTML = `
         <div class="ign-check-box checking">
           <span class="ign-check-tag">// Checking NIS registry...</span>
         </div>`;
     
-      // Wait for Firebase
       let attempts = 0;
       while (!window._nisReady && attempts < 30) {
         await new Promise(r => setTimeout(r, 100));
@@ -881,14 +879,12 @@
           return;
         }
     
-        // Found — grab first match
         const docData  = snap.docs[0].data();
         const docId    = snap.docs[0].id;
         const status   = (docData.status || 'active').toLowerCase();
         ignFoundRecord = { ...docData, id: docId };
     
         if (status === 'active' || status === 'suspended') {
-          // BLOCK submission — they're already a citizen
           ignBlocked = true;
           ignField.classList.add('ign-blocked');
     
@@ -919,7 +915,6 @@
             </div>`;
     
         } else if (status === 'revoked') {
-          // Allow application but warn them
           ignBlocked = false;
           ignField.classList.remove('ign-blocked');
     
@@ -940,13 +935,11 @@
         }
     
       } catch (err) {
-        // Silent fail — don't block the form if Firebase errors
         ignResult.style.display = 'none';
         ignBlocked = false;
       }
     }
     
-    // Debounced check on input
     ignInput.addEventListener('input', () => {
       clearTimeout(ignCheckTimer);
       ignField.classList.remove('ign-blocked');
@@ -958,7 +951,6 @@
       }
     });
     
-    // Also check on blur for immediate feedback
     ignInput.addEventListener('blur', () => {
       clearTimeout(ignCheckTimer);
       const val = ignInput.value.trim();
@@ -966,10 +958,6 @@
     });
     
     // ── Generate reference number ──
-    // Uses current timestamp modulo to guarantee uniqueness per millisecond.
-    // Two simultaneous submissions at the exact same ms are near-impossible for
-    // manual form submissions. Keeps the THELOL-CTZN-YYYY-#### format intact.
-    // NEW — combines timestamp tail + random for much better uniqueness
     function genRef() {
       const year = new Date().getFullYear();
       const num  = String(Math.floor(1000 + Math.random() * 8999 + (Date.now() % 97))).slice(0, 4);
@@ -992,7 +980,6 @@
           txt.textContent  = 'Copy Reference';
         }, 2500);
       }).catch(() => {
-        // Fallback for older browsers
         const el = document.createElement('textarea');
         el.value = ref;
         document.body.appendChild(el);
@@ -1002,17 +989,17 @@
       });
     }
 
-    // Block if active citizen found
-    if (ignBlocked) {
-      document.getElementById('ign').focus();
-      ignResult.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      return;
-    }
-    
     // ── Submit to Formspree ──
     document.getElementById('citizenForm').addEventListener('submit', async function (e) {
       e.preventDefault();
       if (!validateForm()) return;
+
+      // ── Block if active citizen found ──
+      if (ignBlocked) {
+        ignInput.focus();
+        ignResult.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        return;
+      }
 
       const submitBtn = document.getElementById('submitBtn');
       submitBtn.classList.add('loading');
@@ -1045,9 +1032,7 @@
 
         if (res.ok && data.ok) {
           document.getElementById('formWrapper').style.display = 'none';
-          // Populate ref in success panel
           document.getElementById('successRef').textContent = ref;
-          // Update status link with pre-filled ref
           document.getElementById('statusLink').href =
             `/gov/systems/citizenship/status?ref=${encodeURIComponent(ref)}`;
           document.getElementById('panelSuccess').classList.add('show');
