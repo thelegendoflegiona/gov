@@ -11,7 +11,6 @@
   <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,300;0,400;0,600;0,700;0,800;1,400;1,700&family=Barlow:ital,wght@0,300;0,400;0,500;0,600;1,300&family=Fira+Code:wght@300;400;500&display=swap" rel="stylesheet">
   <style>
     *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-
     :root {
       --bg:        #0a0a0a;
       --surface:   #111111;
@@ -31,496 +30,161 @@
       --fb:        'Barlow', sans-serif;
       --fm:        'Fira Code', monospace;
     }
-
     html { scroll-behavior: smooth; }
-    body {
-      background: var(--bg);
-      color: var(--text);
-      font-family: var(--fb);
-      font-size: 16px;
-      line-height: 1.6;
-      -webkit-font-smoothing: antialiased;
-    }
+    body { background: var(--bg); color: var(--text); font-family: var(--fb); font-size: 16px; line-height: 1.6; -webkit-font-smoothing: antialiased; }
 
-    /* ─── NOTICE BAR ─── */
-    .notice-bar {
-      background: var(--gold-bg);
-      border-bottom: 1px solid var(--gold-mid);
-      padding: 9px 24px;
-      text-align: center;
-      font-family: var(--fm); font-size: 11px;
-      letter-spacing: 0.08em; color: var(--gold);
-    }
+    .notice-bar { background: var(--gold-bg); border-bottom: 1px solid var(--gold-mid); padding: 9px 24px; text-align: center; font-family: var(--fm); font-size: 11px; letter-spacing: 0.08em; color: var(--gold); }
     .notice-bar a { color: var(--gold); text-decoration: underline; text-underline-offset: 3px; }
 
-    /* ─── TOP NAV ─── */
-    .topnav {
-      position: sticky; top: 0; z-index: 100;
-      background: rgba(10,10,10,0.96);
-      backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
-      border-bottom: 1px solid var(--border);
-      padding: 0 28px;
-      display: flex; align-items: center;
-      justify-content: space-between; height: 54px;
-    }
-    .topnav-logo {
-      font-family: var(--fh); font-size: 15px; font-weight: 700;
-      letter-spacing: 0.12em; text-transform: uppercase;
-      color: var(--text); text-decoration: none;
-    }
+    .topnav { position: sticky; top: 0; z-index: 100; background: rgba(10,10,10,0.96); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); border-bottom: 1px solid var(--border); padding: 0 28px; display: flex; align-items: center; justify-content: space-between; height: 54px; }
+    .topnav-logo { font-family: var(--fh); font-size: 15px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text); text-decoration: none; }
     .topnav-logo span { color: var(--gold); }
     .topnav-links { display: flex; gap: 28px; list-style: none; }
-    .topnav-links a {
-      font-family: var(--fm); font-size: 11px;
-      letter-spacing: 0.1em; text-transform: uppercase;
-      color: var(--muted); text-decoration: none; transition: color 0.2s;
-    }
+    .topnav-links a { font-family: var(--fm); font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); text-decoration: none; transition: color 0.2s; }
     .topnav-links a:hover, .topnav-links a.active { color: var(--gold); }
-    .hamburger {
-      display: none; flex-direction: column; gap: 5px;
-      cursor: pointer; background: none; border: none; padding: 4px;
-    }
-    .hamburger span {
-      display: block; width: 22px; height: 1px;
-      background: var(--text); transition: all 0.3s;
-    }
+    .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; background: none; border: none; padding: 4px; }
+    .hamburger span { display: block; width: 22px; height: 1px; background: var(--text); transition: all 0.3s; }
     .hamburger.open span:nth-child(1) { transform: translateY(6px) rotate(45deg); }
     .hamburger.open span:nth-child(2) { opacity: 0; }
     .hamburger.open span:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
-    .mobile-nav {
-      display: none; position: fixed;
-      top: 54px; left: 0; right: 0;
-      background: var(--surface);
-      border-bottom: 1px solid var(--border);
-      padding: 8px 28px; z-index: 99;
-      flex-direction: column;
-    }
+    .mobile-nav { display: none; position: fixed; top: 54px; left: 0; right: 0; background: var(--surface); border-bottom: 1px solid var(--border); padding: 8px 28px; z-index: 99; flex-direction: column; }
     .mobile-nav.open { display: flex; }
-    .mobile-nav a {
-      font-family: var(--fm); font-size: 12px;
-      letter-spacing: 0.1em; text-transform: uppercase;
-      color: var(--muted); text-decoration: none;
-      padding: 13px 0; border-bottom: 1px solid var(--border);
-      transition: color 0.2s;
-    }
+    .mobile-nav a { font-family: var(--fm); font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); text-decoration: none; padding: 13px 0; border-bottom: 1px solid var(--border); transition: color 0.2s; }
     .mobile-nav a:last-child { border-bottom: none; }
     .mobile-nav a.active, .mobile-nav a:hover { color: var(--gold); }
 
-    /* ─── BREADCRUMB ─── */
-    .breadcrumb {
-      background: var(--surface);
-      border-bottom: 1px solid var(--border);
-      padding: 12px 28px;
-      font-family: var(--fm); font-size: 11px;
-      letter-spacing: 0.08em; color: var(--dim);
-    }
+    .breadcrumb { background: var(--surface); border-bottom: 1px solid var(--border); padding: 12px 28px; font-family: var(--fm); font-size: 11px; letter-spacing: 0.08em; color: var(--dim); }
     .breadcrumb a { color: var(--dim); text-decoration: none; transition: color 0.2s; }
     .breadcrumb a:hover { color: var(--gold); }
     .breadcrumb span { margin: 0 8px; color: var(--gold); }
 
-    /* ─── LAYOUT ─── */
-    .page {
-      max-width: 800px; margin: 0 auto;
-      padding: 60px 28px 100px;
-    }
+    .page { max-width: 800px; margin: 0 auto; padding: 60px 28px 100px; }
 
-    /* ─── PAGE HEADER ─── */
-    .page-hd {
-      margin-bottom: 48px;
-      padding-bottom: 36px;
-      border-bottom: 1px solid var(--border);
-    }
-    .page-tag {
-      font-family: var(--fm); font-size: 11px;
-      letter-spacing: 0.15em; text-transform: uppercase;
-      color: var(--gold); display: block; margin-bottom: 12px;
-    }
-    .page-hd h1 {
-      font-family: var(--fh);
-      font-size: clamp(40px, 8vw, 72px);
-      font-weight: 800; text-transform: uppercase;
-      letter-spacing: -0.02em; line-height: 0.92;
-      margin-bottom: 16px;
-    }
+    .page-hd { margin-bottom: 48px; padding-bottom: 36px; border-bottom: 1px solid var(--border); }
+    .page-tag { font-family: var(--fm); font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--gold); display: block; margin-bottom: 12px; }
+    .page-hd h1 { font-family: var(--fh); font-size: clamp(40px, 8vw, 72px); font-weight: 800; text-transform: uppercase; letter-spacing: -0.02em; line-height: 0.92; margin-bottom: 16px; }
     .page-hd h1 em { font-style: italic; color: var(--gold); }
-    .page-hd p {
-      font-size: 14px; font-weight: 300;
-      color: var(--muted); line-height: 1.7;
-      max-width: 540px;
-    }
+    .page-hd p { font-size: 14px; font-weight: 300; color: var(--muted); line-height: 1.7; max-width: 540px; }
 
-    /* ─── TYPE SELECTOR ─── */
-    .type-selector {
-      display: grid; grid-template-columns: 1fr 1fr;
-      gap: 1px; background: var(--border);
-      border: 1px solid var(--border);
-      margin-bottom: 40px;
-    }
-    .type-btn {
-      padding: 22px 20px;
-      background: var(--surface);
-      cursor: pointer; text-align: left;
-      border: none; transition: background 0.2s;
-      position: relative;
-    }
+    .type-selector { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--border); border: 1px solid var(--border); margin-bottom: 40px; }
+    .type-btn { padding: 22px 20px; background: var(--surface); cursor: pointer; text-align: left; border: none; transition: background 0.2s; position: relative; }
     .type-btn:hover { background: var(--surface-2); }
     .type-btn.selected { background: var(--gold-bg); }
-    .type-btn.selected::after {
-      content: '';
-      position: absolute; bottom: 0; left: 0; right: 0;
-      height: 2px; background: var(--gold);
-    }
-    .type-btn-tag {
-      font-family: var(--fm); font-size: 10px;
-      letter-spacing: 0.1em; text-transform: uppercase;
-      color: var(--dim); display: block; margin-bottom: 6px;
-    }
+    .type-btn.selected::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 2px; background: var(--gold); }
+    .type-btn-tag { font-family: var(--fm); font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--dim); display: block; margin-bottom: 6px; }
     .type-btn.selected .type-btn-tag { color: var(--gold); }
-    .type-btn h3 {
-      font-family: var(--fh); font-size: 22px;
-      font-weight: 700; text-transform: uppercase;
-      letter-spacing: 0.02em; margin-bottom: 6px;
-      color: var(--muted); transition: color 0.2s;
-    }
+    .type-btn h3 { font-family: var(--fh); font-size: 22px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.02em; margin-bottom: 6px; color: var(--muted); transition: color 0.2s; }
     .type-btn.selected h3 { color: var(--text); }
-    .type-btn p {
-      font-size: 12px; font-weight: 300;
-      color: var(--dim); line-height: 1.55;
-    }
+    .type-btn p { font-size: 12px; font-weight: 300; color: var(--dim); line-height: 1.55; }
     .type-btn.selected p { color: var(--muted); }
 
-    /* ─── FORM ─── */
     .form-section { margin-bottom: 40px; }
-    .form-section-title {
-      font-family: var(--fm); font-size: 11px;
-      letter-spacing: 0.12em; text-transform: uppercase;
-      color: var(--gold); padding-bottom: 14px;
-      border-bottom: 1px solid var(--border);
-      margin-bottom: 24px; display: block;
-    }
+    .form-section-title { font-family: var(--fm); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gold); padding-bottom: 14px; border-bottom: 1px solid var(--border); margin-bottom: 24px; display: block; }
     .field { margin-bottom: 20px; }
-    .field label {
-      display: block;
-      font-family: var(--fm); font-size: 11px;
-      letter-spacing: 0.1em; text-transform: uppercase;
-      color: var(--muted); margin-bottom: 8px;
-    }
+    .field label { display: block; font-family: var(--fm); font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); margin-bottom: 8px; }
     .field label span.req { color: var(--gold); margin-left: 3px; }
-    .field-note {
-      font-size: 12px; font-weight: 300;
-      color: var(--dim); margin-bottom: 8px;
-      line-height: 1.5;
-    }
-    .field input[type="text"],
-    .field input[type="tel"],
-    .field textarea {
-      width: 100%;
-      background: var(--surface);
-      border: 1px solid var(--border);
-      color: var(--text);
-      font-family: var(--fm); font-size: 13px;
-      padding: 12px 14px;
-      outline: none;
-      transition: border-color 0.2s;
-      -webkit-appearance: none;
-    }
+    .field-note { font-size: 12px; font-weight: 300; color: var(--dim); margin-bottom: 8px; line-height: 1.5; }
+    .field input[type="text"], .field input[type="tel"], .field textarea { width: 100%; background: var(--surface); border: 1px solid var(--border); color: var(--text); font-family: var(--fm); font-size: 13px; padding: 12px 14px; outline: none; transition: border-color 0.2s; -webkit-appearance: none; }
     .field input:focus, .field textarea:focus { border-color: var(--gold); }
     .field input::placeholder, .field textarea::placeholder { color: var(--dim); }
     .field textarea { resize: vertical; min-height: 80px; }
 
-    /* ─── IGN CHECK STATES ─── */
-    .ign-check-box {
-      border: 1px solid var(--border);
-      background: var(--surface-2);
-      padding: 16px 18px;
-      margin-top: 2px;
-    }
-    .ign-check-box.found-active {
-      border-color: var(--gold-mid);
-      background: var(--gold-bg);
-      border-left: 3px solid var(--gold);
-    }
-    .ign-check-box.found-revoked {
-      border-color: rgba(180,80,80,0.25);
-      background: rgba(180,80,80,0.06);
-      border-left: 3px solid var(--red);
-    }
-    .ign-check-box.checking {
-      border-left: 3px solid var(--dim);
-    }
-    .ign-check-tag {
-      font-family: var(--fm); font-size: 9px;
-      letter-spacing: 0.18em; text-transform: uppercase;
-      display: block; margin-bottom: 8px;
-    }
+    .ign-check-box { border: 1px solid var(--border); background: var(--surface-2); padding: 16px 18px; margin-top: 2px; }
+    .ign-check-box.found-active { border-color: var(--gold-mid); background: var(--gold-bg); border-left: 3px solid var(--gold); }
+    .ign-check-box.found-revoked { border-color: rgba(180,80,80,0.25); background: rgba(180,80,80,0.06); border-left: 3px solid var(--red); }
+    .ign-check-box.checking { border-left: 3px solid var(--dim); }
+    .ign-check-tag { font-family: var(--fm); font-size: 9px; letter-spacing: 0.18em; text-transform: uppercase; display: block; margin-bottom: 8px; }
     .found-active .ign-check-tag  { color: var(--gold); }
     .found-revoked .ign-check-tag { color: var(--red); }
     .checking .ign-check-tag      { color: var(--dim); }
-    .ign-check-title {
-      font-family: var(--fh); font-size: 18px;
-      font-weight: 700; text-transform: uppercase;
-      letter-spacing: 0.02em; margin-bottom: 6px;
-    }
+    .ign-check-title { font-family: var(--fh); font-size: 18px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.02em; margin-bottom: 6px; }
     .found-active .ign-check-title  { color: var(--text); }
     .found-revoked .ign-check-title { color: var(--red); }
-    .ign-check-body {
-      font-size: 13px; font-weight: 300;
-      color: var(--muted); line-height: 1.65;
-      margin-bottom: 14px;
-    }
+    .ign-check-body { font-size: 13px; font-weight: 300; color: var(--muted); line-height: 1.65; margin-bottom: 14px; }
     .ign-check-actions { display: flex; gap: 8px; flex-wrap: wrap; }
-    .ign-check-btn {
-      font-family: var(--fm); font-size: 10px;
-      letter-spacing: 0.1em; text-transform: uppercase;
-      text-decoration: none; padding: 9px 16px;
-      border: 1px solid; cursor: pointer;
-      transition: all 0.2s; display: inline-block; white-space: nowrap;
-    }
+    .ign-check-btn { font-family: var(--fm); font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; text-decoration: none; padding: 9px 16px; border: 1px solid; cursor: pointer; transition: all 0.2s; display: inline-block; white-space: nowrap; }
     .ign-check-btn-gold  { border-color: var(--gold);   color: var(--gold);   background: transparent; }
     .ign-check-btn-gold:hover  { background: var(--gold);   color: var(--bg); }
     .ign-check-btn-ghost { border-color: var(--border); color: var(--muted); background: transparent; }
     .ign-check-btn-ghost:hover { border-color: var(--gold); color: var(--gold); }
     .ign-check-btn-red   { border-color: rgba(180,80,80,0.35); color: var(--red); background: transparent; }
     .ign-check-btn-red:hover   { background: rgba(180,80,80,0.1); }
-    /* Blur IGN field when blocked */
     .field.ign-blocked input { opacity: 0.45; pointer-events: none; }
-    
-    /* Contact method toggle */
-    .contact-toggle {
-      display: flex; gap: 1px;
-      background: var(--border);
-      border: 1px solid var(--border);
-      margin-bottom: 10px;
-    }
-    .ct-btn {
-      flex: 1; padding: 10px;
-      background: var(--surface);
-      border: none; cursor: pointer;
-      font-family: var(--fm); font-size: 11px;
-      letter-spacing: 0.1em; text-transform: uppercase;
-      color: var(--dim); transition: all 0.2s;
-    }
+
+    .contact-toggle { display: flex; gap: 1px; background: var(--border); border: 1px solid var(--border); margin-bottom: 10px; }
+    .ct-btn { flex: 1; padding: 10px; background: var(--surface); border: none; cursor: pointer; font-family: var(--fm); font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--dim); transition: all 0.2s; }
     .ct-btn:hover { color: var(--muted); background: var(--surface-2); }
     .ct-btn.active { background: var(--gold-bg); color: var(--gold); }
 
-    /* ─── DECLARATIONS ─── */
     .declarations { display: flex; flex-direction: column; gap: 1px; background: var(--border); border: 1px solid var(--border); }
-    .decl-item {
-      background: var(--surface);
-      padding: 14px 16px;
-      display: flex; gap: 14px; align-items: flex-start;
-      cursor: pointer; transition: background 0.15s;
-    }
+    .decl-item { background: var(--surface); padding: 14px 16px; display: flex; gap: 14px; align-items: flex-start; cursor: pointer; transition: background 0.15s; }
     .decl-item:hover { background: var(--surface-2); }
-    .decl-item input[type="checkbox"] {
-      appearance: none; -webkit-appearance: none;
-      width: 16px; height: 16px; flex-shrink: 0;
-      border: 1px solid var(--border); background: var(--surface-2);
-      cursor: pointer; margin-top: 1px;
-      transition: all 0.15s; position: relative;
-    }
-    .decl-item input[type="checkbox"]:checked {
-      background: var(--gold); border-color: var(--gold);
-    }
-    .decl-item input[type="checkbox"]:checked::after {
-      content: '';
-      position: absolute; left: 4px; top: 1px;
-      width: 5px; height: 9px;
-      border: 2px solid var(--bg);
-      border-top: none; border-left: none;
-      transform: rotate(45deg);
-    }
-    .decl-text {
-      font-size: 13px; font-weight: 300;
-      color: var(--muted); line-height: 1.55;
-    }
+    .decl-item input[type="checkbox"] { appearance: none; -webkit-appearance: none; width: 16px; height: 16px; flex-shrink: 0; border: 1px solid var(--border); background: var(--surface-2); cursor: pointer; margin-top: 1px; transition: all 0.15s; position: relative; }
+    .decl-item input[type="checkbox"]:checked { background: var(--gold); border-color: var(--gold); }
+    .decl-item input[type="checkbox"]:checked::after { content: ''; position: absolute; left: 4px; top: 1px; width: 5px; height: 9px; border: 2px solid var(--bg); border-top: none; border-left: none; transform: rotate(45deg); }
+    .decl-text { font-size: 13px; font-weight: 300; color: var(--muted); line-height: 1.55; }
     .decl-text strong { color: var(--text); font-weight: 500; }
     .decl-text a { color: var(--gold); text-decoration: underline; text-underline-offset: 2px; }
 
-    /* ─── SUBMIT AREA ─── */
-    .submit-area {
-      padding-top: 32px;
-      border-top: 1px solid var(--border);
-      margin-top: 40px;
-    }
-    .submit-notice {
-      background: var(--gold-bg);
-      border: 1px solid var(--gold-mid);
-      padding: 14px 16px;
-      margin-bottom: 20px;
-    }
-    .submit-notice p {
-      font-family: var(--fm); font-size: 11px;
-      letter-spacing: 0.06em; color: var(--gold);
-      line-height: 1.65;
-    }
-    .btn-submit {
-      width: 100%;
-      background: transparent;
-      border: 1px solid var(--gold);
-      color: var(--gold);
-      font-family: var(--fm); font-size: 12px;
-      letter-spacing: 0.15em; text-transform: uppercase;
-      padding: 16px;
-      cursor: pointer;
-      transition: background 0.2s, color 0.2s;
-      display: flex; align-items: center; justify-content: center; gap: 10px;
-    }
+    .submit-area { padding-top: 32px; border-top: 1px solid var(--border); margin-top: 40px; }
+    .submit-notice { background: var(--gold-bg); border: 1px solid var(--gold-mid); padding: 14px 16px; margin-bottom: 20px; }
+    .submit-notice p { font-family: var(--fm); font-size: 11px; letter-spacing: 0.06em; color: var(--gold); line-height: 1.65; }
+    .btn-submit { width: 100%; background: transparent; border: 1px solid var(--gold); color: var(--gold); font-family: var(--fm); font-size: 12px; letter-spacing: 0.15em; text-transform: uppercase; padding: 16px; cursor: pointer; transition: background 0.2s, color 0.2s; display: flex; align-items: center; justify-content: center; gap: 10px; }
     .btn-submit:hover:not(:disabled) { background: var(--gold); color: var(--bg); }
     .btn-submit:disabled { opacity: 0.4; cursor: not-allowed; }
-    .btn-submit .spinner {
-      display: none; width: 14px; height: 14px;
-      border: 1px solid currentColor;
-      border-top-color: transparent;
-      border-radius: 50%;
-      animation: spin 0.7s linear infinite;
-    }
+    .btn-submit .spinner { display: none; width: 14px; height: 14px; border: 1px solid currentColor; border-top-color: transparent; border-radius: 50%; animation: spin 0.7s linear infinite; }
     .btn-submit.loading .spinner { display: block; }
     .btn-submit.loading .btn-label { opacity: 0.6; }
     @keyframes spin { to { transform: rotate(360deg); } }
 
-    /* ─── SUCCESS / ERROR STATES ─── */
-    .state-panel {
-      display: none;
-      border: 1px solid var(--border);
-      background: var(--surface);
-      padding: 48px 36px;
-      text-align: center;
-    }
+    .state-panel { display: none; border: 1px solid var(--border); background: var(--surface); padding: 48px 36px; text-align: center; }
     .state-panel.show { display: block; }
-    .state-panel .state-icon {
-      font-family: var(--fm); font-size: 32px;
-      display: block; margin-bottom: 20px;
-    }
+    .state-panel .state-icon { font-family: var(--fm); font-size: 32px; display: block; margin-bottom: 20px; }
     .state-panel.success .state-icon { color: var(--green); }
     .state-panel.error .state-icon { color: var(--red); }
-    .state-panel h2 {
-      font-family: var(--fh); font-size: 32px;
-      font-weight: 700; text-transform: uppercase;
-      letter-spacing: 0.04em; margin-bottom: 12px;
-    }
+    .state-panel h2 { font-family: var(--fh); font-size: 32px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 12px; }
     .state-panel.success h2 { color: var(--green); }
     .state-panel.error h2 { color: var(--red); }
-    .state-panel p {
-      font-size: 14px; font-weight: 300;
-      color: var(--muted); line-height: 1.7;
-      max-width: 400px; margin: 0 auto 12px;
-    }
+    .state-panel p { font-size: 14px; font-weight: 300; color: var(--muted); line-height: 1.7; max-width: 400px; margin: 0 auto 12px; }
 
-    /* ── ref display block ── */
-    .ref-block {
-      background: var(--surface-2);
-      border: 1px solid var(--border);
-      border-left: 3px solid var(--gold);
-      padding: 16px 20px;
-      margin: 20px auto;
-      max-width: 380px;
-      text-align: left;
-    }
-    .ref-block .ref-lbl {
-      font-family: var(--fm); font-size: 9px;
-      letter-spacing: 0.2em; text-transform: uppercase;
-      color: var(--dim); display: block; margin-bottom: 8px;
-    }
-    .ref-block .ref-val {
-      font-family: var(--fm); font-size: 15px;
-      letter-spacing: 0.08em; color: var(--gold);
-      display: block; margin-bottom: 14px;
-    }
-    .ref-actions {
-      display: flex; gap: 8px; flex-wrap: wrap;
-    }
-    .ref-btn {
-      font-family: var(--fm); font-size: 10px;
-      letter-spacing: 0.1em; text-transform: uppercase;
-      padding: 8px 14px; cursor: pointer;
-      transition: all 0.2s; text-decoration: none;
-      display: inline-flex; align-items: center; gap: 6px;
-      white-space: nowrap;
-    }
-    .ref-btn-copy {
-      background: transparent;
-      border: 1px solid var(--gold); color: var(--gold);
-    }
+    .ref-block { background: var(--surface-2); border: 1px solid var(--border); border-left: 3px solid var(--gold); padding: 16px 20px; margin: 20px auto; max-width: 380px; text-align: left; }
+    .ref-block .ref-lbl { font-family: var(--fm); font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--dim); display: block; margin-bottom: 8px; }
+    .ref-block .ref-val { font-family: var(--fm); font-size: 15px; letter-spacing: 0.08em; color: var(--gold); display: block; margin-bottom: 14px; }
+    .ref-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+    .ref-btn { font-family: var(--fm); font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; padding: 8px 14px; cursor: pointer; transition: all 0.2s; text-decoration: none; display: inline-flex; align-items: center; gap: 6px; white-space: nowrap; }
+    .ref-btn-copy { background: transparent; border: 1px solid var(--gold); color: var(--gold); }
     .ref-btn-copy:hover { background: var(--gold); color: var(--bg); }
-    .ref-btn-copy.copied {
-      border-color: var(--green); color: var(--green);
-      background: rgba(80,160,100,0.08);
-    }
-    .ref-btn-status {
-      background: transparent;
-      border: 1px solid var(--border); color: var(--muted);
-    }
+    .ref-btn-copy.copied { border-color: var(--green); color: var(--green); background: rgba(80,160,100,0.08); }
+    .ref-btn-status { background: transparent; border: 1px solid var(--border); color: var(--muted); }
     .ref-btn-status:hover { border-color: var(--gold); color: var(--gold); }
 
-    .state-btn {
-      font-family: var(--fm); font-size: 11px;
-      letter-spacing: 0.12em; text-transform: uppercase;
-      text-decoration: none; padding: 12px 24px;
-      border: 1px solid var(--gold); color: var(--gold);
-      background: transparent;
-      transition: background 0.2s, color 0.2s;
-      cursor: pointer; display: inline-block; margin: 6px;
-    }
+    .state-btn { font-family: var(--fm); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; text-decoration: none; padding: 12px 24px; border: 1px solid var(--gold); color: var(--gold); background: transparent; transition: background 0.2s, color 0.2s; cursor: pointer; display: inline-block; margin: 6px; }
     .state-btn:hover { background: var(--gold); color: var(--bg); }
     .state-btn.ghost { border-color: var(--border); color: var(--muted); }
     .state-btn.ghost:hover { border-color: var(--gold); color: var(--gold); background: transparent; }
 
-    /* ─── VALIDATION ─── */
-    .field-error {
-      font-family: var(--fm); font-size: 11px;
-      color: var(--red); letter-spacing: 0.08em;
-      margin-top: 6px; display: none;
-    }
+    .field-error { font-family: var(--fm); font-size: 11px; color: var(--red); letter-spacing: 0.08em; margin-top: 6px; display: none; }
     .field.invalid input, .field.invalid textarea { border-color: var(--red); }
     .field.invalid .field-error { display: block; }
 
-    /* ─── FOOTER ─── */
     footer { border-top: 1px solid var(--border); padding: 40px 28px 28px; }
-    .footer-bottom {
-      max-width: 800px; margin: 0 auto;
-      display: flex; justify-content: space-between;
-      align-items: center; flex-wrap: wrap; gap: 10px;
-    }
-    .footer-bottom p {
-      font-family: var(--fm); font-size: 10px;
-      letter-spacing: 0.08em; color: var(--dim);
-      text-transform: uppercase;
-    }
-    .footer-bottom a {
-      font-family: var(--fm); font-size: 11px;
-      color: var(--dim); text-decoration: none; transition: color 0.2s;
-    }
+    .footer-bottom { max-width: 800px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; }
+    .footer-bottom p { font-family: var(--fm); font-size: 10px; letter-spacing: 0.08em; color: var(--dim); text-transform: uppercase; }
+    .footer-bottom a { font-family: var(--fm); font-size: 11px; color: var(--dim); text-decoration: none; transition: color 0.2s; }
     .footer-bottom a:hover { color: var(--gold); }
-    .disclaimer {
-      max-width: 800px; margin: 16px auto 0;
-      font-size: 11px; color: var(--dim);
-      font-weight: 300; line-height: 1.6;
-    }
+    .disclaimer { max-width: 800px; margin: 16px auto 0; font-size: 11px; color: var(--dim); font-weight: 300; line-height: 1.6; }
 
-    /* ─── RESPONSIVE ─── */
-    @media (max-width: 768px) {
-      .topnav-links { display: none; }
-      .hamburger { display: flex; }
-      .page { padding: 48px 20px 80px; }
-      .type-selector { grid-template-columns: 1fr; }
-    }
-    @media (max-width: 400px) {
-      .page-hd h1 { font-size: 42px; }
-      .ref-actions { flex-direction: column; }
-      .ref-btn { justify-content: center; }
-    }
+    @media (max-width: 768px) { .topnav-links { display: none; } .hamburger { display: flex; } .page { padding: 48px 20px 80px; } .type-selector { grid-template-columns: 1fr; } }
+    @media (max-width: 400px) { .page-hd h1 { font-size: 42px; } .ref-actions { flex-direction: column; } .ref-btn { justify-content: center; } }
   </style>
 </head>
 <body>
 
-  <!-- NOTICE BAR -->
   <div class="notice-bar">
     CITIZENSHIP APPLICATION SUBMITTED? — TRACK YOUR PROGRESS //
     <a href="/gov/systems/citizenship/status">CHECK YOUR STATUS →</a>
   </div>
 
-  <!-- TOP NAV -->
   <nav class="topnav">
     <a href="/gov/" class="topnav-logo">THE LOL.<span>GOV</span></a>
     <ul class="topnav-links">
@@ -536,7 +200,6 @@
     </button>
   </nav>
 
-  <!-- MOBILE NAV -->
   <div class="mobile-nav" id="mobileNav">
     <a href="/main/">THE LOL</a>
     <a href="/gov/">GOVERNMENT</a>
@@ -546,7 +209,6 @@
     <a href="/gov/systems/archives/">ARCHIVES</a>
   </div>
 
-  <!-- BREADCRUMB -->
   <div class="breadcrumb">
     <a href="/gov/">Government</a>
     <span>//</span>
@@ -555,27 +217,18 @@
     Application Form
   </div>
 
-  <!-- ═══ MAIN CONTENT ═══ -->
   <main class="page">
 
-    <!-- PAGE HEADER -->
     <div class="page-hd">
       <span class="page-tag">THELOL.GOV // CITIZENSHIP APPLICATION // ALTAËR ERA</span>
       <h1>Citizenship <em>Application</em></h1>
-      <p>
-        Complete this form to apply for or renew your citizenship in The Legend of Legiona.
-        All fields are required. Ensure your information is accurate — false declarations
-        are immediate grounds for rejection and potential ban from future applications.
-      </p>
+      <p>Complete this form to apply for or renew your citizenship in The Legend of Legiona. All fields are required. Ensure your information is accurate — false declarations are immediate grounds for rejection and potential ban from future applications.</p>
     </div>
 
-    <!-- SUCCESS PANEL -->
     <div class="state-panel success" id="panelSuccess">
       <span class="state-icon">✓</span>
       <h2>Application Submitted</h2>
       <p>Your application has been received by the Office of the President. You will be contacted via the details you provided.</p>
-
-      <!-- Ref block with copy + status link -->
       <div class="ref-block">
         <span class="ref-lbl">Your Reference Number — Save This</span>
         <span class="ref-val" id="successRef">THELOL-CTZN-2026-0000</span>
@@ -589,13 +242,11 @@
           </a>
         </div>
       </div>
-
       <p style="font-size: 12px; color: var(--dim); margin-top: 8px;">Do not resubmit. Review time may vary.</p>
       <br>
       <a href="/gov/systems/citizenship/" class="state-btn ghost">← Back to Citizenship Info</a>
     </div>
 
-    <!-- ERROR PANEL -->
     <div class="state-panel error" id="panelError">
       <span class="state-icon">✕</span>
       <h2>Submission Failed</h2>
@@ -605,10 +256,8 @@
       <a href="/gov/systems/citizenship/apply" class="state-btn ghost">← Back</a>
     </div>
 
-    <!-- APPLICATION FORM -->
     <div id="formWrapper">
 
-      <!-- TYPE SELECTOR -->
       <div class="type-selector" id="typeSelector">
         <button class="type-btn selected" data-type="apply" onclick="selectType('apply')">
           <span class="type-btn-tag">TYPE-01 // NEW</span>
@@ -623,10 +272,8 @@
       </div>
       <input type="hidden" id="appType" value="apply">
 
-      <!-- FORM -->
       <form id="citizenForm" novalidate>
 
-        <!-- SECTION 1: PERSONAL DETAILS -->
         <div class="form-section">
           <span class="form-section-title">Section 01 // Personal Details</span>
           <div class="field" id="fieldCallName">
@@ -637,15 +284,13 @@
           </div>
           <div class="field" id="fieldIGN">
             <label for="ign">Minecraft IGN (Username) <span class="req">*</span></label>
-            <p class="field-note">Your exact Minecraft username / Gamertag. <strong>This is case-sensitive</strong> — type it exactly as it appears in-game. (e.g. Faiz4224, lyvwiz)</p>
+            <p class="field-note">Your exact Minecraft username / Gamertag. <strong>This is case-sensitive</strong> — type it exactly as it appears in-game.</p>
             <input type="text" id="ign" name="ign" placeholder="e.g. Faiz4224" maxlength="16" autocomplete="on" spellcheck="false">
-            <!-- NIS duplicate check result -->
             <div id="ignCheckResult" style="display:none; margin-top:10px;"></div>
             <span class="field-error">Minecraft IGN is required.</span>
           </div>
         </div>
 
-        <!-- SECTION 2: CONTACT -->
         <div class="form-section">
           <span class="form-section-title">Section 02 // Contact Information</span>
           <div class="field" id="fieldContact">
@@ -661,7 +306,6 @@
           </div>
         </div>
 
-        <!-- SECTION 3: DECLARATIONS -->
         <div class="form-section">
           <span class="form-section-title">Section 03 // Declarations &amp; Agreements</span>
           <p class="field-note" style="margin-bottom: 16px;">You must check all boxes to proceed. These declarations are legally binding within The LoL's governance framework.</p>
@@ -714,7 +358,6 @@
           <span class="field-error" id="declError" style="display:none; margin-top: 10px;">All declarations must be accepted to submit.</span>
         </div>
 
-        <!-- SUBMIT -->
         <div class="submit-area">
           <div class="submit-notice">
             <p>
@@ -735,7 +378,6 @@
 
   </main>
 
-  <!-- FOOTER -->
   <footer>
     <div class="footer-bottom">
       <p>© 2026 THE LEGEND OF LEGIONA // CITIZENSHIP PORTAL</p>
@@ -811,99 +453,58 @@
       const callName = document.getElementById('callName').value.trim();
       if (!callName) { setFieldError('fieldCallName'); valid = false; }
       else clearFieldError('fieldCallName');
-
       const ign = document.getElementById('ign').value.trim();
       if (!ign) { setFieldError('fieldIGN'); valid = false; }
       else clearFieldError('fieldIGN');
-
       const contact = document.getElementById('contactInput').value.trim();
-      if (!contact) {
-        document.getElementById('fieldContact').classList.add('invalid');
-        valid = false;
-      } else clearFieldError('fieldContact');
-
+      if (!contact) { document.getElementById('fieldContact').classList.add('invalid'); valid = false; }
+      else clearFieldError('fieldContact');
       const checks     = document.querySelectorAll('.decl-check');
       const allChecked = Array.from(checks).every(c => c.checked);
-      if (!allChecked) {
-        document.getElementById('declError').style.display = 'block';
-        valid = false;
-      } else {
-        document.getElementById('declError').style.display = 'none';
-      }
+      if (!allChecked) { document.getElementById('declError').style.display = 'block'; valid = false; }
+      else document.getElementById('declError').style.display = 'none';
       return valid;
     }
 
-    // ── IGN DUPLICATE CHECK ──────────────────────────────────────────────
-    let ignCheckTimer   = null;
-    let ignBlocked      = false;
-    let ignFoundRecord  = null;
-    
-    const ignInput      = document.getElementById('ign');
-    const ignResult     = document.getElementById('ignCheckResult');
-    const ignField      = document.getElementById('fieldIGN');
-    
+    // ── IGN DUPLICATE CHECK ──
+    let ignCheckTimer  = null;
+    let ignBlocked     = false;
+    let ignFoundRecord = null;
+    const ignInput  = document.getElementById('ign');
+    const ignResult = document.getElementById('ignCheckResult');
+    const ignField  = document.getElementById('fieldIGN');
+
     async function checkIgnExists(username) {
-      if (!username || username.length < 3) {
-        ignResult.style.display = 'none';
-        ignBlocked = false;
-        return;
-      }
-    
+      if (!username || username.length < 3) { ignResult.style.display = 'none'; ignBlocked = false; return; }
       ignResult.style.display = 'block';
-      ignResult.innerHTML = `
-        <div class="ign-check-box checking">
-          <span class="ign-check-tag">// Checking NIS registry...</span>
-        </div>`;
-    
+      ignResult.innerHTML = `<div class="ign-check-box checking"><span class="ign-check-tag">// Checking NIS registry...</span></div>`;
       let attempts = 0;
-      while (!window._nisReady && attempts < 30) {
-        await new Promise(r => setTimeout(r, 100));
-        attempts++;
-      }
-      if (!window._nisReady) {
-        ignResult.style.display = 'none';
-        ignBlocked = false;
-        return;
-      }
-    
+      while (!window._nisReady && attempts < 30) { await new Promise(r => setTimeout(r, 100)); attempts++; }
+      if (!window._nisReady) { ignResult.style.display = 'none'; ignBlocked = false; return; }
       try {
         const { collection, query, where, getDocs } = window._nisQuery;
         const q    = query(collection(window._nisDB, 'citizens'), where('username', '==', username));
         const snap = await getDocs(q);
-    
-        if (snap.empty) {
-          ignResult.style.display = 'none';
-          ignBlocked = false;
-          ignFoundRecord = null;
-          ignField.classList.remove('ign-blocked');
-          return;
-        }
-    
+        if (snap.empty) { ignResult.style.display = 'none'; ignBlocked = false; ignFoundRecord = null; ignField.classList.remove('ign-blocked'); return; }
         const docData  = snap.docs[0].data();
         const docId    = snap.docs[0].id;
         const status   = (docData.status || 'active').toLowerCase();
         ignFoundRecord = { ...docData, id: docId };
-    
         if (status === 'active' || status === 'suspended') {
-          ignBlocked = true;
-          ignField.classList.add('ign-blocked');
-    
+          ignBlocked = true; ignField.classList.add('ign-blocked');
           const statusLabel  = status === 'suspended' ? 'Suspended' : 'Active';
           const statusColor  = status === 'suspended' ? 'color:var(--amber,#c9a84c)' : 'color:var(--gold)';
           const idCardLink   = `/gov/systems/id/id-card?id=${encodeURIComponent(docId)}`;
           const registryLink = `/gov/systems/id/registry?id=${encodeURIComponent(docId)}`;
           const renewLink    = `/gov/systems/citizenship/apply?type=renew`;
-    
           ignResult.innerHTML = `
             <div class="ign-check-box found-active">
               <span class="ign-check-tag">// NIS Record Found · ${statusLabel}</span>
               <div class="ign-check-title">${username} is already registered</div>
               <p class="ign-check-body">
-                This Minecraft username already holds a citizenship record in the NIS.
-                <br>National ID: <strong style="font-family:var(--fm);${statusColor}">${docId}</strong>
-                ${status === 'suspended'
-                  ? '<br><br>Note: this citizenship is currently <strong>suspended</strong> and under review by The Black House.'
-                  : ''}
+                This Minecraft username already holds a citizenship record in the NIS.<br>
+                National ID: <strong style="font-family:var(--fm);${statusColor}">${docId}</strong>
+                ${status === 'suspended' ? '<br><br>Note: this citizenship is currently <strong>suspended</strong> and under review by The Black House.' : ''}
                 <br><br>If this is you, use the links below to view your ID card or submit a renewal.
                 If this is not you, contact the Government — username conflicts must be resolved before applying.
               </p>
@@ -913,50 +514,28 @@
                 <a href="${renewLink}" class="ign-check-btn ign-check-btn-ghost">Submit Renewal →</a>
               </div>
             </div>`;
-    
         } else if (status === 'revoked') {
-          ignBlocked = false;
-          ignField.classList.remove('ign-blocked');
-    
+          ignBlocked = false; ignField.classList.remove('ign-blocked');
           ignResult.innerHTML = `
             <div class="ign-check-box found-revoked">
               <span class="ign-check-tag">// NIS Record Found · Revoked</span>
               <div class="ign-check-title">Previous citizenship revoked</div>
-              <p class="ign-check-body">
-                A previous citizenship record was found for this username but it has been
-                <strong>revoked</strong>. You may still submit a new application — however,
-                your prior record will be visible to The Government during review.
-                Applications from previously revoked citizens are subject to additional scrutiny.
-              </p>
+              <p class="ign-check-body">A previous citizenship record was found for this username but it has been <strong>revoked</strong>. You may still submit a new application — however, your prior record will be visible to The Government during review. Applications from previously revoked citizens are subject to additional scrutiny.</p>
               <div class="ign-check-actions">
                 <button class="ign-check-btn ign-check-btn-red" onclick="this.closest('.ign-check-box').style.display='none'">I Understand — Continue</button>
               </div>
             </div>`;
         }
-    
-      } catch (err) {
-        ignResult.style.display = 'none';
-        ignBlocked = false;
-      }
+      } catch (err) { ignResult.style.display = 'none'; ignBlocked = false; }
     }
-    
+
     ignInput.addEventListener('input', () => {
-      clearTimeout(ignCheckTimer);
-      ignField.classList.remove('ign-blocked');
-      ignBlocked = false;
-      ignResult.style.display = 'none';
+      clearTimeout(ignCheckTimer); ignField.classList.remove('ign-blocked'); ignBlocked = false; ignResult.style.display = 'none';
       const val = ignInput.value.trim();
-      if (val.length >= 3) {
-        ignCheckTimer = setTimeout(() => checkIgnExists(val), 600);
-      }
+      if (val.length >= 3) ignCheckTimer = setTimeout(() => checkIgnExists(val), 600);
     });
-    
-    ignInput.addEventListener('blur', () => {
-      clearTimeout(ignCheckTimer);
-      const val = ignInput.value.trim();
-      if (val.length >= 3) checkIgnExists(val);
-    });
-    
+    ignInput.addEventListener('blur', () => { clearTimeout(ignCheckTimer); const val = ignInput.value.trim(); if (val.length >= 3) checkIgnExists(val); });
+
     // ── Generate reference number ──
     function genRef() {
       const year = new Date().getFullYear();
@@ -964,46 +543,56 @@
       return `THELOL-CTZN-${year}-${num}`;
     }
 
-    // ── Copy reference number to clipboard ──
+    // ── Copy reference number ──
     function copyRef() {
       const ref = document.getElementById('successRef').textContent;
       navigator.clipboard.writeText(ref).then(() => {
         const btn  = document.getElementById('copyBtn');
         const icon = document.getElementById('copyIcon');
         const txt  = document.getElementById('copyTxt');
-        btn.classList.add('copied');
-        icon.textContent = '✓';
-        txt.textContent  = 'Copied!';
-        setTimeout(() => {
-          btn.classList.remove('copied');
-          icon.textContent = '⧉';
-          txt.textContent  = 'Copy Reference';
-        }, 2500);
+        btn.classList.add('copied'); icon.textContent = '✓'; txt.textContent = 'Copied!';
+        setTimeout(() => { btn.classList.remove('copied'); icon.textContent = '⧉'; txt.textContent = 'Copy Reference'; }, 2500);
       }).catch(() => {
-        const el = document.createElement('textarea');
-        el.value = ref;
-        document.body.appendChild(el);
-        el.select();
-        document.execCommand('copy');
-        document.body.removeChild(el);
+        const el = document.createElement('textarea'); el.value = ref; document.body.appendChild(el); el.select(); document.execCommand('copy'); document.body.removeChild(el);
       });
+    }
+
+    // ── Write application to Firestore (fire and forget) ──
+    async function writeApplicationToFirestore(data) {
+      try {
+        let attempts = 0;
+        while (!window._nisReady && attempts < 20) { await new Promise(r => setTimeout(r, 100)); attempts++; }
+        if (!window._nisReady || !window._nisWrite) return;
+        const { doc, setDoc } = window._nisWrite;
+        await setDoc(doc(window._nisDB, 'applications', data.ref), {
+          ref:           data.ref,
+          status:        'pending',
+          ign:           data.ign,
+          callName:      data.callName,
+          type:          data.type,
+          contact:       data.contact,
+          contactMethod: data.contactMethod,
+          submitted:     new Date().toISOString().split('T')[0],
+          processed:     '',
+          era:           'SKYXION: ALTAËR ERA',
+          thelol_id:     '',
+          public_note:   '',
+          admin_note:    '',
+        });
+      } catch (e) {
+        // Silent fail — Formspree already captured the submission
+        console.warn('[NIS] Application Firestore write failed:', e.message);
+      }
     }
 
     // ── Submit to Formspree ──
     document.getElementById('citizenForm').addEventListener('submit', async function (e) {
       e.preventDefault();
       if (!validateForm()) return;
-
-      // ── Block if active citizen found ──
-      if (ignBlocked) {
-        ignInput.focus();
-        ignResult.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        return;
-      }
+      if (ignBlocked) { ignInput.focus(); ignResult.scrollIntoView({ behavior: 'smooth', block: 'center' }); return; }
 
       const submitBtn = document.getElementById('submitBtn');
-      submitBtn.classList.add('loading');
-      submitBtn.disabled = true;
+      submitBtn.classList.add('loading'); submitBtn.disabled = true;
 
       const ref              = genRef();
       const type             = document.getElementById('appType').value;
@@ -1023,18 +612,16 @@
       fd.append('_subject',         `[${type === 'renew' ? 'RENEWAL' : 'NEW APPLICATION'}] The LoL Citizenship — ${callName} (${ign}) // ${ref}`);
 
       try {
-        const res  = await fetch('https://formspree.io/f/xvzldagr', {
-          method:  'POST',
-          body:    fd,
-          headers: { 'Accept': 'application/json' }
-        });
+        const res  = await fetch('https://formspree.io/f/xvzldagr', { method: 'POST', body: fd, headers: { 'Accept': 'application/json' } });
         const data = await res.json();
 
         if (res.ok && data.ok) {
+          // Write to Firestore — non-blocking
+          writeApplicationToFirestore({ ref, ign, callName, type, contact, contactMethod: contactMethodVal });
+
           document.getElementById('formWrapper').style.display = 'none';
           document.getElementById('successRef').textContent = ref;
-          document.getElementById('statusLink').href =
-            `/gov/systems/citizenship/status?ref=${encodeURIComponent(ref)}`;
+          document.getElementById('statusLink').href = `/gov/systems/citizenship/status?ref=${encodeURIComponent(ref)}`;
           document.getElementById('panelSuccess').classList.add('show');
           window.scrollTo({ top: 0, behavior: 'smooth' });
         } else {
@@ -1046,10 +633,8 @@
 
       } catch (err) {
         document.getElementById('panelError').classList.add('show');
-        document.getElementById('errorMsg').textContent =
-          err.message || 'An error occurred while submitting your application. Check your connection and try again.';
-        submitBtn.classList.remove('loading');
-        submitBtn.disabled = false;
+        document.getElementById('errorMsg').textContent = err.message || 'An error occurred. Check your connection and try again.';
+        submitBtn.classList.remove('loading'); submitBtn.disabled = false;
         window.scrollTo({ top: 0, behavior: 'smooth' });
       }
     });
@@ -1057,11 +642,9 @@
     function resetError() {
       document.getElementById('panelError').classList.remove('show');
       const submitBtn = document.getElementById('submitBtn');
-      submitBtn.classList.remove('loading');
-      submitBtn.disabled = false;
+      submitBtn.classList.remove('loading'); submitBtn.disabled = false;
     }
 
-    // ── Live field clear on input ──
     document.getElementById('callName').addEventListener('input',    () => clearFieldError('fieldCallName'));
     document.getElementById('ign').addEventListener('input',         () => clearFieldError('fieldIGN'));
     document.getElementById('contactInput').addEventListener('input', () => clearFieldError('fieldContact'));
@@ -1072,10 +655,12 @@
       });
     });
   </script>
+
+  <!-- ── Firebase ── -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/12.12.1/firebase-app.js";
-    import { getFirestore, collection, getDocs, query, where } from "https://www.gstatic.com/firebasejs/12.12.1/firebase-firestore.js";
-  
+    import { getFirestore, collection, getDocs, query, where, doc, setDoc } from "https://www.gstatic.com/firebasejs/12.12.1/firebase-firestore.js";
+
     const firebaseConfig = {
       apiKey: "AIzaSyAgrLJDO8F6yyVLFubiZdRGiEl5ICRSAdQ",
       authDomain: "the-legend-of-legiona-the-lol.firebaseapp.com",
@@ -1085,11 +670,13 @@
       appId: "1:29247096448:web:370f536ad630c088b94865",
       measurementId: "G-VX3M8X2P43"
     };
-  
+
     const app = initializeApp(firebaseConfig);
     const db  = getFirestore(app);
+
     window._nisDB    = db;
     window._nisQuery = { collection, query, where, getDocs };
+    window._nisWrite = { doc, setDoc };   // ← for writing applications
     window._nisReady = true;
   </script>
 </body>
