@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Digital ID Card — National ID Portal · The Legend of Legiona</title>
+  <base href="https://thelegendoflegiona.github.io/gov/systems/id/id-card" />
   <link rel="icon" type="image/png" href="/gov/assets/images/logo.png"/>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -39,6 +40,8 @@
       line-height: 1.6; min-height: 100vh; overflow-x: hidden;
     }
     a { color: inherit; text-decoration: none; }
+    img, svg { max-width: 100%; }
+    input, button { font: inherit; }
 
     body::before {
       content: ''; position: fixed; inset: 0;
@@ -102,7 +105,7 @@
     .lookup-section {
       padding: 40px 48px; border-bottom: 1px solid var(--border);
     }
-    .lookup-row { display: flex; gap: 0; max-width: 600px; }
+    .lookup-row { display: flex; gap: 0; max-width: 640px; width: 100%; }
     .lookup-label { font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.2em; color: var(--emerald-l); text-transform: uppercase; margin-bottom: 12px; display: block; }
     .lookup-prefix {
       background: var(--bg-card); border: 1px solid var(--border); border-right: none;
@@ -115,6 +118,7 @@
       color: var(--text); font-family: var(--font-mono); font-size: 15px;
       letter-spacing: 0.12em; padding: 14px 20px; outline: none;
       transition: border-color 0.2s; text-transform: uppercase;
+      min-width: 0;
     }
     .lookup-input::placeholder { color: var(--text-dim); font-size: 12px; }
     .lookup-input:focus { border-color: var(--emerald); }
@@ -122,6 +126,7 @@
       background: var(--emerald); border: 1px solid var(--emerald); color: var(--white);
       font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.18em;
       text-transform: uppercase; padding: 0 32px; cursor: pointer; transition: all 0.2s;
+      min-height: 50px; white-space: nowrap;
     }
     .lookup-submit:hover { background: var(--emerald-l); }
     .lookup-hint { font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.08em; color: var(--text-dim); margin-top: 10px; }
@@ -147,7 +152,7 @@
     .state-error-msg { font-family: var(--font-display); font-size: 20px; color: var(--text); margin-bottom: 8px; }
     .state-error-sub { font-family: var(--font-mono); font-size: 11px; color: var(--text-muted); }
 
-    .state-result { display: none; flex-direction: column; align-items: center; gap: 32px; }
+    .state-result { display: none; flex-direction: column; align-items: center; gap: 32px; width: 100%; }
 
     /* ════════════════════════════════════
        THE ID CARD — Hero element
@@ -155,6 +160,7 @@
     .id-card-wrap {
       width: 100%;
       max-width: 760px;
+      min-width: 0;
       position: relative;
     }
 
@@ -179,6 +185,7 @@
       overflow: hidden;
       display: flex;
       flex-direction: column;
+      min-width: 0;
       transition: transform 0.4s ease, box-shadow 0.4s ease;
     }
     .id-card:hover {
@@ -246,6 +253,30 @@
     .id-card-status-bar.revoked { background: linear-gradient(90deg, #8b3a3a, #c0392b); }
     .id-card-status-bar.suspended { background: linear-gradient(90deg, #7a6020, #c9a84c); }
 
+    .id-card-status-stamp {
+      position: absolute;
+      z-index: 4;
+      inset: auto 44px 74px auto;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      min-width: 190px;
+      padding: 10px 18px;
+      border: 2px solid currentColor;
+      font-family: var(--font-mono);
+      font-size: 18px;
+      font-weight: 700;
+      letter-spacing: 0.24em;
+      text-transform: uppercase;
+      transform: rotate(-12deg);
+      pointer-events: none;
+      background: rgba(10,10,10,0.5);
+      mix-blend-mode: screen;
+    }
+    .id-card-status-stamp.show { display: flex; }
+    .id-card-status-stamp.revoked { color: rgba(192,57,43,0.8); }
+    .id-card-status-stamp.suspended { color: rgba(201,168,76,0.82); }
+
     /* CARD BODY */
     .id-card-body {
       position: relative; z-index: 2;
@@ -276,7 +307,7 @@
     }
     .id-card-nation-label {
       font-family: var(--font-mono);
-      font-size: 5.5px;
+      font-size: 6.5px;
       letter-spacing: 0.22em;
       color: rgba(201,168,76,0.6);
       text-transform: uppercase;
@@ -284,7 +315,7 @@
     }
     .id-card-nation-name {
       font-family: var(--font-display);
-      font-size: 8.5px;
+      font-size: 9.5px;
       font-weight: 700;
       color: rgba(201,168,76,0.9);
       letter-spacing: 0.04em;
@@ -293,7 +324,7 @@
 
     /* Avatar area */
     .id-card-avatar {
-      width: 80px; height: 80px;
+      width: 86px; height: 86px;
       border: 2px solid rgba(61,107,82,0.5);
       background: rgba(61,107,82,0.08);
       display: flex; align-items: center; justify-content: center;
@@ -315,9 +346,48 @@
     }
 
     .id-card-tier-badge {
-      font-family: var(--font-mono); font-size: 6px; letter-spacing: 0.2em;
+      font-family: var(--font-mono); font-size: 7px; letter-spacing: 0.18em;
       text-transform: uppercase; padding: 4px 10px; border: 1px solid;
       text-align: center; width: 100%;
+    }
+
+    .id-card-security {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding-top: 8px;
+      border-top: 1px solid rgba(255,255,255,0.05);
+    }
+    .id-card-qr {
+      width: 34px;
+      height: 34px;
+      flex: 0 0 auto;
+      border: 1px solid rgba(201,168,76,0.35);
+      background-color: rgba(0,0,0,0.35);
+      background-image:
+        linear-gradient(90deg, rgba(201,168,76,0.6) 50%, transparent 50%),
+        linear-gradient(rgba(78,143,107,0.6) 50%, transparent 50%),
+        linear-gradient(90deg, transparent 62%, rgba(255,255,255,0.18) 62% 75%, transparent 75%);
+      background-size: 8px 8px, 10px 10px, 14px 14px;
+      image-rendering: pixelated;
+      opacity: 0.8;
+    }
+    .id-card-security-label {
+      font-family: var(--font-mono);
+      font-size: 5.5px;
+      letter-spacing: 0.2em;
+      color: rgba(255,255,255,0.28);
+      text-transform: uppercase;
+    }
+    .id-card-security-code {
+      font-family: var(--font-mono);
+      font-size: 7px;
+      letter-spacing: 0.12em;
+      color: rgba(201,168,76,0.88);
+      margin-top: 2px;
+      white-space: nowrap;
     }
     .id-card-tier-badge.citizen   { color: rgba(200,200,200,0.7); border-color: rgba(200,200,200,0.2); }
     .id-card-tier-badge.senior    { color: rgba(78,143,107,0.9);  border-color: rgba(61,107,82,0.4);  background: rgba(61,107,82,0.08); }
@@ -345,7 +415,7 @@
     }
     .id-card-doctype {
       font-family: var(--font-display);
-      font-size: 11px;
+      font-size: 13px;
       font-weight: 900;
       color: rgba(255,255,255,0.9);
       line-height: 1.1;
@@ -353,14 +423,14 @@
     }
     .id-card-doctype-sub {
       font-family: var(--font-mono);
-      font-size: 5px;
+      font-size: 6px;
       letter-spacing: 0.2em;
       color: rgba(61,107,82,0.8);
       text-transform: uppercase;
       margin-top: 2px;
     }
     .id-card-status-chip {
-      font-family: var(--font-mono); font-size: 5.5px; letter-spacing: 0.2em;
+      font-family: var(--font-mono); font-size: 6.5px; letter-spacing: 0.18em;
       text-transform: uppercase; padding: 3px 8px; border: 1px solid;
       display: flex; align-items: center; gap: 4px;
     }
@@ -381,16 +451,16 @@
       padding-right: 12px;
     }
     .id-card-field-label {
-      font-family: var(--font-mono); font-size: 4.5px; letter-spacing: 0.22em;
+      font-family: var(--font-mono); font-size: 6px; letter-spacing: 0.18em;
       color: rgba(255,255,255,0.25); text-transform: uppercase; margin-bottom: 2px;
     }
     .id-card-field-val {
-      font-family: var(--font-mono); font-size: 8.5px; letter-spacing: 0.04em;
+      font-family: var(--font-mono); font-size: 9.5px; letter-spacing: 0.04em;
       color: rgba(255,255,255,0.85);
     }
     .id-card-field-val.em { color: rgba(78,143,107,0.95); }
     .id-card-field-val.gold { color: rgba(201,168,76,0.95); }
-    .id-card-field-val.lg { font-size: 11px; letter-spacing: 0.06em; color: #fff; }
+    .id-card-field-val.lg { font-size: 12.5px; letter-spacing: 0.05em; color: #fff; }
 
     /* ID number display */
     .id-card-number-wrap {
@@ -399,11 +469,11 @@
       padding-top: 10px;
     }
     .id-card-number-label {
-      font-family: var(--font-mono); font-size: 4.5px; letter-spacing: 0.22em;
+      font-family: var(--font-mono); font-size: 6px; letter-spacing: 0.18em;
       color: rgba(255,255,255,0.25); text-transform: uppercase; margin-bottom: 4px;
     }
     .id-card-number {
-      font-family: var(--font-mono); font-size: 14px; letter-spacing: 0.15em;
+      font-family: var(--font-mono); font-size: 16px; letter-spacing: 0.12em;
       color: rgba(201,168,76,0.95);
       text-shadow: 0 0 20px rgba(201,168,76,0.3);
     }
@@ -418,12 +488,12 @@
       display: flex; align-items: center; justify-content: space-between; gap: 8px;
     }
     .id-card-mrz-text {
-      font-family: var(--font-mono); font-size: 5px; letter-spacing: 0.18em;
+      font-family: var(--font-mono); font-size: 5.5px; letter-spacing: 0.16em;
       color: rgba(255,255,255,0.15); font-style: normal;
       overflow: hidden; white-space: nowrap;
     }
     .id-card-mrz-logo {
-      font-family: var(--font-mono); font-size: 5px; letter-spacing: 0.2em;
+      font-family: var(--font-mono); font-size: 5.5px; letter-spacing: 0.18em;
       color: rgba(61,107,82,0.5); white-space: nowrap; flex-shrink: 0;
     }
 
@@ -437,11 +507,14 @@
       font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.18em;
       text-transform: uppercase; padding: 12px 24px; border: 1px solid;
       cursor: pointer; transition: all 0.2s; background: transparent;
+      min-width: 0;
     }
     .action-btn.primary { color: var(--emerald-l); border-color: var(--emerald); }
     .action-btn.primary:hover { background: var(--emerald-dim); }
     .action-btn.secondary { color: var(--text-muted); border-color: var(--border); }
     .action-btn.secondary:hover { border-color: #444; color: var(--text); }
+    .action-btn.download { color: var(--white); border-color: rgba(78,143,107,0.55); background: rgba(61,107,82,0.14); }
+    .action-btn.download:hover { border-color: var(--emerald-l); background: rgba(61,107,82,0.22); }
     .action-btn.gold-btn { color: var(--gold); border-color: rgba(201,168,76,0.35); }
     .action-btn.gold-btn:hover { background: var(--gold-dim); }
     .action-sep { width: 1px; height: 28px; background: var(--border); }
@@ -461,13 +534,53 @@
 
     /* PRINT */
     @media print {
+      @page { size: A4 landscape; margin: 10mm; }
+
+      html,
+      body {
+        width: 100%;
+        min-height: 100%;
+        background: #fff !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+
       .netbar, .site-header, .page-top, .lookup-section, .action-bar,
-      .revoked-banner, body::before { display: none !important; }
-      body { background: #fff; }
-      .card-section { padding: 0; display: flex; justify-content: center; }
-      .state-result { display: flex !important; }
-      .id-card-wrap { max-width: 90vw; }
-      .id-card:hover { transform: none; box-shadow: none; }
+      .revoked-banner, body::before, .id-card-wrap::before { display: none !important; }
+
+      .card-section {
+        min-height: calc(100vh - 20mm);
+        padding: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #fff !important;
+        page-break-inside: avoid;
+      }
+      .state-idle, .state-loading, .state-error { display: none !important; }
+      .state-result {
+        display: flex !important;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        min-height: calc(100vh - 20mm);
+        gap: 0;
+      }
+      .id-card-wrap {
+        width: min(100%, 235mm) !important;
+        max-width: 235mm !important;
+        margin: 0 auto !important;
+      }
+      .id-card {
+        width: 100% !important;
+        aspect-ratio: 1.586 / 1 !important;
+        transform: none !important;
+        box-shadow: none !important;
+        border: 1px solid rgba(0,0,0,0.35) !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+      .id-card:hover { transform: none !important; box-shadow: none !important; }
     }
 
     /* MOBILE */
@@ -479,12 +592,94 @@
       .card-section { padding: 40px 24px; }
     }
     @media (max-width: 600px) {
+      .page-h1 { font-size: 32px; }
+      .page-desc { max-width: 100%; }
+      .lookup-row { flex-direction: column; max-width: none; }
       .lookup-prefix { display: none; }
-      .id-card-left { width: 30%; padding: 12px 10px; }
-      .id-card-avatar { width: 56px; height: 56px; }
-      .id-card-nation-name { font-size: 6px; }
-      .id-card-doctype { font-size: 8px; }
-      .id-card-number { font-size: 10px; }
+      .lookup-input { width: 100%; padding: 15px 16px; }
+      .lookup-submit { width: 100%; justify-content: center; padding: 0 18px; }
+      .state-idle { padding: 56px 18px; }
+      .state-result { align-items: stretch; }
+      .id-card-wrap { max-width: calc(100vw - 48px); }
+      .id-card {
+        max-width: calc(100vw - 48px);
+        aspect-ratio: auto;
+        min-height: 540px;
+      }
+      .id-card:hover { transform: none; }
+      .id-card-body { flex-direction: column; }
+      .id-card-left {
+        width: 100%;
+        min-height: 122px;
+        border-right: none;
+        border-bottom: 1px solid rgba(255,255,255,0.06);
+        padding: 12px;
+        display: grid;
+        grid-template-columns: 64px 1fr;
+        grid-template-areas:
+          "avatar nation"
+          "avatar tier"
+          "security security";
+        align-items: center;
+        gap: 8px 12px;
+      }
+      .id-card-nation {
+        grid-area: nation;
+        width: auto;
+        max-width: none;
+        text-align: left;
+        border-bottom: none;
+        padding-bottom: 0;
+        margin-bottom: 0;
+      }
+      .id-card-avatar { grid-area: avatar; width: 64px; height: 64px; }
+      .id-card-tier-badge { grid-area: tier; width: auto; min-width: 96px; justify-self: start; padding: 5px 8px; }
+      .id-card-security {
+        grid-area: security;
+        width: 100%;
+        padding-top: 0;
+        border-top: none;
+        justify-content: flex-start;
+      }
+      .id-card-qr { width: 30px; height: 30px; }
+      .id-card-crest-wrap { display: none; }
+      .id-card-right { padding: 15px 16px 14px; }
+      .id-card-doctype-row {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 12px;
+      }
+      .id-card-status-chip { align-self: flex-start; }
+      .id-card-field-row { grid-template-columns: 1fr; }
+      .id-card-field { padding: 8px 0; }
+      .id-card-number { font-size: 14px; word-break: break-word; }
+      .id-card-status-stamp {
+        inset: auto 18px 88px auto;
+        min-width: 150px;
+        font-size: 14px;
+      }
+      .id-card-mrz {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+      .id-card-mrz-text {
+        width: 100%;
+        max-width: 100%;
+        min-width: 0;
+        text-overflow: clip;
+      }
+      .action-bar {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 12px;
+        max-width: calc(100vw - 48px);
+      }
+      .action-btn {
+        justify-content: center;
+        padding: 12px 10px;
+      }
+      .action-sep { display: none; }
+      .action-meta { margin-left: 0; }
     }
   </style>
 </head>
@@ -551,7 +746,7 @@
       <span class="lookup-prefix">THELOL-</span>
       <input class="lookup-input" id="idInput" type="text"
         placeholder="2026-00001" maxlength="10"
-        autocomplete="on" spellcheck="false" />
+        autocomplete="on" spellcheck="false" inputmode="numeric" />
       <button class="lookup-submit" onclick="fetchCard()">LOAD CARD →</button>
     </div>
     <p class="lookup-hint">// Your National ID is provided upon citizenship approval by The Black House</p>
@@ -606,6 +801,7 @@
 
           <!-- Status stripe -->
           <div class="id-card-status-bar" id="cardStatusBar"></div>
+          <div class="id-card-status-stamp" id="cardStatusStamp" aria-hidden="true"></div>
 
           <!-- Backgrounds -->
           <div class="id-card-bg">
@@ -639,6 +835,14 @@
               </div>
 
               <div class="id-card-tier-badge citizen" id="cardTierBadge">Citizen</div>
+
+              <div class="id-card-security">
+                <div class="id-card-qr" id="cardQr" aria-hidden="true"></div>
+                <div>
+                  <div class="id-card-security-label">Verify</div>
+                  <div class="id-card-security-code" id="cardVerifyCode">NIS-000000</div>
+                </div>
+              </div>
 
               <div class="id-card-crest-wrap">
                 <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
@@ -701,11 +905,22 @@
                 <div class="id-card-field-row">
                   <div class="id-card-field">
                     <div class="id-card-field-label">Server Era</div>
-                    <div class="id-card-field-val" style="font-size:7px; letter-spacing:0.06em;">SKYXION: ALTAËR ERA</div>
+                    <div class="id-card-field-val" style="font-size:8.5px; letter-spacing:0.05em;">SKYXION: ALTAËR ERA</div>
                   </div>
                   <div class="id-card-field">
                     <div class="id-card-field-label">Issuing Authority</div>
-                    <div class="id-card-field-val gold" style="font-size:7px;">The Black House</div>
+                    <div class="id-card-field-val gold" style="font-size:8.5px;">The Black House</div>
+                  </div>
+                </div>
+
+                <div class="id-card-field-row">
+                  <div class="id-card-field">
+                    <div class="id-card-field-label">Verification</div>
+                    <div class="id-card-field-val em" id="cardVerification">Live Registry</div>
+                  </div>
+                  <div class="id-card-field">
+                    <div class="id-card-field-label">Valid Until</div>
+                    <div class="id-card-field-val" id="cardValidUntil">No expiry</div>
                   </div>
                 </div>
 
@@ -739,7 +954,11 @@
           <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><rect x="2" y="1" width="8" height="4" stroke="currentColor" stroke-width="1"/><rect x="1" y="4" width="10" height="5" stroke="currentColor" stroke-width="1"/><rect x="3" y="7" width="6" height="4" stroke="currentColor" stroke-width="1"/></svg>
           Print Card
         </button>
-        <button class="action-btn secondary" onclick="copyID()">
+        <button class="action-btn download" onclick="downloadCardPNG()">
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M6 1v6" stroke="currentColor" stroke-width="1.1"/><path d="M3.5 4.8 6 7.3l2.5-2.5" stroke="currentColor" stroke-width="1.1"/><path d="M2 10.5h8" stroke="currentColor" stroke-width="1.1"/></svg>
+          Download PNG
+        </button>
+        <button class="action-btn secondary" onclick="copyID(event)">
           <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><rect x="1" y="3" width="8" height="8" stroke="currentColor" stroke-width="1"/><path d="M3 3V1h8v8h-2" stroke="currentColor" stroke-width="1"/></svg>
           Copy ID
         </button>
@@ -817,6 +1036,29 @@
       founding: { badge: 'founding', label: 'Founding Citizen', cardLabel: 'Founding Citizen' },
     };
 
+    function hashID(id) {
+      let hash = 0;
+      for (const ch of id) hash = Math.imul(31, hash) + ch.charCodeAt(0) | 0;
+      return Math.abs(hash);
+    }
+
+    function makeVerifyCode(id) {
+      return 'NIS-' + hashID(id).toString(36).toUpperCase().padStart(6, '0').slice(0, 6);
+    }
+
+    function formatDateLike(value) {
+      if (!value) return '';
+      if (typeof value === 'string') return value;
+      if (value.seconds) {
+        return new Date(value.seconds * 1000).toLocaleDateString('en-GB', {
+          day: '2-digit',
+          month: 'short',
+          year: 'numeric'
+        });
+      }
+      return String(value);
+    }
+
     // ── RENDER ──
     function renderCard(id, data) {
       const parts  = id.split('-');
@@ -826,6 +1068,7 @@
       const tier   = (data.tier   || 'citizen').toLowerCase();
       const sCfg   = STATUS_CFG[status] || STATUS_CFG.active;
       const tCfg   = TIER_CFG[tier]     || TIER_CFG.citizen;
+      const verifyCode = makeVerifyCode(id);
 
       // Status bar
       const bar = document.getElementById('cardStatusBar');
@@ -835,6 +1078,14 @@
       const chip = document.getElementById('cardStatusChip');
       chip.className = 'id-card-status-chip ' + sCfg.chip;
       document.getElementById('cardStatusText').textContent = sCfg.text;
+
+      const stamp = document.getElementById('cardStatusStamp');
+      stamp.className = 'id-card-status-stamp';
+      stamp.textContent = '';
+      if (status === 'revoked' || status === 'suspended') {
+        stamp.classList.add('show', status);
+        stamp.textContent = sCfg.text;
+      }
 
       // Revoked banner
       const revBanner = document.getElementById('revokedBanner');
@@ -849,6 +1100,11 @@
         revBanner.style.borderColor = 'var(--gold)';
         revBanner.style.background  = 'var(--gold-dim)';
         revBanner.querySelector('.revoked-banner-text').style.color = 'var(--gold)';
+      } else {
+        revBanner.classList.remove('show');
+        revBanner.style.borderColor = '';
+        revBanner.style.background  = '';
+        revBanner.querySelector('.revoked-banner-text').style.color = '';
       }
 
       // Tier badge
@@ -866,6 +1122,20 @@
       wEl.textContent  = data.walletLinked ? 'TL$ Linked' : 'Not Linked';
       wEl.className    = 'id-card-field-val ' + (data.walletLinked ? 'em' : '');
 
+      const verificationText =
+        status === 'revoked' ? 'Invalidated' :
+        status === 'suspended' ? 'Under Review' :
+        'Live Registry';
+      const validUntil =
+        formatDateLike(data.validUntil || data.expiryDate || data.expiresAt) ||
+        (status === 'revoked' ? 'Invalidated' : (status === 'suspended' ? 'Under review' : 'No expiry'));
+      const qrSeed = hashID(id);
+      document.getElementById('cardVerification').textContent = verificationText;
+      document.getElementById('cardValidUntil').textContent = validUntil;
+      document.getElementById('cardVerifyCode').textContent = verifyCode;
+      document.getElementById('cardQr').style.backgroundPosition =
+        `${qrSeed % 8}px ${qrSeed % 6}px, ${qrSeed % 10}px ${qrSeed % 7}px, ${qrSeed % 14}px 0`;
+
       // ID number
       document.getElementById('cardIdYear').textContent = year;
       document.getElementById('cardIdSeq').textContent  = seq;
@@ -876,9 +1146,15 @@
       document.getElementById('cardMrz').textContent = mrz + '<'.repeat(Math.max(0, 80 - mrz.length));
 
       // Avatar — Java via Minotar, Bedrock via Crafthead
+      const img = document.getElementById('cardAvatarImg');
+      const placeholder = document.getElementById('cardAvatarPlaceholder');
+      img.style.display = 'none';
+      img.removeAttribute('src');
+      placeholder.style.display = 'flex';
+
       if (data.username) {
-        const img = document.getElementById('cardAvatarImg');
         const isJava = !data.platform || data.platform === 'java';
+        img.crossOrigin = 'anonymous';
       
         img.src = isJava
           ? `https://tabavatars.net/avatar/?username=${encodeURIComponent(data.username)}&type=helm`
@@ -886,11 +1162,11 @@
       
         img.onload = () => {
           img.style.display = 'block';
-          document.getElementById('cardAvatarPlaceholder').style.display = 'none';
+          placeholder.style.display = 'none';
         };
         img.onerror = () => {
           img.style.display = 'none';
-          document.getElementById('cardAvatarPlaceholder').style.display = 'flex';
+          placeholder.style.display = 'flex';
         };
       }
 
@@ -950,15 +1226,135 @@
 
     window.fetchCard = fetchCard;
 
+    function blobToDataURL(blob) {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = reject;
+        reader.readAsDataURL(blob);
+      });
+    }
+
+    function downloadBlob(blob, filename) {
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = filename;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      setTimeout(() => URL.revokeObjectURL(url), 1000);
+    }
+
+    async function embedCardImages(cardClone) {
+      const liveImgs = [...document.querySelectorAll('#theCard img')];
+      const cloneImgs = [...cardClone.querySelectorAll('img')];
+
+      await Promise.all(cloneImgs.map(async (cloneImg, index) => {
+        const liveImg = liveImgs[index];
+        const src = liveImg?.currentSrc || liveImg?.src;
+        if (!src || liveImg?.style.display === 'none') return;
+
+        try {
+          const res = await fetch(src, { mode: 'cors' });
+          if (!res.ok) throw new Error('Image fetch failed');
+          cloneImg.setAttribute('src', await blobToDataURL(await res.blob()));
+        } catch {
+          cloneImg.removeAttribute('src');
+          cloneImg.style.display = 'none';
+          const placeholder = cardClone.querySelector('#cardAvatarPlaceholder');
+          if (placeholder) placeholder.style.display = 'flex';
+        }
+      }));
+    }
+
+    async function downloadCardPNG() {
+      const card = document.getElementById('theCard');
+      const meta = document.getElementById('actionMeta');
+      if (!card) return;
+
+      meta.textContent = 'Preparing PNG download...';
+      await document.fonts?.ready;
+
+      const rect = card.getBoundingClientRect();
+      const width = Math.ceil(rect.width);
+      const height = Math.ceil(rect.height);
+      const scale = 2;
+      const cardClone = card.cloneNode(true);
+      cardClone.setAttribute('xmlns', 'http://www.w3.org/1999/xhtml');
+      cardClone.style.width = width + 'px';
+      cardClone.style.height = height + 'px';
+      cardClone.style.transform = 'none';
+      cardClone.style.boxShadow = 'none';
+      cardClone.style.margin = '0';
+
+      await embedCardImages(cardClone);
+
+      const styles = [...document.querySelectorAll('style')]
+        .map(style => style.textContent)
+        .join('\n');
+      const markup = new XMLSerializer().serializeToString(cardClone);
+      const svg = `<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}" viewBox="0 0 ${width} ${height}">
+  <foreignObject width="100%" height="100%">
+    <div xmlns="http://www.w3.org/1999/xhtml">
+      <style>
+        ${styles}
+        body::before, .id-card-wrap::before { display: none !important; }
+        .id-card { width: ${width}px !important; height: ${height}px !important; transform: none !important; box-shadow: none !important; }
+      </style>
+      ${markup}
+    </div>
+  </foreignObject>
+</svg>`;
+
+      const svgBlob = new Blob([svg], { type: 'image/svg+xml;charset=utf-8' });
+      const svgUrl = URL.createObjectURL(svgBlob);
+      const image = new Image();
+      const filenameID = `THELOL-${document.getElementById('cardIdYear').textContent}-${document.getElementById('cardIdSeq').textContent}`;
+
+      image.onload = () => {
+        const canvas = document.createElement('canvas');
+        canvas.width = width * scale;
+        canvas.height = height * scale;
+        const ctx = canvas.getContext('2d');
+        ctx.scale(scale, scale);
+        ctx.drawImage(image, 0, 0, width, height);
+        canvas.toBlob(blob => {
+          URL.revokeObjectURL(svgUrl);
+          if (!blob) {
+            downloadBlob(svgBlob, `${filenameID}-card.svg`);
+            meta.textContent = 'Downloaded SVG fallback';
+            return;
+          }
+          downloadBlob(blob, `${filenameID}-card.png`);
+          meta.textContent = `Downloaded ${filenameID}-card.png`;
+        }, 'image/png');
+      };
+
+      image.onerror = () => {
+        URL.revokeObjectURL(svgUrl);
+        downloadBlob(svgBlob, `${filenameID}-card.svg`);
+        meta.textContent = 'Downloaded SVG fallback';
+      };
+
+      image.src = svgUrl;
+    }
+    window.downloadCardPNG = downloadCardPNG;
+
     // ── COPY ──
-    function copyID() {
+    function copyID(evt) {
       const year = document.getElementById('cardIdYear').textContent;
       const seq  = document.getElementById('cardIdSeq').textContent;
       if (year && seq && year !== '????') {
-        navigator.clipboard.writeText(`THELOL-${year}-${seq}`).then(() => {
-          const btn = event.target.closest('button');
+        const copiedID = `THELOL-${year}-${seq}`;
+        navigator.clipboard.writeText(copiedID).then(() => {
+          const btn = evt?.target?.closest('button');
+          const meta = document.getElementById('actionMeta');
+          if (!btn) return;
           const orig = btn.innerHTML;
-          btn.innerHTML = '✓ Copied!';
+          btn.textContent = 'Copied';
+          meta.textContent = `Copied ${copiedID} to clipboard`;
           setTimeout(() => { btn.innerHTML = orig; }, 1600);
         });
       }
