@@ -1227,15 +1227,6 @@
 
     window.fetchCard = fetchCard;
 
-    function blobToDataURL(blob) {
-      return new Promise((resolve, reject) => {
-        const reader = new FileReader();
-        reader.onload = () => resolve(reader.result);
-        reader.onerror = reject;
-        reader.readAsDataURL(blob);
-      });
-    }
-
     function downloadBlob(blob, filename) {
       const url = URL.createObjectURL(blob);
       const a = document.createElement('a');
@@ -1246,29 +1237,7 @@
       a.remove();
       setTimeout(() => URL.revokeObjectURL(url), 1000);
     }
-
-    async function embedCardImages(cardClone) {
-      const liveImgs = [...document.querySelectorAll('#theCard img')];
-      const cloneImgs = [...cardClone.querySelectorAll('img')];
-
-      await Promise.all(cloneImgs.map(async (cloneImg, index) => {
-        const liveImg = liveImgs[index];
-        const src = liveImg?.currentSrc || liveImg?.src;
-        if (!src || liveImg?.style.display === 'none') return;
-
-        try {
-          const res = await fetch(src, { mode: 'cors' });
-          if (!res.ok) throw new Error('Image fetch failed');
-          cloneImg.setAttribute('src', await blobToDataURL(await res.blob()));
-        } catch {
-          cloneImg.removeAttribute('src');
-          cloneImg.style.display = 'none';
-          const placeholder = cardClone.querySelector('#cardAvatarPlaceholder');
-          if (placeholder) placeholder.style.display = 'flex';
-        }
-      }));
-    }
-
+    
     // Print
     function statsPrint() { window.statsTrackEvent?.('id_card_prints'); window.print(); }
     
@@ -1276,76 +1245,53 @@
       const card = document.getElementById('theCard');
       const meta = document.getElementById('actionMeta');
       if (!card) return;
-
-      meta.textContent = 'Preparing PNG download...';
-      await document.fonts?.ready;
-
-      const rect = card.getBoundingClientRect();
-      const width = Math.ceil(rect.width);
-      const height = Math.ceil(rect.height);
-      const scale = 2;
-      const cardClone = card.cloneNode(true);
-      cardClone.setAttribute('xmlns', 'http://www.w3.org/1999/xhtml');
-      cardClone.style.width = width + 'px';
-      cardClone.style.height = height + 'px';
-      cardClone.style.transform = 'none';
-      cardClone.style.boxShadow = 'none';
-      cardClone.style.margin = '0';
-
-      await embedCardImages(cardClone);
-
-      const styles = [...document.querySelectorAll('style')]
-        .map(style => style.textContent)
-        .join('\n');
-      const markup = new XMLSerializer().serializeToString(cardClone);
-      const svg = `<?xml version="1.0" encoding="UTF-8"?>
-<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}" viewBox="0 0 ${width} ${height}">
-  <foreignObject width="100%" height="100%">
-    <div xmlns="http://www.w3.org/1999/xhtml">
-      <style>
-        ${styles}
-        body::before, .id-card-wrap::before { display: none !important; }
-        .id-card { width: ${width}px !important; height: ${height}px !important; transform: none !important; box-shadow: none !important; }
-      </style>
-      ${markup}
-    </div>
-  </foreignObject>
-</svg>`;
-
-      const svgBlob = new Blob([svg], { type: 'image/svg+xml;charset=utf-8' });
-      const svgUrl = URL.createObjectURL(svgBlob);
-      const image = new Image();
+    
       const filenameID = `THELOL-${document.getElementById('cardIdYear').textContent}-${document.getElementById('cardIdSeq').textContent}`;
-
-      image.onload = () => {
-        const canvas = document.createElement('canvas');
-        canvas.width = width * scale;
-        canvas.height = height * scale;
-        const ctx = canvas.getContext('2d');
-        ctx.scale(scale, scale);
-        ctx.drawImage(image, 0, 0, width, height);
+      meta.textContent = 'Preparing PNG…';
+    
+      try {
+        // Load html2canvas on-demand from cdnjs
+        if (!window.html2canvas) {
+          await new Promise((resolve, reject) => {
+            const s = document.createElement('script');
+            s.src = 'https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js';
+            s.onload = resolve;
+            s.onerror = () => reject(new Error('Renderer failed to load.'));
+            document.head.appendChild(s);
+          });
+        }
+    
+        await document.fonts?.ready;
+    
+        // Suppress hover transform during snapshot
+        const prevTransition = card.style.transition;
+        const prevTransform  = card.style.transform;
+        card.style.transition = 'none';
+        card.style.transform  = 'none';
+    
+        const canvas = await html2canvas(card, {
+          scale: 3,
+          useCORS: true,
+          allowTaint: false,
+          backgroundColor: '#111111',
+          logging: false,
+          imageTimeout: 10000,
+        });
+    
+        card.style.transition = prevTransition;
+        card.style.transform  = prevTransform;
+    
         canvas.toBlob(blob => {
-          URL.revokeObjectURL(svgUrl);
-          if (!blob) {
-            downloadBlob(svgBlob, `${filenameID}-card.svg`);
-            meta.textContent = 'Downloaded SVG fallback';
-            return;
-          }
+          if (!blob) { meta.textContent = 'Export failed — try Print instead.'; return; }
           downloadBlob(blob, `${filenameID}-card.png`);
           meta.textContent = `Downloaded ${filenameID}-card.png`;
+          window.statsTrackEvent?.('id_card_downloads');
         }, 'image/png');
-      };
-      
-      // Stats
-      window.statsTrackEvent?.('id_card_downloads');
-      
-      image.onerror = () => {
-        URL.revokeObjectURL(svgUrl);
-        downloadBlob(svgBlob, `${filenameID}-card.svg`);
-        meta.textContent = 'Downloaded SVG fallback';
-      };
-
-      image.src = svgUrl;
+    
+      } catch (err) {
+        console.error('[downloadCardPNG]', err);
+        meta.textContent = `Failed: ${err.message}`;
+      }
     }
     window.downloadCardPNG = downloadCardPNG;
 
