@@ -951,7 +951,7 @@
 
       <!-- ACTION BAR -->
       <div class="action-bar">
-        <button class="action-btn primary" onclick="window.print()">
+        <button class="action-btn primary" onclick="statsPrint()">
           <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><rect x="2" y="1" width="8" height="4" stroke="currentColor" stroke-width="1"/><rect x="1" y="4" width="10" height="5" stroke="currentColor" stroke-width="1"/><rect x="3" y="7" width="6" height="4" stroke="currentColor" stroke-width="1"/></svg>
           Print Card
         </button>
@@ -1271,6 +1271,9 @@
       }));
     }
 
+    // Print
+    function statsPrint() { window.statsTrackEvent?.('id_card_prints'); window.print(); }
+    
     async function downloadCardPNG() {
       const card = document.getElementById('theCard');
       const meta = document.getElementById('actionMeta');
@@ -1334,7 +1337,10 @@
           meta.textContent = `Downloaded ${filenameID}-card.png`;
         }, 'image/png');
       };
-
+      
+      // Stats
+      window.statsTrackEvent?.('id_card_downloads');
+      
       image.onerror = () => {
         URL.revokeObjectURL(svgUrl);
         downloadBlob(svgBlob, `${filenameID}-card.svg`);
