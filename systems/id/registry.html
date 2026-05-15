@@ -725,6 +725,9 @@
 
       showState('stateResult');
       addRecent(id, data.username, status);
+
+      // Stats
+      window.statsTrackEvent?.('registry_searches');
     }
 
     /* ══════════════════════════════
