@@ -426,7 +426,12 @@
       if (entry.ref && entry.ref.match(/^THELOL-CTZN-\d{4}-\d{4}$/)) {
         history.replaceState(null, '', `?ref=${encodeURIComponent(entry.ref)}`);
       }
-
+      // Stats
+      window.statsTrackEvent?.('status_checks');
+      if (entry.status && entry.status !== 'not_found') {
+        window.statsTrackEvent?.('status_result_' + entry.status);
+      }
+      
       const cells = [];
       if (entry.ref)       cells.push({ lbl: 'Reference', val: entry.ref });
       if (entry.ign)       cells.push({ lbl: 'IGN',       val: entry.ign });
