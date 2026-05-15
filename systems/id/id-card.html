@@ -1070,6 +1070,8 @@
       const sCfg   = STATUS_CFG[status] || STATUS_CFG.active;
       const tCfg   = TIER_CFG[tier]     || TIER_CFG.citizen;
       const verifyCode = makeVerifyCode(id);
+      // Stats
+      window.statsTrackEvent?.('id_card_lookups');
 
       // Status bar
       const bar = document.getElementById('cardStatusBar');
