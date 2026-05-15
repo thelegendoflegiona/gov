@@ -498,6 +498,8 @@
           const idCardLink   = `/gov/systems/id/id-card?id=${encodeURIComponent(docId)}`;
           const registryLink = `/gov/systems/id/registry?id=${encodeURIComponent(docId)}`;
           const renewLink    = `/gov/systems/citizenship/apply?type=renew`;
+          // Stats
+          window.statsTrackEvent?.('ign_check_hits');
           ignResult.innerHTML = `
             <div class="ign-check-box found-active">
               <span class="ign-check-tag">// NIS Record Found · ${statusLabel}</span>
@@ -619,6 +621,8 @@
         if (res.ok && data.ok) {
           // Write to Firestore — non-blocking
           writeApplicationToFirestore({ ref, ign, callName, type, contact, contactMethod: contactMethodVal });
+          // Stats
+          window.statsTrackEvent?.('app_submissions');
 
           document.getElementById('formWrapper').style.display = 'none';
           document.getElementById('successRef').textContent = ref;
