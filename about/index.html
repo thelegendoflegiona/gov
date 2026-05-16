@@ -9,6 +9,77 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=DM+Mono:wght@300;400;500&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="/gov/about/assets/css/style.css">
+
+  <!-- pAIz engine extras: image grid, tags, kbd, chat code blocks -->
+  <style>
+    /* ── IMAGE GRID (pAIz photo responses) ── */
+    .img-grid {
+      display: grid;
+      gap: 4px;
+      margin: 8px 0 4px;
+      border-radius: 0;
+    }
+    .img-grid.single { grid-template-columns: 1fr; }
+    .img-grid.duo    { grid-template-columns: 1fr 1fr; }
+    .img-grid.trio   { grid-template-columns: 1fr 1fr 1fr; }
+    .img-grid:not(.single):not(.duo):not(.trio) { grid-template-columns: 1fr 1fr; }
+    .paiz-img {
+      width: 100%; aspect-ratio: 16 / 9;
+      object-fit: cover; cursor: pointer;
+      display: block;
+      transition: opacity 0.2s;
+    }
+    .paiz-img:hover { opacity: 0.85; }
+    .img-caption {
+      font-family: 'DM Mono', monospace;
+      font-size: 8px; letter-spacing: 0.15em;
+      color: var(--text-dim); text-transform: uppercase;
+      margin-top: 3px;
+    }
+
+    /* ── TAG CHIPS (pAIz inline tags) ── */
+    .tag {
+      display: inline-block;
+      font-family: 'DM Mono', monospace;
+      font-size: 8px; letter-spacing: 0.12em;
+      padding: 2px 7px;
+      background: var(--dark-4);
+      border: 1px solid rgba(255,255,255,0.1);
+      color: var(--text-dim);
+      margin: 1px;
+    }
+    .tag.red  { color: #e74c3c; border-color: rgba(231,76,60,0.3);  background: rgba(231,76,60,0.08); }
+    .tag.gold { color: var(--gold); border-color: rgba(201,168,76,0.3); background: rgba(201,168,76,0.07); }
+    .tag.new  { color: #2ecc71; border-color: rgba(46,204,113,0.3); background: rgba(46,204,113,0.08); }
+    .tag.blue { color: #5dade2; border-color: rgba(52,152,219,0.3); background: rgba(52,152,219,0.08); }
+
+    /* ── KBD (pAIz slash command hints) ── */
+    kbd {
+      display: inline-block;
+      font-family: 'DM Mono', monospace;
+      font-size: 9px; letter-spacing: 0.05em;
+      background: var(--dark-4);
+      border: 1px solid rgba(255,255,255,0.12);
+      padding: 1px 6px;
+      color: var(--text-dim);
+    }
+
+    /* ── HR inside bot bubble ── */
+    .msg-bubble hr {
+      border: none;
+      border-top: 1px solid rgba(255,255,255,0.06);
+      margin: 8px 0;
+    }
+
+    /* ── Code inside bot bubble ── */
+    .msg-bubble code {
+      font-family: 'DM Mono', monospace;
+      font-size: 10px;
+      background: var(--dark-4);
+      padding: 1px 5px;
+      color: var(--gold);
+    }
+  </style>
 </head>
 <script type="module" src="/gov/assets/js/stats.js"></script>
 <body>
@@ -16,9 +87,11 @@
   <!-- TOPBAR -->
   <div id="topbar">
     <div class="topbar-inner">
+      <a href="/main/">HUB</a>
       <a href="/gov/">GOVERNMENT</a>
       <a href="/gov/systems/citizenship/">CITIZENSHIP</a>
       <a href="/gov/systems/archives/">ARCHIVES</a>
+      <a href="/isc/">ISC</a>
     </div>
   </div>
 
@@ -26,7 +99,7 @@
   <div class="notice-banner">
     <span class="tag">NEW</span>
     <span>
-      pAIz — our AI navigation assistant — is now live on this portal. Developed by Paiz Corp. —
+      pAIz v5.3 — the Omniscient AI assistant — is now live on this portal. Developed by Paiz Corp. —
       <a href="#" onclick="openPaiz(); return false;">CHAT WITH pAIz →</a>
     </span>
   </div>
@@ -61,9 +134,9 @@
     <img src="/gov/assets/images/logo.png" alt="The LoL Government" class="hero-seal" />
     <div class="hero-overline">About This Portal</div>
     <h1 class="hero-title">Why the <em>Government</em> Portal?</h1>
-    <p class="hero-sub">The official portal for The Legend of Legiona's governance, transparency, and public record &nbsp;·&nbsp; Est. 2023</p>
+    <p class="hero-sub">The official portal for The Legend of Legiona's governance, transparency, and public record &nbsp;·&nbsp; Est. 2021</p>
     <div class="live-badge" style="opacity:0;animation:fadeUp 0.8s ease 0.75s forwards;">
-      <span class="live-dot"></span> pAIz Online &nbsp;·&nbsp; Ask Anything Below
+      <span class="live-dot"></span> pAIz v5.3 Online &nbsp;·&nbsp; Ask Anything Below
     </div>
     <div class="hero-btns">
       <a href="#why" class="btn-primary">Read Our Mission</a>
@@ -89,7 +162,7 @@
         <div class="why-card">
           <div class="why-num">02 // PURPOSE</div>
           <h4>A Permanent Public Record</h4>
-          <p>Minecraft worlds reset. Discord messages get buried. But this portal preserves The LoL's official history — founding documents, election records, crisis timelines, and policy decisions — in a form that outlasts any server era, including the current Skyxion: Altaer Era.</p>
+          <p>Minecraft worlds reset. Discord messages get buried. But this portal preserves The LoL's official history — founding documents, election records, crisis timelines, and policy decisions — in a form that outlasts any server era, including the current Skyxion: Altaër Era.</p>
         </div>
         <div class="why-card">
           <div class="why-num">03 // PURPOSE</div>
@@ -152,7 +225,7 @@
         <a href="/gov/systems/archives/" class="portal-card">
           <div class="portal-id">PORTAL-03 // Legal Archive</div>
           <h4>Legal Archive & Documents</h4>
-          <p>The searchable archive of all official LoL legal documents — citizenship acts, presidential proclamations, rights charters, and policy ordinances. Filterable by category.</p>
+          <p>The searchable archive of all official The LoL legal documents — citizenship acts, presidential proclamations, rights charters, and policy ordinances. Filterable by category.</p>
           <div class="portal-arrow">→ thelol.gov/systems/archives/</div>
         </a>
         <a href="/isc/" class="portal-card">
@@ -165,12 +238,12 @@
           <div class="portal-id">PORTAL-05 // Nation</div>
           <h4>The LoL Main Site</h4>
           <p>The primary national website — not a government sub-site. Covers the nation's overview, Minecraft server status, TLSRL railway, and the broader Paiz Corp ecosystem.</p>
-          <div class="portal-arrow">→ /thelol/</div>
+          <div class="portal-arrow">→ /main/</div>
         </a>
         <a href="#home" class="portal-card">
           <div class="portal-id">PORTAL-06 // Info</div>
           <h4>About This Portal</h4>
-          <p>You are here. This page explains the purpose of the government portal, how to navigate it, who built it, and how to interact with pAIz — our AI navigation assistant.</p>
+          <p>You are here. This page explains the purpose of the government portal, how to navigate it, who built it, and how to interact with pAIz — our AI assistant.</p>
           <div class="portal-arrow">→ You're here</div>
         </a>
       </div>
@@ -198,13 +271,13 @@
       </div>
       <div class="credit-card">
         <div class="credit-id">FEATURE // AI</div>
-        <h4>pAIz — AI Assistant</h4>
-        <p>A smart navigation assistant developed by Paiz Corp Intelligence Division. pAIz is trained on The LoL's full knowledge base — history, departments, legal documents, and portal structure — to help citizens and visitors find exactly what they need.</p>
+        <h4>pAIz v5.3 — Omniscient</h4>
+        <p>A smart navigation assistant developed by Paiz Corp Intelligence Division. Powered by a structured knowledge engine covering The LoL's full history, departments, legal documents, NIS, Paiz Corp, FN SMP, and portal structure — with bilingual (EN/BM) support and gallery photo previews.</p>
       </div>
       <div class="credit-card">
         <div class="credit-id">STANDARD // Governance</div>
         <h4>Document Standards</h4>
-        <p>All official documents follow the LoL reference number convention: THELOLGOV-YYYY-### for Government, BH-YYYY-### for The Black House, ISC-YYYY-### for the ISC, and PC-[SUB]-YYYY-### for Paiz Corp subsidiaries.</p>
+        <p>All official documents follow the The LoL reference number convention: THELOLGOV-YYYY-### for Government, BH-YYYY-### for The Black House, ISC-YYYY-### for the ISC, and PC-[SUB]-YYYY-### for Paiz Corp subsidiaries.</p>
       </div>
     </div>
 
@@ -216,13 +289,15 @@
         <span class="tech-pill">CSS3 + Custom Properties</span>
         <span class="tech-pill">Vanilla JavaScript</span>
         <span class="tech-pill">GitHub Pages</span>
+        <span class="tech-pill">Firebase Firestore</span>
+        <span class="tech-pill">Formspree</span>
         <span class="tech-pill">Google Fonts</span>
         <span class="tech-pill">Playfair Display</span>
         <span class="tech-pill">DM Mono</span>
         <span class="tech-pill">Outfit</span>
         <span class="tech-pill">Responsive Grid</span>
         <span class="tech-pill">CSS Animations</span>
-        <span class="tech-pill">pAIz Intelligence Engine</span>
+        <span class="tech-pill">pAIz v5.3 Engine</span>
       </div>
     </div>
   </section>
@@ -233,7 +308,7 @@
       <div class="footer-top">
         <div class="footer-brand">
           <div class="name">The Legend of <em>Legiona</em></div>
-          <p>The official government of The LoL — a sovereign nation built on unity, equality, and the resilience of its people across the Skyxion world since 2023.</p>
+          <p>The official government of The LoL — a sovereign nation built on unity, equality, and the resilience of its people across the Skyxion world since 2021.</p>
         </div>
         <div class="footer-col">
           <h5>Government</h5>
@@ -251,7 +326,7 @@
         <div class="footer-col">
           <h5>Documents</h5>
           <a href="/gov/systems/archives/">Legal Archive</a>
-          <a href=" ">About This Portal</a>
+          <a href="/gov/about/">About This Portal</a>
         </div>
       </div>
       <div class="footer-bottom">
@@ -281,7 +356,7 @@
         <div class="paiz-avatar">p</div>
         <div>
           <div class="paiz-name">pAIz</div>
-          <div class="paiz-by">by Paiz Corp Intelligence</div>
+          <div class="paiz-by">v5.3 · Paiz Corp Intelligence</div>
         </div>
       </div>
       <div style="display:flex;align-items:center;gap:14px;">
@@ -296,13 +371,305 @@
     <div class="paiz-suggestions" id="paiz-suggestions"></div>
 
     <div class="paiz-input-row">
-      <input type="text" id="paiz-input" placeholder="Ask me anything about The LoL…" autocomplete="off" />
+      <input type="text" id="paiz-input" placeholder="Ask or type /help for commands…" autocomplete="off" />
       <button id="paiz-send" onclick="paizSend()">SEND</button>
     </div>
-    <div class="paiz-powered">pAIz // PAIZ CORP INTELLIGENCE DIVISION // SKYXION: ALTAËR ERA</div>
+    <div class="paiz-powered">pAIz v5.3 // PAIZ CORP INTELLIGENCE DIVISION // SKYXION: ALTAËR ERA</div>
   </div>
 
-  <script src="/gov/about/assets/js/script.js"></script>
+  <!-- ════════════════════════════════════════════
+       pAIz ENGINE (external KB + logic)
+  ════════════════════════════════════════════ -->
+  <script src="https://faizzzlol.github.io/paizcorp/assets/js/pAIz-engine.js"></script>
+
+  <!-- ════════════════════════════════════════════
+       pAIz WIDGET CONTROLLER
+  ════════════════════════════════════════════ -->
+  <script>
+    /* ── NAV TOGGLE (hamburger) ── */
+    function toggleMenu() {
+      document.getElementById('mobileMenu').classList.toggle('open');
+    }
+
+    /* ── WIDGET STATE ── */
+    let paizOpen        = false;
+    let paizBusy        = false;
+    let paizInitialized = false;
+
+    /* ── TOGGLE / OPEN ── */
+    function togglePaiz() {
+      paizOpen = !paizOpen;
+      document.getElementById('paiz-panel').classList.toggle('open', paizOpen);
+      document.getElementById('paiz-icon').textContent = paizOpen ? '✕' : '✦';
+      if (paizOpen && !paizInitialized) _initGreeting();
+    }
+    function openPaiz() {
+      if (!paizOpen) togglePaiz();
+    }
+
+    /* ── GREETING ── */
+    function _initGreeting() {
+      paizInitialized = true;
+      _waitForEngine(() => {
+        const match = PaizEngine.bestMatch('hello');
+        if (match && match.type === 'text') {
+          appendMsg('bot', match.entry.r(false));
+          showSuggestions(match.entry.fup || PaizEngine.ALL_CHIPS.all);
+        } else {
+          appendMsg('bot',
+            `Yo! I'm <strong>pAIz v${PaizEngine.VERSION} — Omniscient</strong> — The LoL's official AI. 🟩<br><br>` +
+            `Try slash commands: <kbd>/gov</kbd> · <kbd>/isc</kbd> · <kbd>/fnsmp</kbd> · <kbd>/search [topic]</kbd> · <kbd>/show [photo]</kbd> · <kbd>/help</kbd>`
+          );
+          showSuggestions(PaizEngine.ALL_CHIPS.all);
+        }
+      });
+    }
+
+    /* ── ENGINE READY GUARD ── */
+    function _waitForEngine(cb) {
+      if (window.PaizEngine) { cb(); return; }
+      const t = setInterval(() => {
+        if (window.PaizEngine) { clearInterval(t); cb(); }
+      }, 80);
+    }
+
+    /* ── PROCESS QUERY (main) ── */
+    function processQuery(text) {
+      if (paizBusy || !text.trim()) return;
+      paizBusy = true;
+
+      document.getElementById('paiz-input').value = '';
+      document.getElementById('paiz-suggestions').innerHTML = '';
+      appendMsg('user', escapeHtml(text));
+
+      const typing = showTyping();
+      const delay  = 360 + Math.random() * 260;
+
+      setTimeout(() => {
+        typing.remove();
+        _waitForEngine(() => {
+          _respond(text);
+          paizBusy = false;
+          document.getElementById('paiz-input').focus();
+        });
+      }, delay);
+    }
+
+    function _respond(text) {
+      const bm = PaizEngine.detectBM(text);
+      const q  = text.trim().toLowerCase();
+
+      /* ── SLASH COMMANDS ── */
+      if (q.startsWith('/')) {
+        _handleSlash(q, bm);
+        return;
+      }
+
+      /* ── SHOW INTENT (photo first) ── */
+      if (PaizEngine.isShowIntent(text)) {
+        const m = PaizEngine.bestMatch(text);
+        if (m && m.type === 'image') {
+          appendMsg('bot', PaizEngine.imgGrid(m.entry.images, m.entry.era) + '<br>' + m.entry.r(bm));
+          showSuggestions(m.entry.fup || PaizEngine.ALL_CHIPS.images);
+          return;
+        }
+      }
+
+      /* ── SEARCH INTENT ── */
+      if (PaizEngine.isSearchIntent(text)) {
+        const sq      = text.replace(/^(search|cari|find|look for|lookup|look up|apa ada pasal|ada tak|seach)\s*/i, '').trim();
+        const portals = PaizEngine.searchPortals(sq);
+        if (portals.length) {
+          const links = portals.map(p => `<a href="${p.url}">→ ${p.name}</a> — ${p.desc}`).join('<br>');
+          appendMsg('bot', `<strong>${bm ? 'Carian' : 'Search'}: "${escapeHtml(sq)}"</strong><br><br>${links}`);
+          showSuggestions(PaizEngine.ALL_CHIPS.all);
+          return;
+        }
+      }
+
+      /* ── BEST MATCH ── */
+      const m = PaizEngine.bestMatch(text);
+      if (m) {
+        if (m.type === 'image') {
+          appendMsg('bot', PaizEngine.imgGrid(m.entry.images, m.entry.era) + '<br>' + m.entry.r(bm));
+          showSuggestions(m.entry.fup || PaizEngine.ALL_CHIPS.images);
+        } else {
+          appendMsg('bot', m.entry.r(bm));
+          showSuggestions(m.entry.fup || PaizEngine.ALL_CHIPS.all);
+        }
+      } else {
+        appendMsg('bot', PaizEngine.fallback(bm));
+        showSuggestions(PaizEngine.ALL_CHIPS.all);
+      }
+    }
+
+    /* ── SLASH COMMAND HANDLER ── */
+    function _handleSlash(cmd, bm) {
+      const parts = cmd.slice(1).split(/\s+/);
+      const base  = parts[0];
+      const rest  = parts.slice(1).join(' ').trim();
+
+      const _quick = (query, chips) => {
+        const m = PaizEngine.bestMatch(query);
+        if (m && m.type === 'text') {
+          appendMsg('bot', m.entry.r(bm));
+          showSuggestions(m.entry.fup || chips || PaizEngine.ALL_CHIPS.all);
+        }
+      };
+
+      switch (base) {
+        case 'help':
+          _quick('help commands', PaizEngine.ALL_CHIPS.all);
+          break;
+
+        case 'clear':
+          document.getElementById('paiz-messages').innerHTML = '';
+          document.getElementById('paiz-suggestions').innerHTML = '';
+          appendMsg('bot', bm ? 'Chat dibersihkan. 🧹' : 'Chat cleared. 🧹');
+          showSuggestions(PaizEngine.ALL_CHIPS.all);
+          break;
+
+        case 'gov':
+          _quick('government structure', PaizEngine.ALL_CHIPS.gov);
+          break;
+
+        case 'isc':
+          _quick('isc agency', PaizEngine.ALL_CHIPS.gov);
+          break;
+
+        case 'fn':
+          _quick('freaky niggas', PaizEngine.ALL_CHIPS.fn);
+          break;
+
+        case 'fnsmp':
+          _quick('fn smp overview', PaizEngine.ALL_CHIPS.fnsmp);
+          break;
+
+        case 'search': {
+          if (!rest) {
+            appendMsg('bot', bm ? 'Taip <kbd>/search [topik]</kbd>' : 'Type <kbd>/search [topic]</kbd>');
+            showSuggestions(PaizEngine.ALL_CHIPS.all);
+            break;
+          }
+          const portals = PaizEngine.searchPortals(rest);
+          const kbHits  = PaizEngine.searchAllKB(rest);
+          if (!portals.length && !kbHits.length) {
+            appendMsg('bot', PaizEngine.fallback(bm));
+            showSuggestions(PaizEngine.ALL_CHIPS.all);
+            break;
+          }
+          let html = `<strong>${bm ? 'Carian' : 'Search'}: "${escapeHtml(rest)}"</strong><br><br>`;
+          if (portals.length) {
+            html += `<strong>${bm ? 'Portal:' : 'Portals:'}</strong><br>` +
+                    portals.map(p => `<a href="${p.url}">→ ${p.name}</a>`).join('<br>') + '<br><br>';
+          }
+          if (kbHits.length) {
+            const topHit = kbHits[0];
+            if (topHit.type === 'text' && topHit.entry.r) {
+              html += `<strong>${bm ? 'Info teratas:' : 'Top result:'}</strong><br>` + topHit.entry.r(bm);
+            }
+          }
+          appendMsg('bot', html);
+          showSuggestions(kbHits[0]?.entry?.fup || PaizEngine.ALL_CHIPS.all);
+          break;
+        }
+
+        case 'show': {
+          if (!rest) {
+            appendMsg('bot', bm ? 'Taip <kbd>/show [topik]</kbd> — contoh: <kbd>/show tlcc</kbd>' : 'Type <kbd>/show [topic]</kbd> — e.g. <kbd>/show tlcc</kbd>');
+            showSuggestions(PaizEngine.ALL_CHIPS.images);
+            break;
+          }
+          const m = PaizEngine.bestMatch('show ' + rest);
+          if (m && m.type === 'image') {
+            appendMsg('bot', PaizEngine.imgGrid(m.entry.images, m.entry.era) + '<br>' + m.entry.r(bm));
+            showSuggestions(m.entry.fup || PaizEngine.ALL_CHIPS.images);
+          } else if (m && m.type === 'text') {
+            appendMsg('bot', m.entry.r(bm));
+            showSuggestions(m.entry.fup || PaizEngine.ALL_CHIPS.images);
+          } else {
+            appendMsg('bot', bm
+              ? `Gambar untuk <em>"${escapeHtml(rest)}"</em> tidak ditemui. Cuba: <kbd>/show tlcc</kbd> · <kbd>/show tlsrl</kbd> · <kbd>/show neverland</kbd>`
+              : `No photos found for <em>"${escapeHtml(rest)}"</em>. Try: <kbd>/show tlcc</kbd> · <kbd>/show tlsrl</kbd> · <kbd>/show neverland</kbd>`
+            );
+            showSuggestions(PaizEngine.ALL_CHIPS.images);
+          }
+          break;
+        }
+
+        case 'theme':
+          appendMsg('bot', bm
+            ? 'Tema toggle akan datang untuk portal kerajaan ini! 🎨'
+            : 'Theme toggle coming soon for this gov portal! 🎨'
+          );
+          showSuggestions(PaizEngine.ALL_CHIPS.all);
+          break;
+
+        default:
+          appendMsg('bot', bm
+            ? `Arahan <code>/${escapeHtml(base)}</code> tidak dikenali. Cuba <kbd>/help</kbd>.`
+            : `Unknown command <code>/${escapeHtml(base)}</code>. Try <kbd>/help</kbd>.`
+          );
+          showSuggestions(PaizEngine.ALL_CHIPS.all);
+      }
+    }
+
+    /* ── UI HELPERS ── */
+    function appendMsg(role, html) {
+      const container = document.getElementById('paiz-messages');
+      const msg       = document.createElement('div');
+      msg.className   = `msg ${role}`;
+      const bubble    = document.createElement('div');
+      bubble.className = 'msg-bubble';
+      bubble.innerHTML = html;
+      msg.appendChild(bubble);
+      container.appendChild(msg);
+      container.scrollTop = container.scrollHeight;
+      return msg;
+    }
+
+    function showTyping() {
+      return appendMsg('bot',
+        '<div class="typing-indicator">' +
+        '<div class="typing-dot"></div>' +
+        '<div class="typing-dot"></div>' +
+        '<div class="typing-dot"></div>' +
+        '</div>'
+      );
+    }
+
+    function showSuggestions(chips) {
+      const s = document.getElementById('paiz-suggestions');
+      s.innerHTML = '';
+      (chips || []).forEach(text => {
+        const chip        = document.createElement('button');
+        chip.className    = 'suggestion-chip';
+        chip.textContent  = text;
+        chip.onclick      = () => processQuery(text);
+        s.appendChild(chip);
+      });
+    }
+
+    function escapeHtml(str) {
+      return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;');
+    }
+
+    /* ── SEND ── */
+    function paizSend() {
+      const text = document.getElementById('paiz-input').value.trim();
+      if (text) processQuery(text);
+    }
+
+    document.getElementById('paiz-input').addEventListener('keydown', e => {
+      if (e.key === 'Enter') paizSend();
+    });
+
+    /* ── AUTO-OPEN if coming from a direct link with hash ── */
+    if (window.location.hash === '#paiz') openPaiz();
+  </script>
 
 </body>
 </html>
