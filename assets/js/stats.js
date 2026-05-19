@@ -146,3 +146,27 @@ if (document.readyState === 'loading') {
 } else {
   setupAbandonTracking();
 }
+
+/* ─────────────────────────────────────────────
+   ANNOUNCEMENTS
+───────────────────────────────────────────── */
+async function loadActiveBanner(db) {
+  const { collection, getDocs, where, query, orderBy }
+    = window._fire;
+  const q = query(
+    collection(db, 'announcements'),
+    where('active', '==', true),
+    orderBy('order', 'asc')
+  );
+  const snap = await getDocs(q);
+  snap.forEach(d => {
+    const a = d.data();
+    const banner = document.querySelector('.notice-banner');
+    if (!banner) return;
+    banner.innerHTML =
+      `<span class="tag">${a.type.toUpperCase()}</span>
+       <span>${a.body}${a.link
+         ? ` — <a href="${a.link}">${a.linkText || 'VIEW'} →</a>`
+         : ''}</span>`;
+  });
+}
