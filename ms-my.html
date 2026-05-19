@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The Legend of Legiona — Kerajaan</title>
+  <link rel="icon" type="image/png" href="/gov/assets/images/logo.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=DM+Mono:wght@300;400;500&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/gov/assets/css/style.css">
+</head>
+<body>
+
+  <!-- TOPBAR -->
+  <div id="topbar">
+    <div class="topbar-inner">
+      <a href="/main/">LAMAN UTAMA</a>
+      <a href="/gov/about/">TENTANG</a>
+      <a href="/gov/systems/citizenship/">KERAKYATAN</a>
+      <a href="/gov/systems/archives/">ARKIB</a>
+      <a href="/isc/">ISC</a>
+    </div>
+  </div>
+
+  <!-- NOTICE BANNER -->
+  <div class="notice-banner"></div>
+
+  <!-- NAV WRAPPER: sticky container keeps nav + mobile menu together -->
+  <div class="nav-wrapper">
+    <nav>
+      <div class="nav-logo">THELOL.GOV</div>
+      <ul class="nav-links">
+        <li><a href="#home">Utama</a></li>
+        <li><a href="#proclamation">Pengisytiharan</a></li>
+        <li><a href="#history">Sejarah</a></li>
+        <li><a href="#departments">Jabatan</a></li>
+        <li><a href="#megaprojects">Projek Mega</a></li>
+        <li><a href="#founders">Pengasas</a></li>
+      </ul>
+      <button class="hamburger" onclick="toggleMenu()" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </nav>
+    <div class="mobile-menu" id="mobileMenu">
+      <a href="#home" onclick="toggleMenu()">Utama</a>
+      <a href="#proclamation" onclick="toggleMenu()">Pengisytiharan</a>
+      <a href="#history" onclick="toggleMenu()">Sejarah</a>
+      <a href="#departments" onclick="toggleMenu()">Jabatan</a>
+      <a href="#megaprojects" onclick="toggleMenu()">Projek Mega</a>
+      <a href="#founders" onclick="toggleMenu()">Pengasas</a>
+    </div>
+  </div>
+
+  <!-- HERO -->
+  <div id="home" style="position:relative;">
+    <div class="hero-bg"></div>
+    <img src="/gov/assets/images/logo.png" alt="Logo Kerajaan The LoL" class="hero-seal" />
+    <div class="hero-overline">Inilah The LoL</div>
+    <h1 class="hero-title">The Legend of <em>Legiona</em></h1>
+    <p class="hero-sub">Portal Kerajaan Rasmi &nbsp;·&nbsp; THELOL.GOV &nbsp;·&nbsp; Ditubuhkan 2021</p>
+    <div class="live-badge" style="opacity:0;animation:fadeUp 0.8s ease 0.75s forwards;">
+      <span class="live-dot"></span> Portal Aktif &nbsp;·&nbsp; Pentadbiran Semasa 2026
+    </div>
+    <div class="hero-btns">
+      <a href="#proclamation" class="btn-primary">Baca Pengisytiharan</a>
+      <a href="#history" class="btn-outline">Sejarah Negara</a>
+    </div>
+  </div>
+
+  <!-- ANNOUNCEMENTS -->
+  <div class="full-bg-dark2">
+    <div style="max-width:1200px;margin:0 auto;padding:60px 24px;">
+      <div class="section-tag">Pengumuman Terkini</div>
+      <div style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:0.1em;color:var(--text-dim);">2026 // SEMASA</div>
+      <div class="ann-grid">
+        <div class="ann-card">
+          <div class="meta">2026 // SEMASA</div>
+          <div class="tag-pill tag-security">KESELAMATAN</div>
+          <h4>Internal Security Control (ISC) Secara Rasmi Mengambil Alih Mandat Perisikan daripada TLIO</h4>
+        </div>
+        <div class="ann-card">
+          <div class="meta">2026 // BERLANGSUNG</div>
+          <div class="tag-pill tag-governance">PENTADBIRAN</div>
+          <h4>Model Pentadbiran Egalitarian — Pemantauan Diteruskan</h4>
+        </div>
+        <div class="ann-card">
+          <div class="meta">24 Dis 2021 // BERSEJARAH</div>
+          <div class="tag-pill tag-foundational">ASAS</div>
+          <h4>Pengisytiharan Kedaulatan Ditandatangani oleh Tiga Pengasas</h4>
+        </div>
+        <div class="ann-card">
+          <div class="meta">2023 // DIARKIBKAN</div>
+          <div class="tag-pill tag-infrastructure">INFRASTRUKTUR</div>
+          <h4>Pemulihan Pascakacau — Fasa Pembinaan Semula Selesai</h4>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PROCLAMATION -->
+  <section id="proclamation">
+    <div class="section-tag">Dokumen Pengasas</div>
+    <div class="proc-card">
+      <img src="/gov/assets/images/TheLoL.png" alt="Mohor" class="proc-seal" />
+      <div class="proc-title">Pengisytiharan Kedaulatan The LoL</div>
+      <div class="proc-motto">"Atas Nama Perpaduan, Legasi, dan Kemuliaan"</div>
+      <p class="proc-body">
+        Kami, para Pengasas dan Rakyat The Legend of Legiona, dengan ini mengisytiharkan kepada semua alam — dari Overworld ke Nether dan End — penubuhan sebuah negara berdaulat dan bersatu yang dibentuk oleh visi, keberanian, dan semangat setiakawan.<br /><br />
+        Pengisytiharan ini menandakan permulaan sebuah zaman baharu, apabila nilai keadilan, kemakmuran, dan persaudaraan menjadi tonggak utama. The Legend of Legiona (dahulunya dikenali sebagai The Sus) diasaskan melalui gabungan usaha dan impian tiga orang Pengasas yang berwawasan.
+      </p>
+      <div class="proc-signers">
+        <div class="proc-signer">
+          <div class="name">Faiz4224</div>
+          <div class="role">Presiden Pertama &amp; Pemimpin Pengasas</div>
+        </div>
+        <div class="proc-signer">
+          <div class="name">Imii Kun</div>
+          <div class="role">Pengasas Bersama &amp; Tokoh Visi</div>
+        </div>
+        <div class="proc-signer">
+          <div class="name">Dyno</div>
+          <div class="role">Pengasas Bersama &amp; Pakar Strategi</div>
+        </div>
+      </div>
+      <div class="proc-downloads">
+        <a href="https://drive.google.com/file/d/1yzijC8JZ6EztSOtOHyiTrRJEo7obxBPH/view?usp=drive_link" class="btn-primary">↓ Pengisytiharan (BM)</a>
+        <a href="/gov/systems/archives/" class="btn-outline">📂 Arkib Undang-Undang</a>
+      </div>
+    </div>
+
+    <!-- PILLARS -->
+    <div style="margin-top:80px;">
+      <div class="section-tag">Prinsip Asas Kami</div>
+      <p class="section-desc">Seperti yang termaktub dalam Pengisytiharan asal, The Legend of Legiona dibina atas empat tonggak yang kekal membimbing setiap tindakan pentadbiran dan kewarganegaraan.</p>
+      <div class="pillars-grid">
+        <div class="pillar-card">
+          <div class="pillar-num">01 // TONGGAK</div>
+          <h4>Perpaduan</h4>
+          <p>Apabila semua pemain — pembina, pahlawan, dan pengembara — berdiri seiring, mengejar kejayaan bersama.</p>
+        </div>
+        <div class="pillar-card">
+          <div class="pillar-num">02 // TONGGAK</div>
+          <h4>Kebebasan</h4>
+          <p>Menjamin hak setiap rakyat untuk meneroka, membina, dan berkembang dalam sempadan kami.</p>
+        </div>
+        <div class="pillar-card">
+          <div class="pillar-num">03 // TONGGAK</div>
+          <h4>Inovasi</h4>
+          <p>Memanfaatkan segala kemungkinan dalam dunia Minecraft untuk membina sebuah negara yang tiada tandingan.</p>
+        </div>
+        <div class="pillar-card">
+          <div class="pillar-num">04 // TONGGAK</div>
+          <h4>Pertahanan &amp; Maruah</h4>
+          <p>Melindungi tanah air daripada perosak, penyerang, dan ancaman sambil kekal setia kepada prinsip keadilan.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- HISTORY -->
+  <div class="full-bg-dark2">
+    <div id="history" class="inner" style="max-width:1200px;margin:0 auto;padding:100px 24px;">
+      <div class="section-tag">Rekod Rasmi</div>
+      <h2 class="section-title">Sejarah <em>Negara</em></h2>
+      <div class="timeline">
+
+        <div class="tl-item">
+          <div class="tl-date">24 Dis 2021</div>
+          <div class="tl-badge badge-founding">Zaman Penubuhan</div>
+          <h4>Penubuhan — "The Sus"</h4>
+          <p>The LoL bermula sebagai kumpulan WhatsApp pada 24 Disember 2021, pada asalnya bernama "The Sus", diasaskan oleh Faiz4224, ItzDynozz, dan Imii Kun. Walaupun kecil, ketiga-tiga pengasas ini sudah pun meletakkan asas kepada sebuah negara yang kelak menjadi antara yang paling berpengaruh di Skyxion. Dalam era ini, EhekSquad — diketuai oleh PhoenixAiman, PandaPutih, dan Kagee — turut menyertai The Sus, namun status mereka sama ada sebagai rakyat, sekutu, atau sekadar penghuni tidak pernah ditetapkan secara rasmi kerana The Sus belum mempunyai dasar atau struktur pentadbiran. EhekSquad kemudian berundur dan menubuhkan semula kumpulan mereka secara berasingan.</p>
+        </div>
+
+        <div class="tl-item">
+          <div class="tl-date">Akhir 2021</div>
+          <div class="tl-badge badge-expansion">Pengembangan</div>
+          <h4>Penjenamaan Semula &amp; Pengembangan — The Legend of Legiona</h4>
+          <p>Pada tahun yang sama, negara ini dinamakan semula sebagai "The Legend of Legiona" dan berkembang dengan pesat menjadi negara paling moden dan paling kaya di Skyxion. Di bawah kepimpinan Presiden Faiz4224, The LoL berkembang pesat dari segi ekonomi, infrastruktur, dan inovasi.</p>
+        </div>
+
+        <div class="tl-item">
+          <div class="tl-date">6 Mei 2023</div>
+          <div class="tl-badge badge-democratic">Detik Demokrasi</div>
+          <h4>Pilihan Raya Presiden Pertama</h4>
+          <p>The LoL mengadakan pilihan raya demokrasi pertamanya. UltraX2020 dan parti Parti Harapan Rakyat The LoL (PHRTL) menang dan menjadi Presiden ke-2 The LoL — satu titik perubahan penting dalam pentadbirannya.</p>
+        </div>
+
+        <div class="tl-item">
+          <div class="tl-date">2023 — Krisis</div>
+          <div class="tl-badge badge-conflict">Zaman Konflik</div>
+          <h4>Kepresidenan UltraX2020 — Perpecahan &amp; Kacau-Bilau</h4>
+          <p>Pergolakan dalaman timbul semasa pemerintahan UltraX2020. Papan tanda The LoL City dibom, TLCC diserang dengan TNT, dan konflik politik melanda negara. UltraX2020 akhirnya meletakkan jawatan, lalu kuasa kembali kepada Faiz4224.</p>
+        </div>
+
+        <div class="tl-item">
+          <div class="tl-date">Nov 2023</div>
+          <div class="tl-badge badge-rebuilding">Pemulihan</div>
+          <h4>Pemulihan Pascakacau &amp; Penubuhan TLIO</h4>
+          <p>Faiz4224 kembali memimpin. Projek infrastruktur dimulakan semula, keselamatan diperkukuh. Badan perisikan TLIO (kini dikenali sebagai ISC) ditubuhkan untuk mempertahankan The LoL daripada ancaman masa hadapan dan mengekalkan kestabilan negara.</p>
+        </div>
+
+        <div class="tl-item">
+          <div class="tl-date">2025–2026</div>
+          <div class="tl-badge badge-current">Zaman Semasa</div>
+          <h4>Zaman Moden — ISC &amp; Skyxion: Altaër</h4>
+          <p>TLIO dibangunkan semula sebagai Internal Security Control (ISC) — sebuah agensi perisikan yang lebih rasmi dan tersusun. Hari ini, The LoL berdiri sebagai lambang ketabahan dan inovasi di bawah dunia overworld, dalam era Skyxion: Altaer.</p>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- DEPARTMENTS -->
+  <section id="departments">
+    <div class="section-tag">Cabang-cabang The LoL</div>
+    <h2 class="section-title">Jabatan <em>Pentadbiran</em></h2>
+    <div class="dept-grid">
+      <a href="/isc/" class="dept-card">
+        <div class="dept-id">DEPT-01 // Keselamatan</div>
+        <h4>Internal Security Control</h4>
+        <p>Pengganti TLIO. Agensi utama perisikan dan pertahanan yang melindungi kedaulatan The LoL.</p>
+        <div class="dept-arrow">→ Lawati Portal</div>
+      </a>
+      <div class="dept-card" style="opacity:0.6;cursor:default;">
+        <div class="dept-id">DEPT-02 // Kehakiman</div>
+        <h4>Pejabat Keadilan Negara</h4>
+        <p>Menegakkan Model Egalitarian. Menyelesaikan pertikaian dalaman dan menguatkuasakan undang-undang negara.</p>
+        <div class="dept-arrow" style="color:var(--text-dim);">— Akan Datang</div>
+      </div>
+      <div class="dept-card" style="opacity:0.6;cursor:default;">
+        <div class="dept-id">DEPT-03 // Lore</div>
+        <h4>Kementerian Lore &amp; Arkib</h4>
+        <p>Memelihara sejarah negara, rekod pengisytiharan, dan warisan budaya Legiona.</p>
+        <div class="dept-arrow" style="color:var(--text-dim);">— Akan Datang</div>
+      </div>
+      <div class="dept-card" style="opacity:0.6;cursor:default;">
+        <div class="dept-id">DEPT-04 // Infrastruktur</div>
+        <h4>Bahagian Kerja Raya</h4>
+        <p>Menyelia TLSRL, TLCC Twin Towers, ladang, dan semua projek pembinaan negara.</p>
+        <div class="dept-arrow" style="color:var(--text-dim);">— Akan Datang</div>
+      </div>
+      <div class="dept-card" style="opacity:0.6;cursor:default;">
+        <div class="dept-id">DEPT-05 // Luar</div>
+        <h4>Biro Hubungan Luar</h4>
+        <p>Mengurus hubungan diplomatik dan hal ehwal antara negara di seluruh wilayah Skyxion.</p>
+        <div class="dept-arrow" style="color:var(--text-dim);">— Akan Datang</div>
+      </div>
+      <div class="dept-card" style="opacity:0.6;cursor:default;">
+        <div class="dept-id">DEPT-06 // Komunikasi</div>
+        <h4>Komunikasi The LoL</h4>
+        <p>Siaran kebangsaan, rangkaian The LoL News, dan perkhidmatan maklumat awam.</p>
+        <div class="dept-arrow" style="color:var(--text-dim);">— Akan Datang</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- MEGAPROJECTS -->
+  <div class="full-bg-dark2">
+    <div id="megaprojects" style="max-width:1200px;margin:0 auto;padding:100px 24px;">
+      <div class="section-tag">Infrastruktur &amp; Pembangunan</div>
+      <h2 class="section-title">Projek <em>Mega Negara</em></h2>
+      <p class="section-desc">Daripada menara berkembar hinggalah ke landasan kereta api sepanjang 4,800 blok, infrastruktur The LoL membuktikan apa yang mampu dibina oleh rakyat yang bersatu.</p>
+      <div class="mega-stats">
+        <div class="mega-stat"><div class="num">4,800+</div><div class="label">Blok // TLSRL</div></div>
+        <div class="mega-stat"><div class="num">~10</div><div class="label">Minit // Masa Perjalanan</div></div>
+        <div class="mega-stat"><div class="num">4</div><div class="label">Laluan Rel</div></div>
+      </div>
+      <div class="mega-grid">
+        <div class="mega-card">
+          <div class="mega-id">MEGAPROJECT-01 // Pengangkutan</div>
+          <h4>The LoL – Spawn Railway Link (TLSRL)</h4>
+          <p>Permata utama infrastruktur The LoL. TLSRL merentangi lebih 4,800 blok dan menghubungkan The LoL ke Spawn dengan perkhidmatan biasa, ekspres, dan kargo.</p>
+          <span class="status-pill status-operational">Beroperasi</span>
+          <div style="margin-top:14px;"><a href="https://faizzzlol.github.io/thelol/PaizCorp/tlsrl" style="font-family:'DM Mono',monospace;font-size:11px;color:var(--gold);text-decoration:none;letter-spacing:0.1em;">LIHAT HALAMAN TLSRL →</a></div>
+        </div>
+        <div class="mega-card">
+          <div class="mega-id">MEGAPROJECT-02 // Seni Bina</div>
+          <h4>Menara Berkembar TLCC</h4>
+          <p>The LoL Convention Centre Twin Towers — mercu tanda paling ikonik di The LoL City dan lambang ketahanan negara, telah dipulihkan sepenuhnya selepas serangan TNT pada tahun 2023.</p>
+          <span class="status-pill status-completed">Selesai</span>
+        </div>
+        <div class="mega-card">
+          <div class="mega-id">MEGAPROJECT-03 // Ekonomi</div>
+          <h4>Kompleks Ladang Negara</h4>
+          <p>Tiga ladang automatik — Iron Farm, Totem Farm, dan Gold Farm — yang menjadi nadi ekonomi The LoL dan sokongan kebajikan rakyat.</p>
+          <span class="status-pill status-operational">Beroperasi</span>
+        </div>
+        <div class="mega-card">
+          <div class="mega-id">MEGAPROJECT-04 // Korporat</div>
+          <h4>Paiz® Corp</h4>
+          <p>Konglomerat negara yang menjadi tulang belakang pembinaan dan infrastruktur pengangkutan The LoL. Syarikat induk kepada TL Railways dan Paiz™ Construction.</p>
+          <span class="status-pill status-active">Aktif</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FOUNDERS -->
+  <section id="founders">
+    <div class="section-tag">Penandatangan Pengisytiharan</div>
+    <h2 class="section-title">Tiga <em>Pengasas</em></h2>
+    <div class="founders-grid">
+      <div class="founder-card">
+        <div class="founder-avatar">F</div>
+        <h4>Faiz4224</h4>
+        <div class="role">Presiden Pertama // Pemimpin Pengasas</div>
+        <p>Sosok yang keteguhan dan kebijaksanaannya telah meletakkan asas bagi negara besar ini. Beliau memimpin melalui zaman aman dan krisis.</p>
+      </div>
+      <div class="founder-card">
+        <div class="founder-avatar">I</div>
+        <h4>Imii Kun</h4>
+        <div class="role">Pengasas Bersama // Tokoh Visi</div>
+        <p>Tiang kekuatan yang dedikasi dan komitmennya membantu membina ikatan perpaduan yang mengekalkan Legiona hingga hari ini.</p>
+      </div>
+      <div class="founder-card">
+        <div class="founder-avatar">D</div>
+        <h4>Dyno</h4>
+        <div class="role">Pengasas Bersama // Pakar Strategi</div>
+        <p>Kebijaksanaan dan ketekunan beliau menerangi jalan menuju masa depan negara sejak detik-detik awal penubuhannya.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-top">
+        <div class="footer-brand">
+          <div class="name">The Legend of <em>Legiona</em></div>
+          <p>Pentadbiran rasmi The LoL — sebuah negara berdaulat yang dibina atas perpaduan, kesaksamaan, dan ketabahan rakyatnya di dunia Skyxion sejak 2021.</p>
+        </div>
+        <div class="footer-col">
+          <h5>Pentadbiran</h5>
+          <a href="#proclamation">Pengisytiharan</a>
+          <a href="#history">Sejarah</a>
+          <a href="#departments">Jabatan</a>
+          <a href="#founders">Pengasas</a>
+        </div>
+        <div class="footer-col">
+          <h5>Agensi</h5>
+          <a href="/isc/">Portal ISC</a>
+          <a href="/isc/national/">Ketelusan ISC</a>
+          <a href="/isc/search/">Arkib Awam ISC</a>
+        </div>
+        <div class="footer-col">
+          <h5>Dokumen</h5>
+          <a href="/gov/systems/id/">Kad Identiti (ID)</a>
+          <a href="/gov/systems/archives/">Arkib Undang-Undang</a>
+          <a href="/main/about/">Tentang The LoL</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <div class="copy">© 2026 THE LEGEND OF LEGIONA // KERAJAAN RASMI</div>
+        <div class="era">SKYXION: ERA ALTAËR // DIBINA UNTUK KEAMANAN // KEDAULATAN MELALUI PERPADUAN</div>
+      </div>
+      <div style="margin-top: 25px; font-family: 'DM Mono', monospace; font-size: 9px; color: var(--text-dim); border-top: 1px solid rgba(255,255,255,0.05); padding-top: 15px; opacity: 0.8; line-height: 1.6;">
+        <strong>NOTA PENAFIAN UNDANG-UNDANG:</strong> The Legend of Legiona (The LoL) ialah projek komuniti bebas dalam Minecraft.
+        Istilah "Skyxion" dan "Altaër" yang digunakan dalam projek ini serta penamaan era tidak berkaitan, dan tidak mempunyai kaitan dengan Kawaiisho.
+        Projek ini BUKAN PRODUK RASMI MINECRAFT. Ia tidak disahkan atau dikaitkan dengan Mojang AB atau Microsoft Corporation.
+      </div>
+    </div>
+  </footer>
+
+  <script src="/gov/assets/js/script.js"></script>
+  <script type="module" src="/gov/assets/js/stats.js"></script>
+</body>
+</html>
