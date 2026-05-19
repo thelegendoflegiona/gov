@@ -313,8 +313,89 @@
     .toast.show { display: block; }
     @keyframes toastIn { from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)} }
 
+    /* ══════════════════════════════
+       ACTIVITY LOG
+    ══════════════════════════════ */
+    .log-table { width: 100%; border-collapse: collapse; }
+    .log-table th { font-family: var(--fM); font-size: 7px; letter-spacing: 0.22em; color: var(--dim); text-transform: uppercase; padding: 9px 14px; border-bottom: 1px solid var(--border); text-align: left; background: var(--surface); white-space: nowrap; }
+    .log-table td { padding: 11px 14px; border-bottom: 1px solid var(--border); font-size: 12px; vertical-align: middle; }
+    .log-table tr:last-child td { border-bottom: none; }
+    .log-table tr:hover td { background: var(--card); }
+    .log-ts-cell { font-family: var(--fM); font-size: 10px; color: var(--dim); white-space: nowrap; }
+    .log-cit-id { font-family: var(--fM); font-size: 10px; color: var(--emerald-l); }
+    .log-ign { font-size: 12px; color: var(--text); }
+    .log-note-cell { font-size: 11px; color: var(--muted); font-weight: 300; max-width: 220px; line-height: 1.5; }
+    .log-arrow { display: inline-flex; align-items: center; gap: 5px; font-family: var(--fM); font-size: 10px; color: var(--muted); }
+    .log-arrow .sep { color: var(--dim); }
+    .log-act { display: inline-block; font-family: var(--fM); font-size: 7px; letter-spacing: 0.14em; text-transform: uppercase; padding: 2px 9px; border: 1px solid; white-space: nowrap; }
+    .log-act.issued    { color: var(--gold);      border-color: var(--gold-border); background: var(--gold-dim); }
+    .log-act.approved  { color: var(--emerald-l); border-color: var(--emerald-b);  background: var(--emerald-dim); }
+    .log-act.rejected  { color: var(--red-l);     border-color: var(--red-b);      background: var(--red-dim); }
+    .log-act.suspended { color: var(--orange-l);  border-color: var(--orange-b);   background: var(--orange-dim); }
+    .log-act.revoked   { color: var(--red-l);     border-color: var(--red-b);      background: var(--red-dim); }
+    .log-act.reinstated{ color: var(--amber-l);   border-color: var(--amber-b);    background: var(--amber-dim); }
+    .log-act.edited    { color: var(--blue-l);    border-color: var(--blue-b);     background: var(--blue-dim); }
+    .log-act.under_review { color: var(--blue-l); border-color: var(--blue-b);     background: var(--blue-dim); }
+    /* Citizen history thread */
+    .cit-history-wrap { margin-top: 20px; border: 1px solid var(--border); background: var(--bg); }
+    .cit-history-hd { padding: 10px 16px; border-bottom: 1px solid var(--border); font-family: var(--fM); font-size: 8px; letter-spacing: 0.2em; color: var(--dim); text-transform: uppercase; display: flex; align-items: center; gap: 8px; }
+    .cit-history-hd-dot { width: 5px; height: 5px; background: var(--emerald-l); animation: pulse 2s infinite; flex-shrink: 0; }
+    .cit-history-thread { max-height: 220px; overflow-y: auto; display: flex; flex-direction: column; }
+    .cit-history-entry { padding: 10px 16px; border-bottom: 1px solid var(--border); display: flex; gap: 12px; align-items: flex-start; }
+    .cit-history-entry:last-child { border-bottom: none; }
+    .che-ts { font-family: var(--fM); font-size: 8px; color: var(--dim); flex-shrink: 0; margin-top: 2px; white-space: nowrap; }
+    .che-body { flex: 1; display: flex; flex-direction: column; gap: 3px; }
+    .che-action { font-family: var(--fM); font-size: 9px; letter-spacing: 0.08em; }
+    .che-note { font-size: 11px; color: var(--muted); font-weight: 300; }
+    .cit-history-empty { padding: 16px; font-family: var(--fM); font-size: 9px; letter-spacing: 0.1em; color: var(--dim); text-align: center; }
+
+    /* ══════════════════════════════
+       ANNOUNCEMENTS MANAGER
+    ══════════════════════════════ */
+    .ann-layout { display: grid; grid-template-columns: 1fr 340px; gap: 24px; align-items: start; }
+    .ann-list-wrap { background: var(--card); border: 1px solid var(--border); overflow: hidden; }
+    .ann-list-hd { padding: 14px 20px; border-bottom: 1px solid var(--border); font-family: var(--fM); font-size: 8px; letter-spacing: 0.2em; color: var(--muted); text-transform: uppercase; display: flex; align-items: center; justify-content: space-between; }
+    .ann-list { display: flex; flex-direction: column; }
+    .ann-item { padding: 16px 20px; border-bottom: 1px solid var(--border); display: flex; gap: 14px; align-items: flex-start; transition: background 0.15s; }
+    .ann-item:last-child { border-bottom: none; }
+    .ann-item:hover { background: var(--card-h); }
+    .ann-item.inactive { opacity: 0.4; }
+    .ann-item-left { flex: 1; display: flex; flex-direction: column; gap: 5px; }
+    .ann-item-title { font-family: var(--fB); font-size: 13px; font-weight: 600; color: var(--text); }
+    .ann-item-meta { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; margin-top: 3px; }
+    .ann-type-pill { font-family: var(--fM); font-size: 7px; letter-spacing: 0.14em; text-transform: uppercase; padding: 2px 8px; border: 1px solid; }
+    .ann-type-pill.notice   { color: var(--muted);    border-color: var(--border); }
+    .ann-type-pill.alert    { color: var(--red-l);    border-color: var(--red-b);     background: var(--red-dim); }
+    .ann-type-pill.new      { color: var(--emerald-l);border-color: var(--emerald-b); background: var(--emerald-dim); }
+    .ann-type-pill.security { color: var(--amber-l);  border-color: var(--amber-b);   background: var(--amber-dim); }
+    .ann-link-ref { font-family: var(--fM); font-size: 8px; color: var(--gold); letter-spacing: 0.06em; }
+    .ann-active-label { font-family: var(--fM); font-size: 8px; color: var(--dim); }
+    .ann-toggle { display: flex; align-items: center; gap: 6px; cursor: pointer; flex-shrink: 0; }
+    .ann-toggle-track { width: 30px; height: 14px; border: 1px solid var(--border); background: var(--surface); position: relative; transition: all 0.2s; flex-shrink: 0; }
+    .ann-toggle-track.on { border-color: var(--emerald-b); background: var(--emerald-dim); }
+    .ann-toggle-thumb { width: 8px; height: 8px; background: var(--dim); position: absolute; top: 2px; left: 2px; transition: all 0.2s; }
+    .ann-toggle-track.on .ann-toggle-thumb { background: var(--emerald-l); transform: translateX(16px); }
+    .ann-item-actions { display: flex; gap: 5px; flex-shrink: 0; flex-direction: column; }
+    .ann-btn { font-family: var(--fM); font-size: 7px; letter-spacing: 0.1em; text-transform: uppercase; padding: 4px 10px; border: 1px solid; background: none; cursor: pointer; transition: all 0.2s; white-space: nowrap; }
+    .ann-btn.edit  { color: var(--muted); border-color: var(--border); }
+    .ann-btn.edit:hover  { border-color: var(--gold-border); color: var(--gold); }
+    .ann-btn.del   { color: var(--dim); border-color: var(--border); }
+    .ann-btn.del:hover   { border-color: var(--red-b); color: var(--red-l); }
+    .ann-empty { padding: 40px; font-family: var(--fM); font-size: 10px; letter-spacing: 0.1em; color: var(--dim); text-align: center; }
+    .ann-form-box { background: var(--card); border: 1px solid var(--border); overflow: hidden; }
+    .ann-form-hd { padding: 14px 20px; border-bottom: 1px solid var(--border); font-family: var(--fM); font-size: 8px; letter-spacing: 0.2em; color: var(--muted); text-transform: uppercase; display: flex; align-items: center; gap: 8px; }
+    .ann-form-hd-dot { width: 5px; height: 5px; background: var(--gold); flex-shrink: 0; }
+    .ann-form-body { padding: 20px; display: flex; flex-direction: column; gap: 14px; }
+    .ann-fb { font-family: var(--fM); font-size: 10px; letter-spacing: 0.06em; padding: 10px 14px; border: 1px solid; display: none; }
+    .ann-fb.ok  { color: var(--emerald-l); border-color: var(--emerald-b); background: var(--emerald-dim); }
+    .ann-fb.err { color: var(--red-l);     border-color: var(--red-b);     background: var(--red-dim);    }
+    .ann-fb.show { display: block; }
+    .ann-snippet-box { background: var(--bg); border: 1px solid var(--border); border-left: 3px solid var(--gold); padding: 16px 18px; margin-top: 12px; }
+    .ann-snippet-title { font-family: var(--fM); font-size: 8px; letter-spacing: 0.2em; color: var(--gold); text-transform: uppercase; margin-bottom: 10px; }
+    .ann-snippet-code { font-family: var(--fM); font-size: 10px; color: var(--muted); line-height: 1.7; white-space: pre-wrap; word-break: break-all; }
+
     /* ── RESPONSIVE ── */
-    @media (max-width: 1100px) { .issue-layout { grid-template-columns: 1fr; } }
+    @media (max-width: 1100px) { .issue-layout,.ann-layout { grid-template-columns: 1fr; } }
     @media (max-width: 1000px) { .stats-grid.c5,.stats-grid.c6 { grid-template-columns: repeat(3,1fr); } }
     @media (max-width: 700px) {
       .site-header { padding: 12px 18px; } .admin-body { padding: 20px 16px; }
@@ -421,6 +502,8 @@
     <button class="tab-btn" onclick="switchTab('citizens',this)">
       Citizens <span class="tab-count" id="tabCountCitizens">—</span>
     </button>
+    <button class="tab-btn" onclick="switchTab('activity',this)">Activity Log</button>
+    <button class="tab-btn" onclick="switchTab('announcements',this)">Announcements</button>
     <button class="tab-btn" onclick="switchTab('analytics',this)">Analytics</button>
   </nav>
 
@@ -436,8 +519,6 @@
           <span class="sec-title">System Dashboard</span>
         </div>
       </div>
-
-      <!-- Citizenship stats -->
       <div class="sec-sub-lbl">Citizenship Applications</div>
       <div class="stats-grid c5">
         <div class="stat-card"><span class="stat-label">Total Applications</span><span class="stat-val gold" id="statTotal">—</span><span class="stat-sub">All time</span></div>
@@ -446,8 +527,6 @@
         <div class="stat-card"><span class="stat-label">Approved</span><span class="stat-val emerald" id="statApproved">—</span><span class="stat-sub">Citizenship granted</span></div>
         <div class="stat-card"><span class="stat-label">Rejected</span><span class="stat-val red" id="statRejected">—</span><span class="stat-sub">Denied</span></div>
       </div>
-
-      <!-- NIS stats -->
       <div class="sec-sub-lbl">National ID System (NIS)</div>
       <div class="stats-grid c4">
         <div class="stat-card"><span class="stat-label">IDs Issued</span><span class="stat-val gold" id="nisTotal">—</span><span class="stat-sub">All time</span></div>
@@ -455,8 +534,6 @@
         <div class="stat-card"><span class="stat-label">Revoked</span><span class="stat-val red" id="nisRevoked">—</span><span class="stat-sub">Citizenship ended</span></div>
         <div class="stat-card"><span class="stat-label">Suspended</span><span class="stat-val orange" id="nisSuspended">—</span><span class="stat-sub">Under review</span></div>
       </div>
-
-      <!-- Dash cols -->
       <div class="dash-cols">
         <div class="dash-panel">
           <div class="dash-panel-hd"><span class="dash-panel-dot amber"></span><span class="dash-panel-lbl">Pending Applications</span></div>
@@ -467,7 +544,6 @@
           <div class="dash-panel-body" id="dashRecentIDs"><div class="dash-empty">// Loading...</div></div>
         </div>
       </div>
-
       <div style="margin-top:20px;">
         <div class="dash-panel">
           <div class="dash-panel-hd"><span class="dash-panel-dot gold"></span><span class="dash-panel-lbl">Session Activity Log</span></div>
@@ -645,6 +721,147 @@
     </div>
 
     <!-- ════════════════════════
+         ACTIVITY LOG TAB
+    ════════════════════════ -->
+    <div class="tab-panel" id="tab-activity">
+      <div class="sec-hdr">
+        <div class="sec-hdr-left">
+          <span class="sec-eyebrow">NIS Division</span>
+          <span class="sec-title">Citizen Activity Log</span>
+        </div>
+      </div>
+      <div class="controls">
+        <input class="ctrl-search" id="logSearch" type="text" placeholder="Filter by citizen ID or IGN..." oninput="filterActivityLog()" />
+        <select class="ctrl-select" id="filterLogAction" onchange="filterActivityLog()">
+          <option value="">All Actions</option>
+          <option value="issued">ID Issued</option>
+          <option value="approved">Approved</option>
+          <option value="rejected">Rejected</option>
+          <option value="under_review">Under Review</option>
+          <option value="suspended">Suspended</option>
+          <option value="revoked">Revoked</option>
+          <option value="reinstated">Reinstated</option>
+          <option value="edited">Edited</option>
+        </select>
+        <button class="ctrl-refresh" onclick="loadActivityLog()">↻ Refresh</button>
+        <span class="ctrl-count" id="logCount">— entries</span>
+      </div>
+      <div class="table-wrap">
+        <table class="log-table">
+          <thead><tr>
+            <th>Timestamp</th>
+            <th>Citizen ID</th>
+            <th>IGN</th>
+            <th>Action</th>
+            <th>Status Change</th>
+            <th>Note</th>
+          </tr></thead>
+          <tbody id="logTableBody">
+            <tr><td colspan="6" class="tbl-loading">// Click Refresh to load the log</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ════════════════════════
+         ANNOUNCEMENTS TAB
+    ════════════════════════ -->
+    <div class="tab-panel" id="tab-announcements">
+      <div class="sec-hdr">
+        <div class="sec-hdr-left">
+          <span class="sec-eyebrow">Communications</span>
+          <span class="sec-title">Announcement Manager</span>
+        </div>
+      </div>
+      <div class="ann-layout">
+
+        <div>
+          <div class="ann-list-wrap">
+            <div class="ann-list-hd">
+              <span>Active Announcements</span>
+              <button class="ctrl-refresh" onclick="loadAnnouncements()" style="padding:5px 12px;">↻ Refresh</button>
+            </div>
+            <div class="ann-list" id="annList">
+              <div class="ann-empty">// Click Refresh to load announcements</div>
+            </div>
+          </div>
+
+          <div class="ann-snippet-box">
+            <div class="ann-snippet-title">How to display on your pages</div>
+            <div class="ann-snippet-code">// Add inside existing Firebase module script on any gov page:
+async function loadActiveBanner(db) {
+  const { collection, getDocs, where, query, orderBy }
+    = window._fire;
+  const q = query(
+    collection(db, 'announcements'),
+    where('active', '==', true),
+    orderBy('order', 'asc')
+  );
+  const snap = await getDocs(q);
+  snap.forEach(d => {
+    const a = d.data();
+    const banner = document.querySelector('.notice-banner');
+    if (!banner) return;
+    banner.innerHTML =
+      `&lt;span class="tag"&gt;${a.type.toUpperCase()}&lt;/span&gt;
+       &lt;span&gt;${a.body}${a.link
+         ? ` — &lt;a href="${a.link}"&gt;${a.linkText || 'VIEW'} →&lt;/a&gt;`
+         : ''}&lt;/span&gt;`;
+  });
+}</div>
+          </div>
+        </div>
+
+        <div class="ann-form-box">
+          <div class="ann-form-hd">
+            <span class="ann-form-hd-dot"></span>
+            <span id="annFormTitle">New Announcement</span>
+          </div>
+          <div class="ann-form-body">
+            <input type="hidden" id="ann_edit_id" value="" />
+            <div class="f-field">
+              <label class="f-label">Type *</label>
+              <select class="f-select" id="ann_type">
+                <option value="notice">Notice</option>
+                <option value="new">New</option>
+                <option value="alert">Alert</option>
+                <option value="security">Security</option>
+              </select>
+            </div>
+            <div class="f-field">
+              <label class="f-label">Body Text *</label>
+              <textarea class="f-textarea" id="ann_body" placeholder="The announcement text shown to users..."></textarea>
+            </div>
+            <div class="f-field">
+              <label class="f-label">Link URL (optional)</label>
+              <input class="f-input" id="ann_link" type="text" placeholder="/gov/systems/archives/" />
+            </div>
+            <div class="f-field">
+              <label class="f-label">Link Label (optional)</label>
+              <input class="f-input" id="ann_link_text" type="text" placeholder="VIEW NOW" />
+            </div>
+            <div class="f-field">
+              <label class="f-label">Display Order (lower = first)</label>
+              <input class="f-input" id="ann_order" type="number" value="1" min="1" />
+            </div>
+            <div class="f-field">
+              <label class="f-label" style="display:flex;align-items:center;gap:8px;cursor:pointer;font-size:7px;letter-spacing:0.2em;">
+                <input type="checkbox" id="ann_active" checked style="accent-color:var(--emerald-l);width:14px;height:14px;" />
+                PUBLISH IMMEDIATELY (ACTIVE)
+              </label>
+            </div>
+            <div class="ann-fb" id="annFb"></div>
+            <div class="f-actions">
+              <button class="btn-issue" id="annSaveBtn" onclick="saveAnnouncement()">SAVE →</button>
+              <button class="btn-clr" onclick="clearAnnForm()">Clear</button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ════════════════════════
          ANALYTICS TAB
     ════════════════════════ -->
     <div class="tab-panel" id="tab-analytics">
@@ -654,130 +871,40 @@
           <span class="sec-title">Web Analytics</span>
         </div>
       </div>
-
-      <!-- Page Traffic -->
       <div class="analytics-section">
         <div class="analytics-section-title">Page Traffic — Unique Sessions</div>
         <div class="stats-grid c6">
-          <div class="stat-card analytics-stat-card traffic">
-            <span class="stat-label">Citizenship</span>
-            <span class="a-stat-page">/citizenship/</span>
-            <span class="stat-val blue" id="an_page_citizenship">—</span>
-            <span class="stat-sub">sessions</span>
-          </div>
-          <div class="stat-card analytics-stat-card traffic">
-            <span class="stat-label">Apply Page</span>
-            <span class="a-stat-page">/citizenship/apply</span>
-            <span class="stat-val blue" id="an_page_apply">—</span>
-            <span class="stat-sub">sessions</span>
-          </div>
-          <div class="stat-card analytics-stat-card traffic">
-            <span class="stat-label">Status Page</span>
-            <span class="a-stat-page">/citizenship/status</span>
-            <span class="stat-val blue" id="an_page_status">—</span>
-            <span class="stat-sub">sessions</span>
-          </div>
-          <div class="stat-card analytics-stat-card traffic">
-            <span class="stat-label">ID Card</span>
-            <span class="a-stat-page">/id/id-card</span>
-            <span class="stat-val blue" id="an_page_id_card">—</span>
-            <span class="stat-sub">sessions</span>
-          </div>
-          <div class="stat-card analytics-stat-card traffic">
-            <span class="stat-label">Registry</span>
-            <span class="a-stat-page">/id/registry</span>
-            <span class="stat-val blue" id="an_page_registry">—</span>
-            <span class="stat-sub">sessions</span>
-          </div>
-          <div class="stat-card analytics-stat-card traffic">
-            <span class="stat-label">Total Sessions</span>
-            <span class="a-stat-page">All pages combined</span>
-            <span class="stat-val gold" id="an_total_sessions">—</span>
-            <span class="stat-sub">sessions</span>
-          </div>
+          <div class="stat-card analytics-stat-card traffic"><span class="stat-label">Citizenship</span><span class="a-stat-page">/citizenship/</span><span class="stat-val blue" id="an_page_citizenship">—</span><span class="stat-sub">sessions</span></div>
+          <div class="stat-card analytics-stat-card traffic"><span class="stat-label">Apply Page</span><span class="a-stat-page">/citizenship/apply</span><span class="stat-val blue" id="an_page_apply">—</span><span class="stat-sub">sessions</span></div>
+          <div class="stat-card analytics-stat-card traffic"><span class="stat-label">Status Page</span><span class="a-stat-page">/citizenship/status</span><span class="stat-val blue" id="an_page_status">—</span><span class="stat-sub">sessions</span></div>
+          <div class="stat-card analytics-stat-card traffic"><span class="stat-label">ID Card</span><span class="a-stat-page">/id/id-card</span><span class="stat-val blue" id="an_page_id_card">—</span><span class="stat-sub">sessions</span></div>
+          <div class="stat-card analytics-stat-card traffic"><span class="stat-label">Registry</span><span class="a-stat-page">/id/registry</span><span class="stat-val blue" id="an_page_registry">—</span><span class="stat-sub">sessions</span></div>
+          <div class="stat-card analytics-stat-card traffic"><span class="stat-label">Total Sessions</span><span class="a-stat-page">All pages combined</span><span class="stat-val gold" id="an_total_sessions">—</span><span class="stat-sub">sessions</span></div>
         </div>
       </div>
-
-      <!-- Portal Events -->
       <div class="analytics-section">
         <div class="analytics-section-title">Portal Events</div>
         <div class="stats-grid c5">
-          <div class="stat-card analytics-stat-card event">
-            <span class="stat-label">App Submissions</span>
-            <span class="a-stat-page">form submitted</span>
-            <span class="stat-val emerald" id="an_app_submissions">—</span>
-            <span class="stat-sub">applications</span>
-          </div>
-          <div class="stat-card analytics-stat-card event">
-            <span class="stat-label">Status Checks</span>
-            <span class="a-stat-page">lookups performed</span>
-            <span class="stat-val emerald" id="an_status_checks">—</span>
-            <span class="stat-sub">queries</span>
-          </div>
-          <div class="stat-card analytics-stat-card event">
-            <span class="stat-label">ID Card Lookups</span>
-            <span class="a-stat-page">cards loaded</span>
-            <span class="stat-val emerald" id="an_id_card_lookups">—</span>
-            <span class="stat-sub">lookups</span>
-          </div>
-          <div class="stat-card analytics-stat-card action">
-            <span class="stat-label">Card Downloads</span>
-            <span class="a-stat-page">PNG downloaded</span>
-            <span class="stat-val gold" id="an_id_card_downloads">—</span>
-            <span class="stat-sub">downloads</span>
-          </div>
-          <div class="stat-card analytics-stat-card action">
-            <span class="stat-label">Card Prints</span>
-            <span class="a-stat-page">print triggered</span>
-            <span class="stat-val gold" id="an_id_card_prints">—</span>
-            <span class="stat-sub">prints</span>
-          </div>
+          <div class="stat-card analytics-stat-card event"><span class="stat-label">App Submissions</span><span class="a-stat-page">form submitted</span><span class="stat-val emerald" id="an_app_submissions">—</span><span class="stat-sub">applications</span></div>
+          <div class="stat-card analytics-stat-card event"><span class="stat-label">Status Checks</span><span class="a-stat-page">lookups performed</span><span class="stat-val emerald" id="an_status_checks">—</span><span class="stat-sub">queries</span></div>
+          <div class="stat-card analytics-stat-card event"><span class="stat-label">ID Card Lookups</span><span class="a-stat-page">cards loaded</span><span class="stat-val emerald" id="an_id_card_lookups">—</span><span class="stat-sub">lookups</span></div>
+          <div class="stat-card analytics-stat-card action"><span class="stat-label">Card Downloads</span><span class="a-stat-page">PNG downloaded</span><span class="stat-val gold" id="an_id_card_downloads">—</span><span class="stat-sub">downloads</span></div>
+          <div class="stat-card analytics-stat-card action"><span class="stat-label">Card Prints</span><span class="a-stat-page">print triggered</span><span class="stat-val gold" id="an_id_card_prints">—</span><span class="stat-sub">prints</span></div>
         </div>
         <div class="stats-grid c3" style="margin-top:2px;">
-          <div class="stat-card analytics-stat-card event">
-            <span class="stat-label">Registry Searches</span>
-            <span class="a-stat-page">IDs verified</span>
-            <span class="stat-val emerald" id="an_registry_searches">—</span>
-            <span class="stat-sub">verifications</span>
-          </div>
-          <div class="stat-card analytics-stat-card event">
-            <span class="stat-label">IDs Issued (Admin)</span>
-            <span class="a-stat-page">via NIS console</span>
-            <span class="stat-val emerald" id="an_ids_issued">—</span>
-            <span class="stat-sub">issued</span>
-          </div>
-          <div class="stat-card analytics-stat-card action">
-            <span class="stat-label">Status Updates</span>
-            <span class="a-stat-page">admin actions</span>
-            <span class="stat-val gold" id="an_status_updates">—</span>
-            <span class="stat-sub">updates</span>
-          </div>
+          <div class="stat-card analytics-stat-card event"><span class="stat-label">Registry Searches</span><span class="a-stat-page">IDs verified</span><span class="stat-val emerald" id="an_registry_searches">—</span><span class="stat-sub">verifications</span></div>
+          <div class="stat-card analytics-stat-card event"><span class="stat-label">IDs Issued (Admin)</span><span class="a-stat-page">via NIS console</span><span class="stat-val emerald" id="an_ids_issued">—</span><span class="stat-sub">issued</span></div>
+          <div class="stat-card analytics-stat-card action"><span class="stat-label">Status Updates</span><span class="a-stat-page">admin actions</span><span class="stat-val gold" id="an_status_updates">—</span><span class="stat-sub">updates</span></div>
         </div>
       </div>
-
       <div class="analytics-actions">
         <button class="btn-analytics refresh" onclick="loadAnalytics()">↻ Refresh Data</button>
         <button class="btn-analytics reset" onclick="resetAnalytics()">Reset All Counters</button>
         <span class="analytics-last-updated" id="analyticsLastUpdated">// Not loaded</span>
       </div>
-
       <div class="analytics-note">
         <span class="analytics-note-title">How to enable tracking on your pages</span>
-        <p>Analytics data is stored in Firestore at <code>analytics/counters</code>. Add the tracking snippet below to each page's existing Firebase module script. Sessions are deduplicated via sessionStorage so refreshes don't inflate counts.</p>
-        <br>
-        <p style="color:var(--dim);margin-top:4px;">Add to each page's <code>&lt;script type="module"&gt;</code>:<br><br>
-        <code style="color:var(--gold)">import { setDoc, doc, increment } from "https://...firebase-firestore.js";</code><br>
-        <code style="color:var(--emerald-l)">// Then call: await trackPageView(db, 'page_apply');  // or page_status, page_id_card, page_registry, page_citizenship</code><br>
-        <code style="color:var(--emerald-l)">// And on events: await trackEvent(db, 'status_checks'); // or app_submissions, id_card_lookups, id_card_downloads, id_card_prints, registry_searches</code><br><br>
-        <code style="color:var(--muted)">async function trackPageView(db, page) {<br>
-        &nbsp;&nbsp;if (sessionStorage.getItem('t_'+page)) return;<br>
-        &nbsp;&nbsp;sessionStorage.setItem('t_'+page, '1');<br>
-        &nbsp;&nbsp;try { await setDoc(doc(db,'analytics','counters'), {[page]:increment(1),total_sessions:increment(1)},{merge:true}); } catch{}<br>
-        }<br>
-        async function trackEvent(db, evt) {<br>
-        &nbsp;&nbsp;try { await setDoc(doc(db,'analytics','counters'), {[evt]:increment(1)},{merge:true}); } catch{}<br>
-        }</code>
-        </p>
+        <p>Analytics data is stored in Firestore at <code>analytics/counters</code>. Add the tracking snippet to each page's existing Firebase module script.</p>
       </div>
     </div>
 
@@ -785,7 +912,7 @@
 </div><!-- /mainContent -->
 
 <!-- ════════════════════════════
-     REVIEW MODAL (Applications)
+     REVIEW MODAL
 ════════════════════════════ -->
 <div class="modal-overlay" id="reviewModal">
   <div class="modal">
@@ -800,7 +927,6 @@
       <input type="hidden" id="modalAppRef" />
       <span class="modal-sec-lbl">01 // Application Details</span>
       <div class="app-details" id="modalDetailsGrid"></div>
-
       <div class="issue-settings" id="approveSettings" style="display:none;">
         <div class="issue-settings-hd">
           <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><rect x="0.5" y="0.5" width="9" height="9" stroke="#4e8f6b" stroke-width="1"/><path d="M2.5 5l2 2 3-3" stroke="#4e8f6b" stroke-width="1.2"/></svg>
@@ -816,7 +942,6 @@
           <div class="f-field"><label class="f-label">Platform</label><select class="f-select" id="issPlatform"><option value="java">Java Edition</option><option value="bedrock">Bedrock Edition</option></select></div>
         </div>
       </div>
-
       <div class="approve-only-field" id="approveOnlyField">
         <span class="modal-sec-lbl">02 // Link Existing NIS ID</span>
         <div class="f-field">
@@ -825,7 +950,6 @@
           <span class="f-hint">Enter the ID issued manually via the Issue ID tab</span>
         </div>
       </div>
-
       <span class="modal-sec-lbl" id="notesSectionLbl">02 // Admin Notes</span>
       <div class="notes-section">
         <div class="f-field"><label class="f-label">Public Note <span style="color:var(--emerald-l)">(Citizen-visible)</span></label><textarea class="f-textarea" id="modalPublicNote"></textarea></div>
@@ -891,6 +1015,18 @@
         <div class="f-field"><label class="f-label">Wallet Linked</label><select class="f-select" id="edit_wallet"><option value="false">Not Linked</option><option value="true">Linked (TL$)</option></select></div>
       </div>
       <div class="f-field"><label class="f-label">Public Note</label><textarea class="f-textarea" id="edit_note"></textarea></div>
+
+      <!-- ── CITIZEN CHANGE HISTORY ── -->
+      <div class="cit-history-wrap">
+        <div class="cit-history-hd">
+          <span class="cit-history-hd-dot"></span>
+          <span>Change History</span>
+        </div>
+        <div class="cit-history-thread" id="editHistoryThread">
+          <div class="cit-history-empty">// Open a citizen record to view their history</div>
+        </div>
+      </div>
+
       <div class="edit-fb" id="editFeedback"></div>
     </div>
     <div class="modal-actions-edit">
@@ -910,7 +1046,7 @@
   import { initializeApp } from "https://www.gstatic.com/firebasejs/12.12.1/firebase-app.js";
   import {
     getFirestore, collection, doc,
-    getDoc, getDocs, updateDoc, setDoc,
+    getDoc, getDocs, updateDoc, setDoc, deleteDoc,
     runTransaction, query, where, orderBy,
     increment
   } from "https://www.gstatic.com/firebasejs/12.12.1/firebase-firestore.js";
@@ -929,7 +1065,7 @@
   const db  = getFirestore(app);
 
   window._db    = db;
-  window._fire  = { collection, doc, getDoc, getDocs, updateDoc, setDoc, runTransaction, query, where, orderBy, increment };
+  window._fire  = { collection, doc, getDoc, getDocs, updateDoc, setDoc, deleteDoc, runTransaction, query, where, orderBy, increment };
   window._fbReady = true;
 </script>
 
@@ -937,10 +1073,9 @@
      MAIN SCRIPT
 ════════════════════════════ -->
 <script>
-/* ═══════════════════════════════
+/* ─────────────────────────────
    PASSPHRASE HASH
-   SHA-256 of passphrase
-═══════════════════════════════ */
+───────────────────────────── */
 const ADMIN_HASH = "22822251adfcc00bc0433042524ee7a3fe378466462493a8c37f5edb72964701";
 
 async function sha256(s) {
@@ -993,10 +1128,12 @@ function switchTab(id, btn) {
   document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
   document.getElementById('tab-' + id).classList.add('active');
   btn.classList.add('active');
-  if (id === 'applications') loadAllApps();
-  if (id === 'citizens')    loadAllCitizens();
-  if (id === 'issue-id')    loadNextID();
-  if (id === 'analytics')   loadAnalytics();
+  if (id === 'applications')  loadAllApps();
+  if (id === 'citizens')      loadAllCitizens();
+  if (id === 'issue-id')      loadNextID();
+  if (id === 'analytics')     loadAnalytics();
+  if (id === 'activity')      loadActivityLog();
+  if (id === 'announcements') loadAnnouncements();
 }
 window.switchTab = switchTab;
 
@@ -1007,7 +1144,7 @@ function showToast(msg, type = 'ok') {
   setTimeout(() => t.classList.remove('show'), 3200);
 }
 
-/* ── ACTIVITY LOG ── */
+/* ── SESSION LOG ── */
 const actLog = [];
 function logAct(type, msg) {
   const ts = new Date().toLocaleTimeString('en-GB', { hour:'2-digit', minute:'2-digit', second:'2-digit' });
@@ -1032,12 +1169,34 @@ function onAdminReady() {
 }
 
 /* ══════════════════════════════
+   CITIZEN ACTIVITY LOGGER
+   Writes to Firestore: citizen_logs
+══════════════════════════════ */
+async function logCitizenAction(citizenId, username, action, prevStatus, newStatus, note = '') {
+  try {
+    const { doc, setDoc } = window._fire;
+    const tsKey = new Date().toISOString().replace(/[:.]/g, '-');
+    const logRef = doc(window._db, 'citizen_logs', `${tsKey}-${Math.random().toString(36).slice(2,7)}`);
+    await setDoc(logRef, {
+      citizenId:  citizenId  || '',
+      username:   username   || '',
+      action,
+      prevStatus: prevStatus || '',
+      newStatus:  newStatus  || '',
+      note:       note       || '',
+      timestamp:  new Date().toISOString(),
+    });
+  } catch (e) {
+    console.warn('[LOG] Failed to write activity log:', e.message);
+  }
+}
+
+/* ══════════════════════════════
    DASHBOARD
 ══════════════════════════════ */
 async function loadDashboard() {
   try {
     const { collection, getDocs } = window._fire;
-    // Applications
     const appSnap = await getDocs(collection(window._db, 'applications'));
     let total=0, pending=0, under=0, approved=0, rejected=0;
     const pendingList = [];
@@ -1056,7 +1215,6 @@ async function loadDashboard() {
     document.getElementById('statRejected').textContent = rejected;
     document.getElementById('tabCountPending').textContent = pending > 0 ? pending : '—';
 
-    // Pending list
     const pEl = document.getElementById('dashPending');
     if (!pendingList.length) { pEl.innerHTML = '<div class="dash-empty">// No pending applications</div>'; }
     else {
@@ -1070,7 +1228,6 @@ async function loadDashboard() {
       ).join('');
     }
 
-    // Citizens
     const citSnap = await getDocs(collection(window._db, 'citizens'));
     let nisTotal=0, nisActive=0, nisRevoked=0, nisSuspended=0;
     const recentCits = [];
@@ -1088,7 +1245,6 @@ async function loadDashboard() {
     document.getElementById('nisSuspended').textContent = nisSuspended;
     document.getElementById('tabCountCitizens').textContent = nisTotal > 0 ? nisTotal : '—';
 
-    // Recent IDs
     recentCits.sort((a,b)=>(b.issuedDate||'').localeCompare(a.issuedDate||''));
     const rEl = document.getElementById('dashRecentIDs');
     if (!recentCits.length) { rEl.innerHTML = '<div class="dash-empty">// No IDs issued yet</div>'; }
@@ -1123,7 +1279,7 @@ async function loadNextID() {
     const seq  = snap.exists() ? (snap.data().lastSequence||0)+1 : 1;
     const val  = `${year}-${String(seq).padStart(5,'0')}`;
     if (document.getElementById('previewIdFull')) document.getElementById('previewIdFull').textContent = val;
-    if (document.getElementById('previewIdVal')) document.getElementById('previewIdVal').textContent = val;
+    if (document.getElementById('previewIdVal'))  document.getElementById('previewIdVal').textContent  = val;
   } catch { if (el) el.textContent = '????-?????'; }
 }
 window.loadNextID = loadNextID;
@@ -1206,7 +1362,9 @@ async function quickAppStatus(ref, newStatus) {
     const app = allApps.find(a=>(a.ref||a._id)===ref);
     if (app) { app.status=newStatus; if (upd.processed) app.processed=today; }
     filterApps(); loadDashboard();
-    logAct(newStatus==='rejected'?'bad':(newStatus==='approved'?'ok':''), `${newStatus.toUpperCase()} → ${ref}`);
+    const appIGN = app?.ign || '';
+    await logCitizenAction(ref, appIGN, newStatus === 'rejected' ? 'rejected' : 'under_review', app?.status || '', newStatus, `Quick status via applications table`);
+    logAct(newStatus==='rejected'?'bad':'', `${newStatus.toUpperCase()} → ${ref}`);
     showToast(`${ref} → ${newStatus}`, newStatus==='rejected'?'err':'ok');
   } catch(e) { showToast('Error: '+e.message,'err'); }
 }
@@ -1268,7 +1426,6 @@ function statusCls(s) { return {pending:'amber',under_review:'blue',approved:'em
 
 function closeReviewModal() { document.getElementById('reviewModal').classList.remove('open'); currentApp=null; }
 window.closeReviewModal = closeReviewModal;
-
 document.getElementById('reviewModal').addEventListener('click', function(e) { if(e.target===this) closeReviewModal(); });
 
 function setModalMode(mode, btn) {
@@ -1311,13 +1468,13 @@ async function approveAndIssueID() {
       tx.set(doc(db,'citizens',newID),{username:ign,tier,issuedDate:today,territory,status:'active',platform,walletLinked:false,publicNote:pubNote,issuedYear:year});
       tx.update(doc(db,'applications',ref),{status:'approved',thelol_id:newID,processed:today,public_note:pubNote,admin_note:admNote});
     });
+    await logCitizenAction(newID, ign, 'issued', '', 'active', `Approved & issued via application ${ref}`);
     const app=allApps.find(a=>(a.ref||a._id)===ref);
-    if (app){app.status='approved';app.thelol_id=newID;app.processed=new Date().toISOString().split('T')[0];app.public_note=pubNote;app.admin_note=admNote;}
+    if (app){app.status='approved';app.thelol_id=newID;app.processed=today;app.public_note=pubNote;app.admin_note=admNote;}
     showModalFb('ok',`// SUCCESS — <strong style="color:var(--emerald-l)">${newID}</strong> issued to ${ign}. <a href="/gov/systems/id/id-card?id=${encodeURIComponent(newID)}" target="_blank" style="color:var(--gold);">View ID Card →</a>`);
     logAct('ok',`APPROVED + ISSUED ${newID} → ${ign} (${ref})`);
     showToast(`✓ ${newID} issued to ${ign}`, 'ok');
     loadDashboard(); filterApps(); loadNextID();
-    // Track in analytics
     trackAdminEvent('ids_issued'); trackAdminEvent('status_updates');
   } catch(e) { showModalFb('err',`// ERROR: ${e.message}`); showToast('Transaction failed','err'); }
   btn.disabled=false;
@@ -1337,6 +1494,7 @@ async function approveOnly() {
     const { doc, updateDoc } = window._fire;
     const today=new Date().toISOString().split('T')[0];
     await updateDoc(doc(window._db,'applications',ref),{status:'approved',thelol_id:nisId,processed:today,public_note:pubNote,admin_note:admNote});
+    await logCitizenAction(nisId, currentApp?.ign || '', 'approved', '', 'active', `Linked to existing ID via application ${ref}`);
     const app=allApps.find(a=>(a.ref||a._id)===ref);
     if (app){app.status='approved';app.thelol_id=nisId;app.processed=today;app.public_note=pubNote;app.admin_note=admNote;}
     showModalFb('ok',`// Approved and linked to ${nisId}`);
@@ -1362,6 +1520,7 @@ async function setAppStatus(newStatus) {
     const upd={status:newStatus,public_note:pubNote,admin_note:admNote};
     if (newStatus==='rejected') upd.processed=today;
     await updateDoc(doc(window._db,'applications',ref), upd);
+    await logCitizenAction(ref, currentApp?.ign || '', newStatus === 'rejected' ? 'rejected' : 'under_review', currentApp?.status || '', newStatus, pubNote);
     const app=allApps.find(a=>(a.ref||a._id)===ref);
     if (app){app.status=newStatus;app.public_note=pubNote;app.admin_note=admNote;if(upd.processed)app.processed=today;}
     showModalFb('ok',`// Status → ${newStatus.replace('_',' ')}`);
@@ -1404,12 +1563,12 @@ async function issueID() {
       tx.set(cRef,{lastSequence:newSeq,lastYear:String(year)});
       tx.set(doc(db,'citizens',newID),{username,tier,issuedDate:issued,territory,status,platform,walletLinked:false,publicNote:note||'',issuedYear:year});
     });
+    await logCitizenAction(newID, username, 'issued', '', status, `Manually issued via Issue ID tab`);
     showFb(fb,'ok',`// SUCCESS — ID Issued: ${newID} → ${username}`);
     logAct('ok',`ISSUED ${newID} → ${username}`);
     showToast(`✓ ID Issued: ${newID}`,'ok');
     clearIssueForm(); loadNextID(); loadDashboard();
     trackAdminEvent('ids_issued');
-    // Also refresh citizens if tab was loaded
     if (allCitizens.length) loadAllCitizens();
   } catch(e) { showFb(fb,'err',`// ERROR: ${e.message}`); showToast('Failed to issue ID','err'); }
   btn.disabled=false;
@@ -1485,11 +1644,15 @@ window.filterCitizens = filterCitizens;
 async function quickCitStatus(id, newStatus) {
   const labels={active:'reinstate',suspended:'suspend',revoked:'revoke'};
   if (!confirm(`${labels[newStatus]?.toUpperCase()} citizen ${id}?`)) return;
+  const c = allCitizens.find(x=>x.id===id);
+  const prevStatus = c?.status || '';
   try {
     const { doc, updateDoc } = window._fire;
     await updateDoc(doc(window._db,'citizens',id),{status:newStatus});
-    const c=allCitizens.find(x=>x.id===id); if(c) c.status=newStatus;
+    if (c) c.status=newStatus;
     filterCitizens(); loadDashboard();
+    const actionLabel = newStatus === 'active' ? 'reinstated' : newStatus;
+    await logCitizenAction(id, c?.username || '', actionLabel, prevStatus, newStatus, `Quick status via citizens table`);
     logAct(newStatus==='revoked'?'bad':(newStatus==='suspended'?'warn':''),`${newStatus.toUpperCase()} → ${id}`);
     showToast(`${id} → ${newStatus}`, newStatus==='active'?'ok':'err');
     trackAdminEvent('status_updates');
@@ -1510,13 +1673,14 @@ function openEditModal(id) {
   document.getElementById('edit_wallet').value=c.walletLinked?'true':'false';
   document.getElementById('edit_note').value=c.publicNote||'';
   const fb=document.getElementById('editFeedback'); fb.className='edit-fb';
+  // Load this citizen's change history
+  loadCitizenHistory(id);
   document.getElementById('editModal').classList.add('open');
 }
 window.openEditModal = openEditModal;
 
 function closeEditModal() { document.getElementById('editModal').classList.remove('open'); }
 window.closeEditModal = closeEditModal;
-
 document.getElementById('editModal').addEventListener('click', function(e){ if(e.target===this) closeEditModal(); });
 
 async function saveEdit() {
@@ -1531,17 +1695,258 @@ async function saveEdit() {
   const fb=document.getElementById('editFeedback');
   if (!username) { fb.textContent='// Username is required'; fb.className='edit-fb err show'; return; }
   fb.textContent='// Saving...'; fb.className='edit-fb ok show';
+  const prevStatus = allCitizens.find(x=>x.id===id)?.status || '';
   try {
     const { doc, updateDoc } = window._fire;
     await updateDoc(doc(window._db,'citizens',id),{username,status,tier,territory:territory||'Mainland Legiona',issuedDate:issued,walletLinked:walletStr==='true',publicNote:note});
     const c=allCitizens.find(x=>x.id===id);
     if(c) Object.assign(c,{username,status,tier,territory:territory||'Mainland Legiona',issuedDate:issued,walletLinked:walletStr==='true',publicNote:note});
+    if (prevStatus !== status) {
+      await logCitizenAction(id, username, 'edited', prevStatus, status, `Record edited via admin console`);
+    }
     fb.textContent=`// Saved — ${id} updated`; logAct('',`EDITED ${id} (${username})`);
     showToast(`${id} updated`,'ok'); filterCitizens(); loadDashboard();
+    loadCitizenHistory(id);
     setTimeout(closeEditModal, 800);
   } catch(e) { fb.textContent=`// ERROR: ${e.message}`; fb.className='edit-fb err show'; }
 }
 window.saveEdit = saveEdit;
+
+/* ══════════════════════════════
+   ACTIVITY LOG TAB
+══════════════════════════════ */
+let allLogs = [];
+
+async function loadActivityLog() {
+  const body = document.getElementById('logTableBody');
+  body.innerHTML = '<tr><td colspan="6" class="tbl-loading">// Querying log...</td></tr>';
+  try {
+    const { collection, getDocs, query, orderBy } = window._fire;
+    const q    = query(collection(window._db, 'citizen_logs'), orderBy('timestamp', 'desc'));
+    const snap = await getDocs(q);
+    allLogs = [];
+    snap.forEach(d => allLogs.push({ _id: d.id, ...d.data() }));
+    filterActivityLog();
+    logAct('ok', `LOADED activity log (${allLogs.length} entries)`);
+  } catch(e) {
+    body.innerHTML = `<tr><td colspan="6" class="tbl-loading" style="color:var(--red-l)">// ERROR: ${e.message}</td></tr>`;
+  }
+}
+window.loadActivityLog = loadActivityLog;
+
+function filterActivityLog() {
+  const q  = (document.getElementById('logSearch')?.value || '').toUpperCase();
+  const fa = document.getElementById('filterLogAction')?.value || '';
+  const filtered = allLogs.filter(l => {
+    const matchQ = !q || (l.citizenId||'').toUpperCase().includes(q) || (l.username||'').toUpperCase().includes(q);
+    const matchA = !fa || l.action === fa;
+    return matchQ && matchA;
+  });
+  document.getElementById('logCount').textContent = `${filtered.length} entr${filtered.length!==1?'ies':'y'}`;
+  const body = document.getElementById('logTableBody');
+  if (!filtered.length) { body.innerHTML='<tr><td colspan="6" class="tbl-empty">// No entries match this filter</td></tr>'; return; }
+  body.innerHTML = filtered.map(l => {
+    const ts  = l.timestamp ? new Date(l.timestamp).toLocaleString('en-GB') : '—';
+    const arrow = (l.prevStatus && l.newStatus)
+      ? `<span class="log-arrow"><span>${l.prevStatus}</span><span class="sep">→</span><span>${l.newStatus}</span></span>`
+      : '—';
+    return `<tr>
+      <td class="log-ts-cell">${ts}</td>
+      <td class="log-cit-id">${l.citizenId||'—'}</td>
+      <td class="log-ign">${l.username||'—'}</td>
+      <td><span class="log-act ${l.action||''}">${(l.action||'—').replace('_',' ')}</span></td>
+      <td>${arrow}</td>
+      <td class="log-note-cell">${l.note||'—'}</td>
+    </tr>`;
+  }).join('');
+}
+window.filterActivityLog = filterActivityLog;
+
+/* Load history thread for a specific citizen (inside edit modal) */
+async function loadCitizenHistory(citizenId) {
+  const thread = document.getElementById('editHistoryThread');
+  if (!thread) return;
+  thread.innerHTML = '<div class="cit-history-empty">// Loading...</div>';
+  try {
+    const { collection, getDocs, query, where, orderBy } = window._fire;
+    const q = query(
+      collection(window._db, 'citizen_logs'),
+      where('citizenId', '==', citizenId),
+      orderBy('timestamp', 'desc')
+    );
+    const snap = await getDocs(q);
+    if (snap.empty) {
+      thread.innerHTML = '<div class="cit-history-empty">// No history recorded yet</div>';
+      return;
+    }
+    let html = '';
+    snap.forEach(d => {
+      const l = d.data();
+      const ts = l.timestamp ? new Date(l.timestamp).toLocaleString('en-GB', { dateStyle:'short', timeStyle:'short' }) : '—';
+      const arrow = (l.prevStatus && l.newStatus) ? `${l.prevStatus} → ${l.newStatus}` : '';
+      html += `<div class="cit-history-entry">
+        <span class="che-ts">${ts}</span>
+        <div class="che-body">
+          <span class="che-action">
+            <span class="log-act ${l.action||''}">${(l.action||'?').replace('_',' ')}</span>
+            ${arrow ? `&nbsp;<span style="color:var(--dim);font-family:var(--fM);font-size:9px;">${arrow}</span>` : ''}
+          </span>
+          ${l.note ? `<span class="che-note">${l.note}</span>` : ''}
+        </div>
+      </div>`;
+    });
+    thread.innerHTML = html;
+  } catch(e) {
+    thread.innerHTML = `<div class="cit-history-empty" style="color:var(--red-l)">// ${e.message}</div>`;
+  }
+}
+
+/* ══════════════════════════════
+   ANNOUNCEMENTS MANAGER
+══════════════════════════════ */
+let allAnn = [];
+
+async function loadAnnouncements() {
+  const list = document.getElementById('annList');
+  list.innerHTML = '<div class="ann-empty">// Loading...</div>';
+  try {
+    const { collection, getDocs, query, orderBy } = window._fire;
+    const q    = query(collection(window._db, 'announcements'), orderBy('order', 'asc'));
+    const snap = await getDocs(q);
+    allAnn = [];
+    snap.forEach(d => allAnn.push({ _id: d.id, ...d.data() }));
+    renderAnnList();
+    logAct('ok', `LOADED announcements (${allAnn.length})`);
+  } catch(e) {
+    list.innerHTML = `<div class="ann-empty" style="color:var(--red-l)">// ERROR: ${e.message}</div>`;
+  }
+}
+window.loadAnnouncements = loadAnnouncements;
+
+function renderAnnList() {
+  const list = document.getElementById('annList');
+  if (!allAnn.length) {
+    list.innerHTML = '<div class="ann-empty">// No announcements yet — create one on the right</div>';
+    return;
+  }
+  list.innerHTML = allAnn.map(a => `
+    <div class="ann-item ${a.active ? '' : 'inactive'}">
+      <div class="ann-item-left">
+        <div class="ann-item-title">${(a.body||'').slice(0, 80)}${(a.body||'').length > 80 ? '…' : ''}</div>
+        <div class="ann-item-meta">
+          <span class="ann-type-pill ${a.type||'notice'}">${(a.type||'notice').toUpperCase()}</span>
+          ${a.link ? `<span class="ann-link-ref">→ ${a.linkText||a.link}</span>` : ''}
+          <span class="ann-active-label">Order: ${a.order??'—'} &nbsp;·&nbsp; ${a.active ? 'Active' : 'Hidden'}</span>
+        </div>
+      </div>
+      <div class="ann-toggle" onclick="toggleAnnActive('${a._id}', ${!!a.active})" title="${a.active?'Deactivate':'Activate'}">
+        <div class="ann-toggle-track ${a.active?'on':''}">
+          <div class="ann-toggle-thumb"></div>
+        </div>
+      </div>
+      <div class="ann-item-actions">
+        <button class="ann-btn edit" onclick="editAnn('${a._id}')">Edit</button>
+        <button class="ann-btn del"  onclick="deleteAnn('${a._id}')">Del</button>
+      </div>
+    </div>
+  `).join('');
+}
+
+async function saveAnnouncement() {
+  const body = document.getElementById('ann_body').value.trim();
+  if (!body) { showAnnFb('err', '// Body text is required'); return; }
+  const btn = document.getElementById('annSaveBtn');
+  btn.disabled = true;
+  showAnnFb('ok', '// Saving...');
+  const data = {
+    type:      document.getElementById('ann_type').value,
+    body,
+    link:      document.getElementById('ann_link').value.trim(),
+    linkText:  document.getElementById('ann_link_text').value.trim(),
+    order:     parseInt(document.getElementById('ann_order').value) || 1,
+    active:    document.getElementById('ann_active').checked,
+    updatedAt: new Date().toISOString(),
+  };
+  try {
+    const editId = document.getElementById('ann_edit_id').value;
+    const { doc, setDoc, updateDoc } = window._fire;
+    if (editId) {
+      await updateDoc(doc(window._db, 'announcements', editId), data);
+      showAnnFb('ok', '// Announcement updated');
+      logAct('ok', `UPDATED announcement (${editId})`);
+    } else {
+      data.createdAt = new Date().toISOString();
+      const newRef = doc(window._db, 'announcements', `ann-${Date.now()}`);
+      await setDoc(newRef, data);
+      showAnnFb('ok', '// Announcement created');
+      logAct('ok', 'CREATED new announcement');
+    }
+    clearAnnForm();
+    loadAnnouncements();
+  } catch(e) {
+    showAnnFb('err', `// ERROR: ${e.message}`);
+  }
+  btn.disabled = false;
+}
+window.saveAnnouncement = saveAnnouncement;
+
+async function deleteAnn(id) {
+  if (!confirm('Delete this announcement? This cannot be undone.')) return;
+  try {
+    const { doc, deleteDoc } = window._fire;
+    await deleteDoc(doc(window._db, 'announcements', id));
+    showToast('Announcement deleted', 'warn');
+    logAct('warn', `DELETED announcement (${id})`);
+    loadAnnouncements();
+  } catch(e) { showToast('Delete failed: '+e.message, 'err'); }
+}
+window.deleteAnn = deleteAnn;
+
+async function toggleAnnActive(id, current) {
+  try {
+    const { doc, updateDoc } = window._fire;
+    await updateDoc(doc(window._db, 'announcements', id), { active: !current });
+    const item = allAnn.find(a => a._id === id);
+    if (item) item.active = !current;
+    renderAnnList();
+    showToast(`Announcement ${!current?'activated':'deactivated'}`, !current?'ok':'warn');
+  } catch(e) { showToast('Error: '+e.message, 'err'); }
+}
+window.toggleAnnActive = toggleAnnActive;
+
+function editAnn(id) {
+  const a = allAnn.find(x => x._id === id);
+  if (!a) return;
+  document.getElementById('ann_edit_id').value   = id;
+  document.getElementById('ann_type').value      = a.type     || 'notice';
+  document.getElementById('ann_body').value      = a.body     || '';
+  document.getElementById('ann_link').value      = a.link     || '';
+  document.getElementById('ann_link_text').value = a.linkText || '';
+  document.getElementById('ann_order').value     = a.order    ?? 1;
+  document.getElementById('ann_active').checked  = !!a.active;
+  document.getElementById('annFormTitle').textContent = 'Edit Announcement';
+  document.getElementById('annFb').className = 'ann-fb';
+  document.getElementById('ann_body').focus();
+}
+window.editAnn = editAnn;
+
+function clearAnnForm() {
+  ['ann_edit_id','ann_body','ann_link','ann_link_text'].forEach(id => {
+    const el = document.getElementById(id); if(el) el.value = '';
+  });
+  document.getElementById('ann_type').value    = 'notice';
+  document.getElementById('ann_order').value   = '1';
+  document.getElementById('ann_active').checked = true;
+  document.getElementById('annFormTitle').textContent = 'New Announcement';
+  document.getElementById('annFb').className = 'ann-fb';
+}
+window.clearAnnForm = clearAnnForm;
+
+function showAnnFb(type, msg) {
+  const fb = document.getElementById('annFb');
+  fb.textContent = msg;
+  fb.className = `ann-fb ${type} show`;
+}
 
 /* ══════════════════════════════
    ANALYTICS
@@ -1591,7 +1996,6 @@ async function resetAnalytics() {
 }
 window.resetAnalytics = resetAnalytics;
 
-/* Track admin-side events (IDs issued, status updates) */
 async function trackAdminEvent(eventName) {
   try {
     const { doc, setDoc, increment } = window._fire;
