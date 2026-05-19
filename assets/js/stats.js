@@ -1,19 +1,34 @@
 /**
- * stats.js — The Legend of Legiona Analytics
- * Drop-in module. No config needed per-page.
- * Place at bottom of <body> on every page:
- *   <script type="module" src="/gov/assets/js/stats.js"></script>
+ * stats.js — The Legend of Legiona Analytics + Banner System
+ * ----------------------------------------------------------
+ * Drop-in module. No per-page config needed.
  *
- * From other scripts, call:
+ * Place before </body>:
+ * <script type="module" src="/gov/assets/js/stats.js"></script>
+ *
+ * Public API:
  *   window.statsTrackEvent('event_name')
  */
 
-import { initializeApp, getApps }    from "https://www.gstatic.com/firebasejs/12.12.1/firebase-app.js";
-import { getFirestore, doc, setDoc, increment } from "https://www.gstatic.com/firebasejs/12.12.1/firebase-firestore.js";
+import {
+  initializeApp,
+  getApps
+} from "https://www.gstatic.com/firebasejs/12.12.1/firebase-app.js";
+
+import {
+  getFirestore,
+  doc,
+  setDoc,
+  increment,
+  collection,
+  getDocs,
+  where,
+  query,
+  orderBy
+} from "https://www.gstatic.com/firebasejs/12.12.1/firebase-firestore.js";
 
 /* ─────────────────────────────────────────────
-   CONFIG — reuses existing Firebase app if
-   another script on the page already init'd it
+   FIREBASE CONFIG
 ───────────────────────────────────────────── */
 const FB_CONFIG = {
   apiKey:            "AIzaSyAgrLJDO8F6yyVLFubiZdRGiEl5ICRSAdQ",
@@ -24,149 +39,274 @@ const FB_CONFIG = {
   appId:             "1:29247096448:web:370f536ad630c088b94865",
 };
 
-const _app = getApps().length ? getApps()[0] : initializeApp(FB_CONFIG);
-const db   = getFirestore(_app);
+const app = getApps().length
+  ? getApps()[0]
+  : initializeApp(FB_CONFIG);
+
+const db = getFirestore(app);
 
 /* ─────────────────────────────────────────────
-   PAGE DETECTION — auto from URL, no HTML edits
+   PAGE DETECTION
 ───────────────────────────────────────────── */
 function detectPage() {
   const p = location.pathname;
-  if (p.includes('/citizenship/apply'))  return 'page_apply';
-  if (p.includes('/citizenship/status')) return 'page_status';
-  if (p.includes('/citizenship'))        return 'page_citizenship';
-  if (p.includes('/id/id-card'))         return 'page_id_card';
-  if (p.includes('/id/registry'))        return 'page_registry';
-  if (p.includes('/gov') && p.endsWith('/gov/') || p.endsWith('/gov')) return 'page_gov_home';
-  if (p.includes('/isc'))                return 'page_isc';
-  if (p.includes('/main'))               return 'page_main';
+
+  if (p.includes('/citizenship/apply')) {
+    return 'page_apply';
+  }
+
+  if (p.includes('/citizenship/status')) {
+    return 'page_status';
+  }
+
+  if (p.includes('/citizenship')) {
+    return 'page_citizenship';
+  }
+
+  if (p.includes('/id/id-card')) {
+    return 'page_id_card';
+  }
+
+  if (p.includes('/id/registry')) {
+    return 'page_registry';
+  }
+
+  if (
+    (p.includes('/gov') && p.endsWith('/gov/')) ||
+    p.endsWith('/gov')
+  ) {
+    return 'page_gov_home';
+  }
+
+  if (p.includes('/isc')) {
+    return 'page_isc';
+  }
+
+  if (p.includes('/main')) {
+    return 'page_main';
+  }
+
   return 'page_other';
 }
 
 const PAGE  = detectPage();
-const today = new Date().toISOString().split('T')[0]; // "2026-05-15"
-const hour  = new Date().getHours();                   // 0–23
+const today = new Date().toISOString().split('T')[0];
+const hour  = new Date().getHours();
 
 /* ─────────────────────────────────────────────
    DEDUPLICATION
-   - isNewSession    → first time on this page this browser session
-   - isNewDailyVisit → first visit anywhere on the site today
 ───────────────────────────────────────────── */
-const isNewSession    = !sessionStorage.getItem('lol_s_' + PAGE);
-const isNewDailyVisit = !localStorage.getItem('lol_uv_' + today);
+const SESSION_KEY = `lol_s_${PAGE}`;
+const DAILY_KEY   = `lol_uv_${today}`;
 
-if (isNewSession)    sessionStorage.setItem('lol_s_' + PAGE, '1');
-if (isNewDailyVisit) localStorage.setItem('lol_uv_' + today, '1');
+const isNewSession =
+  !sessionStorage.getItem(SESSION_KEY);
+
+const isNewDailyVisit =
+  !localStorage.getItem(DAILY_KEY);
+
+if (isNewSession) {
+  sessionStorage.setItem(SESSION_KEY, '1');
+}
+
+if (isNewDailyVisit) {
+  localStorage.setItem(DAILY_KEY, '1');
+}
 
 /* ─────────────────────────────────────────────
-   FLUSH PAGE VIEW
-   Writes to two Firestore docs:
-   analytics/counters   — all-time totals
-   analytics/daily_YYYY-MM-DD — daily breakdown with hourly traffic
+   PAGE VIEW TRACKING
 ───────────────────────────────────────────── */
 async function flushPageView() {
   try {
     const counters = {};
+    const daily    = {};
+
+    // Session counters
     if (isNewSession) {
-      counters[PAGE]            = increment(1);
-      counters['total_sessions'] = increment(1);
-    }
-    if (isNewDailyVisit) {
-      counters['total_unique_visitors'] = increment(1);
+      counters[PAGE] = increment(1);
+      counters.total_sessions = increment(1);
     }
 
-    // Daily doc: hourly buckets h0–h23 + per-page hits
-    const daily = {
-      [`h${hour}`]: increment(1),   // e.g. h14: N — for hourly traffic chart
-      [PAGE]:       increment(1),   // page hits today
-      'total':      increment(1),   // all hits today
-    };
-    if (isNewDailyVisit) daily['unique_visitors'] = increment(1);
+    // Unique visitor counter
+    if (isNewDailyVisit) {
+      counters.total_unique_visitors = increment(1);
+      daily.unique_visitors = increment(1);
+    }
+
+    // Daily traffic
+    daily[`h${hour}`] = increment(1);
+    daily[PAGE]       = increment(1);
+    daily.total       = increment(1);
 
     const writes = [
-      setDoc(doc(db, 'analytics', `daily_${today}`), daily, { merge: true }),
+      setDoc(
+        doc(db, 'analytics', `daily_${today}`),
+        daily,
+        { merge: true }
+      )
     ];
-    if (Object.keys(counters).length) {
-      writes.push(setDoc(doc(db, 'analytics', 'counters'), counters, { merge: true }));
+
+    if (Object.keys(counters).length > 0) {
+      writes.push(
+        setDoc(
+          doc(db, 'analytics', 'counters'),
+          counters,
+          { merge: true }
+        )
+      );
     }
+
     await Promise.all(writes);
-  } catch (_) { /* silent — never break the page */ }
+
+  } catch (err) {
+    console.error('[stats] Page tracking failed:', err);
+  }
 }
 
 /* ─────────────────────────────────────────────
-   PUBLIC EVENT TRACKER
-   Call from any page script:
-     window.statsTrackEvent('app_submissions')
-     window.statsTrackEvent('status_result_approved')
-     window.statsTrackEvent('ign_check_hits')
-     etc.
+   EVENT TRACKER
 ───────────────────────────────────────────── */
-async function trackEvent(evt) {
-  if (!evt) return;
+async function trackEvent(eventName) {
+  if (!eventName) return;
+
   try {
     await Promise.all([
-      setDoc(doc(db, 'analytics', 'counters'),       { [evt]: increment(1) }, { merge: true }),
-      setDoc(doc(db, 'analytics', `daily_${today}`), { [evt]: increment(1) }, { merge: true }),
+      setDoc(
+        doc(db, 'analytics', 'counters'),
+        {
+          [eventName]: increment(1)
+        },
+        { merge: true }
+      ),
+
+      setDoc(
+        doc(db, 'analytics', `daily_${today}`),
+        {
+          [eventName]: increment(1)
+        },
+        { merge: true }
+      )
     ]);
-  } catch (_) { /* silent */ }
+
+  } catch (err) {
+    console.error('[stats] Event tracking failed:', err);
+  }
 }
 
 /* ─────────────────────────────────────────────
-   FORM ABANDONMENT (apply page only)
-   Fires if user touches any field but doesn't submit.
-   Uses visibilitychange — more reliable than beforeunload
-   for async Firestore writes.
+   FORM ABANDONMENT TRACKING
 ───────────────────────────────────────────── */
 function setupAbandonTracking() {
   const form = document.getElementById('citizenForm');
+
   if (!form) return;
 
-  let touched   = false;
+  let touched = false;
   let submitted = false;
 
-  form.addEventListener('focusin', () => { touched = true; }, { once: true });
-  form.addEventListener('submit',  () => { submitted = true; });
+  form.addEventListener(
+    'focusin',
+    () => {
+      touched = true;
+    },
+    { once: true }
+  );
+
+  form.addEventListener('submit', () => {
+    submitted = true;
+  });
 
   document.addEventListener('visibilitychange', () => {
-    if (document.visibilityState === 'hidden' && touched && !submitted) {
+    const abandoned =
+      document.visibilityState === 'hidden' &&
+      touched &&
+      !submitted;
+
+    if (abandoned) {
       trackEvent('form_abandonments');
     }
   });
 }
 
 /* ─────────────────────────────────────────────
-   INIT
+   ANNOUNCEMENT BANNER SYSTEM
 ───────────────────────────────────────────── */
-window.statsTrackEvent = trackEvent;
+async function loadActiveBanner() {
+  const banner = document.querySelector('.notice-banner');
 
-flushPageView();
+  // No banner element on page
+  if (!banner) return;
 
-if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', setupAbandonTracking);
-} else {
-  setupAbandonTracking();
+  try {
+    const q = query(
+      collection(db, 'announcements'),
+      where('active', '==', true),
+      orderBy('order', 'asc')
+    );
+
+    const snap = await getDocs(q);
+
+    // Hide banner if nothing active
+    if (snap.empty) {
+      banner.style.display = 'none';
+      return;
+    }
+
+    const items = [];
+
+    snap.forEach((docSnap) => {
+      const a = docSnap.data();
+
+      const type = String(a.type || 'notice')
+        .toUpperCase();
+
+      const body = a.body || '';
+
+      const linkHTML = a.link
+        ? `
+          — <a href="${a.link}">
+              ${a.linkText || 'VIEW'} →
+            </a>
+        `
+        : '';
+
+      items.push(`
+        <div class="notice-item">
+          <span class="tag">${type}</span>
+          <span class="notice-text">
+            ${body}
+            ${linkHTML}
+          </span>
+        </div>
+      `);
+    });
+
+    banner.innerHTML = items.join('');
+
+  } catch (err) {
+    console.error('[stats] Banner load failed:', err);
+    banner.style.display = 'none';
+  }
 }
 
 /* ─────────────────────────────────────────────
-   ANNOUNCEMENTS
+   GLOBAL API
 ───────────────────────────────────────────── */
-async function loadActiveBanner(db) {
-  const { collection, getDocs, where, query, orderBy }
-    = window._fire;
-  const q = query(
-    collection(db, 'announcements'),
-    where('active', '==', true),
-    orderBy('order', 'asc')
-  );
-  const snap = await getDocs(q);
-  snap.forEach(d => {
-    const a = d.data();
-    const banner = document.querySelector('.notice-banner');
-    if (!banner) return;
-    banner.innerHTML =
-      `<span class="tag">${a.type.toUpperCase()}</span>
-       <span>${a.body}${a.link
-         ? ` — <a href="${a.link}">${a.linkText || 'VIEW'} →</a>`
-         : ''}</span>`;
-  });
+window.statsTrackEvent = trackEvent;
+
+/* ─────────────────────────────────────────────
+   INIT
+───────────────────────────────────────────── */
+async function initStats() {
+  await flushPageView();
+
+  setupAbandonTracking();
+
+  await loadActiveBanner();
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initStats);
+} else {
+  initStats();
 }
