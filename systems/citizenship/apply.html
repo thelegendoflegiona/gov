@@ -8,175 +8,8 @@
   <meta name="description" content="Submit your official citizenship application or renewal for The Legend of Legiona on Skyxion.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,300;0,400;0,600;0,700;0,800;1,400;1,700&family=Barlow:ital,wght@0,300;0,400;0,500;0,600;1,300&family=Fira+Code:wght@300;400;500&display=swap" rel="stylesheet">
-  <style>
-    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-    :root {
-      --bg:        #0a0a0a;
-      --surface:   #111111;
-      --surface-2: #161616;
-      --border:    #1e1e1e;
-      --gold:      #c6a664;
-      --gold-bg:   rgba(198,166,100,0.08);
-      --gold-mid:  rgba(198,166,100,0.35);
-      --red:       #c46a6a;
-      --red-bg:    rgba(180,80,80,0.1);
-      --green:     #6ab87a;
-      --green-bg:  rgba(80,160,100,0.1);
-      --text:      #e8e8e8;
-      --muted:     #888888;
-      --dim:       #555555;
-      --fh:        'Barlow Condensed', sans-serif;
-      --fb:        'Barlow', sans-serif;
-      --fm:        'Fira Code', monospace;
-    }
-    html { scroll-behavior: smooth; }
-    body { background: var(--bg); color: var(--text); font-family: var(--fb); font-size: 16px; line-height: 1.6; -webkit-font-smoothing: antialiased; }
-
-    .notice-bar { background: var(--gold-bg); border-bottom: 1px solid var(--gold-mid); padding: 9px 24px; text-align: center; font-family: var(--fm); font-size: 11px; letter-spacing: 0.08em; color: var(--gold); }
-    .notice-bar a { color: var(--gold); text-decoration: underline; text-underline-offset: 3px; }
-
-    .topnav { position: sticky; top: 0; z-index: 100; background: rgba(10,10,10,0.96); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); border-bottom: 1px solid var(--border); padding: 0 28px; display: flex; align-items: center; justify-content: space-between; height: 54px; }
-    .topnav-logo { font-family: var(--fh); font-size: 15px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text); text-decoration: none; }
-    .topnav-logo span { color: var(--gold); }
-    .topnav-links { display: flex; gap: 28px; list-style: none; }
-    .topnav-links a { font-family: var(--fm); font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); text-decoration: none; transition: color 0.2s; }
-    .topnav-links a:hover, .topnav-links a.active { color: var(--gold); }
-    .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; background: none; border: none; padding: 4px; }
-    .hamburger span { display: block; width: 22px; height: 1px; background: var(--text); transition: all 0.3s; }
-    .hamburger.open span:nth-child(1) { transform: translateY(6px) rotate(45deg); }
-    .hamburger.open span:nth-child(2) { opacity: 0; }
-    .hamburger.open span:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
-    .mobile-nav { display: none; position: fixed; top: 54px; left: 0; right: 0; background: var(--surface); border-bottom: 1px solid var(--border); padding: 8px 28px; z-index: 99; flex-direction: column; }
-    .mobile-nav.open { display: flex; }
-    .mobile-nav a { font-family: var(--fm); font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); text-decoration: none; padding: 13px 0; border-bottom: 1px solid var(--border); transition: color 0.2s; }
-    .mobile-nav a:last-child { border-bottom: none; }
-    .mobile-nav a.active, .mobile-nav a:hover { color: var(--gold); }
-
-    .breadcrumb { background: var(--surface); border-bottom: 1px solid var(--border); padding: 12px 28px; font-family: var(--fm); font-size: 11px; letter-spacing: 0.08em; color: var(--dim); }
-    .breadcrumb a { color: var(--dim); text-decoration: none; transition: color 0.2s; }
-    .breadcrumb a:hover { color: var(--gold); }
-    .breadcrumb span { margin: 0 8px; color: var(--gold); }
-
-    .page { max-width: 800px; margin: 0 auto; padding: 60px 28px 100px; }
-
-    .page-hd { margin-bottom: 48px; padding-bottom: 36px; border-bottom: 1px solid var(--border); }
-    .page-tag { font-family: var(--fm); font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--gold); display: block; margin-bottom: 12px; }
-    .page-hd h1 { font-family: var(--fh); font-size: clamp(40px, 8vw, 72px); font-weight: 800; text-transform: uppercase; letter-spacing: -0.02em; line-height: 0.92; margin-bottom: 16px; }
-    .page-hd h1 em { font-style: italic; color: var(--gold); }
-    .page-hd p { font-size: 14px; font-weight: 300; color: var(--muted); line-height: 1.7; max-width: 540px; }
-
-    .type-selector { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--border); border: 1px solid var(--border); margin-bottom: 40px; }
-    .type-btn { padding: 22px 20px; background: var(--surface); cursor: pointer; text-align: left; border: none; transition: background 0.2s; position: relative; }
-    .type-btn:hover { background: var(--surface-2); }
-    .type-btn.selected { background: var(--gold-bg); }
-    .type-btn.selected::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 2px; background: var(--gold); }
-    .type-btn-tag { font-family: var(--fm); font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--dim); display: block; margin-bottom: 6px; }
-    .type-btn.selected .type-btn-tag { color: var(--gold); }
-    .type-btn h3 { font-family: var(--fh); font-size: 22px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.02em; margin-bottom: 6px; color: var(--muted); transition: color 0.2s; }
-    .type-btn.selected h3 { color: var(--text); }
-    .type-btn p { font-size: 12px; font-weight: 300; color: var(--dim); line-height: 1.55; }
-    .type-btn.selected p { color: var(--muted); }
-
-    .form-section { margin-bottom: 40px; }
-    .form-section-title { font-family: var(--fm); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gold); padding-bottom: 14px; border-bottom: 1px solid var(--border); margin-bottom: 24px; display: block; }
-    .field { margin-bottom: 20px; }
-    .field label { display: block; font-family: var(--fm); font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); margin-bottom: 8px; }
-    .field label span.req { color: var(--gold); margin-left: 3px; }
-    .field-note { font-size: 12px; font-weight: 300; color: var(--dim); margin-bottom: 8px; line-height: 1.5; }
-    .field input[type="text"], .field input[type="tel"], .field textarea { width: 100%; background: var(--surface); border: 1px solid var(--border); color: var(--text); font-family: var(--fm); font-size: 13px; padding: 12px 14px; outline: none; transition: border-color 0.2s; -webkit-appearance: none; }
-    .field input:focus, .field textarea:focus { border-color: var(--gold); }
-    .field input::placeholder, .field textarea::placeholder { color: var(--dim); }
-    .field textarea { resize: vertical; min-height: 80px; }
-
-    .ign-check-box { border: 1px solid var(--border); background: var(--surface-2); padding: 16px 18px; margin-top: 2px; }
-    .ign-check-box.found-active { border-color: var(--gold-mid); background: var(--gold-bg); border-left: 3px solid var(--gold); }
-    .ign-check-box.found-revoked { border-color: rgba(180,80,80,0.25); background: rgba(180,80,80,0.06); border-left: 3px solid var(--red); }
-    .ign-check-box.checking { border-left: 3px solid var(--dim); }
-    .ign-check-tag { font-family: var(--fm); font-size: 9px; letter-spacing: 0.18em; text-transform: uppercase; display: block; margin-bottom: 8px; }
-    .found-active .ign-check-tag  { color: var(--gold); }
-    .found-revoked .ign-check-tag { color: var(--red); }
-    .checking .ign-check-tag      { color: var(--dim); }
-    .ign-check-title { font-family: var(--fh); font-size: 18px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.02em; margin-bottom: 6px; }
-    .found-active .ign-check-title  { color: var(--text); }
-    .found-revoked .ign-check-title { color: var(--red); }
-    .ign-check-body { font-size: 13px; font-weight: 300; color: var(--muted); line-height: 1.65; margin-bottom: 14px; }
-    .ign-check-actions { display: flex; gap: 8px; flex-wrap: wrap; }
-    .ign-check-btn { font-family: var(--fm); font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; text-decoration: none; padding: 9px 16px; border: 1px solid; cursor: pointer; transition: all 0.2s; display: inline-block; white-space: nowrap; }
-    .ign-check-btn-gold  { border-color: var(--gold);   color: var(--gold);   background: transparent; }
-    .ign-check-btn-gold:hover  { background: var(--gold);   color: var(--bg); }
-    .ign-check-btn-ghost { border-color: var(--border); color: var(--muted); background: transparent; }
-    .ign-check-btn-ghost:hover { border-color: var(--gold); color: var(--gold); }
-    .ign-check-btn-red   { border-color: rgba(180,80,80,0.35); color: var(--red); background: transparent; }
-    .ign-check-btn-red:hover   { background: rgba(180,80,80,0.1); }
-    .field.ign-blocked input { opacity: 0.45; pointer-events: none; }
-
-    .contact-toggle { display: flex; gap: 1px; background: var(--border); border: 1px solid var(--border); margin-bottom: 10px; }
-    .ct-btn { flex: 1; padding: 10px; background: var(--surface); border: none; cursor: pointer; font-family: var(--fm); font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--dim); transition: all 0.2s; }
-    .ct-btn:hover { color: var(--muted); background: var(--surface-2); }
-    .ct-btn.active { background: var(--gold-bg); color: var(--gold); }
-
-    .declarations { display: flex; flex-direction: column; gap: 1px; background: var(--border); border: 1px solid var(--border); }
-    .decl-item { background: var(--surface); padding: 14px 16px; display: flex; gap: 14px; align-items: flex-start; cursor: pointer; transition: background 0.15s; }
-    .decl-item:hover { background: var(--surface-2); }
-    .decl-item input[type="checkbox"] { appearance: none; -webkit-appearance: none; width: 16px; height: 16px; flex-shrink: 0; border: 1px solid var(--border); background: var(--surface-2); cursor: pointer; margin-top: 1px; transition: all 0.15s; position: relative; }
-    .decl-item input[type="checkbox"]:checked { background: var(--gold); border-color: var(--gold); }
-    .decl-item input[type="checkbox"]:checked::after { content: ''; position: absolute; left: 4px; top: 1px; width: 5px; height: 9px; border: 2px solid var(--bg); border-top: none; border-left: none; transform: rotate(45deg); }
-    .decl-text { font-size: 13px; font-weight: 300; color: var(--muted); line-height: 1.55; }
-    .decl-text strong { color: var(--text); font-weight: 500; }
-    .decl-text a { color: var(--gold); text-decoration: underline; text-underline-offset: 2px; }
-
-    .submit-area { padding-top: 32px; border-top: 1px solid var(--border); margin-top: 40px; }
-    .submit-notice { background: var(--gold-bg); border: 1px solid var(--gold-mid); padding: 14px 16px; margin-bottom: 20px; }
-    .submit-notice p { font-family: var(--fm); font-size: 11px; letter-spacing: 0.06em; color: var(--gold); line-height: 1.65; }
-    .btn-submit { width: 100%; background: transparent; border: 1px solid var(--gold); color: var(--gold); font-family: var(--fm); font-size: 12px; letter-spacing: 0.15em; text-transform: uppercase; padding: 16px; cursor: pointer; transition: background 0.2s, color 0.2s; display: flex; align-items: center; justify-content: center; gap: 10px; }
-    .btn-submit:hover:not(:disabled) { background: var(--gold); color: var(--bg); }
-    .btn-submit:disabled { opacity: 0.4; cursor: not-allowed; }
-    .btn-submit .spinner { display: none; width: 14px; height: 14px; border: 1px solid currentColor; border-top-color: transparent; border-radius: 50%; animation: spin 0.7s linear infinite; }
-    .btn-submit.loading .spinner { display: block; }
-    .btn-submit.loading .btn-label { opacity: 0.6; }
-    @keyframes spin { to { transform: rotate(360deg); } }
-
-    .state-panel { display: none; border: 1px solid var(--border); background: var(--surface); padding: 48px 36px; text-align: center; }
-    .state-panel.show { display: block; }
-    .state-panel .state-icon { font-family: var(--fm); font-size: 32px; display: block; margin-bottom: 20px; }
-    .state-panel.success .state-icon { color: var(--green); }
-    .state-panel.error .state-icon { color: var(--red); }
-    .state-panel h2 { font-family: var(--fh); font-size: 32px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 12px; }
-    .state-panel.success h2 { color: var(--green); }
-    .state-panel.error h2 { color: var(--red); }
-    .state-panel p { font-size: 14px; font-weight: 300; color: var(--muted); line-height: 1.7; max-width: 400px; margin: 0 auto 12px; }
-
-    .ref-block { background: var(--surface-2); border: 1px solid var(--border); border-left: 3px solid var(--gold); padding: 16px 20px; margin: 20px auto; max-width: 380px; text-align: left; }
-    .ref-block .ref-lbl { font-family: var(--fm); font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--dim); display: block; margin-bottom: 8px; }
-    .ref-block .ref-val { font-family: var(--fm); font-size: 15px; letter-spacing: 0.08em; color: var(--gold); display: block; margin-bottom: 14px; }
-    .ref-actions { display: flex; gap: 8px; flex-wrap: wrap; }
-    .ref-btn { font-family: var(--fm); font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; padding: 8px 14px; cursor: pointer; transition: all 0.2s; text-decoration: none; display: inline-flex; align-items: center; gap: 6px; white-space: nowrap; }
-    .ref-btn-copy { background: transparent; border: 1px solid var(--gold); color: var(--gold); }
-    .ref-btn-copy:hover { background: var(--gold); color: var(--bg); }
-    .ref-btn-copy.copied { border-color: var(--green); color: var(--green); background: rgba(80,160,100,0.08); }
-    .ref-btn-status { background: transparent; border: 1px solid var(--border); color: var(--muted); }
-    .ref-btn-status:hover { border-color: var(--gold); color: var(--gold); }
-
-    .state-btn { font-family: var(--fm); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; text-decoration: none; padding: 12px 24px; border: 1px solid var(--gold); color: var(--gold); background: transparent; transition: background 0.2s, color 0.2s; cursor: pointer; display: inline-block; margin: 6px; }
-    .state-btn:hover { background: var(--gold); color: var(--bg); }
-    .state-btn.ghost { border-color: var(--border); color: var(--muted); }
-    .state-btn.ghost:hover { border-color: var(--gold); color: var(--gold); background: transparent; }
-
-    .field-error { font-family: var(--fm); font-size: 11px; color: var(--red); letter-spacing: 0.08em; margin-top: 6px; display: none; }
-    .field.invalid input, .field.invalid textarea { border-color: var(--red); }
-    .field.invalid .field-error { display: block; }
-
-    footer { border-top: 1px solid var(--border); padding: 40px 28px 28px; }
-    .footer-bottom { max-width: 800px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; }
-    .footer-bottom p { font-family: var(--fm); font-size: 10px; letter-spacing: 0.08em; color: var(--dim); text-transform: uppercase; }
-    .footer-bottom a { font-family: var(--fm); font-size: 11px; color: var(--dim); text-decoration: none; transition: color 0.2s; }
-    .footer-bottom a:hover { color: var(--gold); }
-    .disclaimer { max-width: 800px; margin: 16px auto 0; font-size: 11px; color: var(--dim); font-weight: 300; line-height: 1.6; }
-
-    @media (max-width: 768px) { .topnav-links { display: none; } .hamburger { display: flex; } .page { padding: 48px 20px 80px; } .type-selector { grid-template-columns: 1fr; } }
-    @media (max-width: 400px) { .page-hd h1 { font-size: 42px; } .ref-actions { flex-direction: column; } .ref-btn { justify-content: center; } }
-  </style>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=DM+Mono:wght@300;400;500&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/gov/systems/citizenship/assets/css/style.css">
 </head>
 <body>
 
@@ -186,12 +19,12 @@
   </div>
 
   <nav class="topnav">
-    <a href="/gov/" class="topnav-logo">THE LOL.<span>GOV</span></a>
+    <a href="/gov/" class="topnav-logo">THELOL.<span>GOV</span></a>
     <ul class="topnav-links">
-      <li><a href="/main/">THE LOL</a></li>
+      <li><a href="/main/">HUB</a></li>
       <li><a href="/gov/">GOVERNMENT</a></li>
       <li><a href="/gov/systems/citizenship/" class="active">CITIZENSHIP</a></li>
-      <li><a href="/gov/systems/id/">IDENTITY CARD</a></li>
+      <li><a href="/gov/systems/id/">ID CARD</a></li>
       <li><a href="/isc/">ISC</a></li>
       <li><a href="/gov/systems/archives/">ARCHIVES</a></li>
     </ul>
