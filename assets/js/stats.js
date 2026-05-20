@@ -201,7 +201,7 @@ function setupAbandonTracking() {
 
   if (!form) return;
 
-  let touched = false;
+  let touched   = false;
   let submitted = false;
 
   form.addEventListener(
@@ -230,55 +230,50 @@ function setupAbandonTracking() {
 
 /* ─────────────────────────────────────────────
    ANNOUNCEMENT BANNER SYSTEM
+   Fixed: fetch all docs, filter + sort client-side
+   to avoid requiring a Firestore composite index.
 ───────────────────────────────────────────── */
 async function loadActiveBanner() {
   const banner = document.querySelector('.notice-banner');
 
-  // No banner element on page
   if (!banner) return;
 
   try {
-    const q = query(
-      collection(db, 'announcements'),
-      where('active', '==', true),
-      orderBy('order', 'asc')
-    );
+    const snap = await getDocs(collection(db, 'announcements'));
 
-    const snap = await getDocs(q);
-
-    // Hide banner if nothing active
     if (snap.empty) {
       banner.style.display = 'none';
       return;
     }
 
-    const items = [];
-
+    // Filter active, sort by order — no composite index needed
+    const docs = [];
     snap.forEach((docSnap) => {
-      const a = docSnap.data();
+      const d = docSnap.data();
+      if (d.active === true) {
+        docs.push(d);
+      }
+    });
 
-      const type = String(a.type || 'notice')
-        .toUpperCase();
+    if (!docs.length) {
+      banner.style.display = 'none';
+      return;
+    }
 
+    docs.sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
+
+    const items = docs.map((a) => {
+      const type = String(a.type || 'notice').toUpperCase();
       const body = a.body || '';
 
       const linkHTML = a.link
-        ? `
-          — <a href="${a.link}">
-              ${a.linkText || 'VIEW'} →
-            </a>
-        `
+        ? ` — <a href="${a.link}">${a.linkText || 'VIEW'} →</a>`
         : '';
 
-      items.push(`
-        <div class="notice-item">
-          <span class="tag">${type}</span>
-          <span class="notice-text">
-            ${body}
-            ${linkHTML}
-          </span>
-        </div>
-      `);
+      return `<div class="notice-item">
+        <span class="tag">${type}</span>
+        <span class="notice-text">${body}${linkHTML}</span>
+      </div>`;
     });
 
     banner.innerHTML = items.join('');
