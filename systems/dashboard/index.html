@@ -1073,34 +1073,24 @@ async function loadActiveBanner(db) {
      MAIN SCRIPT
 ════════════════════════════ -->
 <script>
-/* ─────────────────────────────
-   PASSPHRASE HASH
-───────────────────────────── */
-const ADMIN_HASH = "22822251adfcc00bc0433042524ee7a3fe378466462493a8c37f5edb72964701";
+// Replace your attemptAuth() function with this
+import { getAuth, signInWithEmailAndPassword } from 
+  "https://www.gstatic.com/firebasejs/12.12.1/firebase-auth.js";
 
-async function sha256(s) {
-  const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(s));
-  return Array.from(new Uint8Array(buf)).map(x => x.toString(16).padStart(2,'0')).join('');
-}
+const auth = getAuth(app);
 
-/* ── AUTH ── */
 async function attemptAuth() {
-  const hash = await sha256(document.getElementById('authInput').value);
-  if (hash === ADMIN_HASH) {
+  const email    = document.getElementById('authEmail').value;
+  const password = document.getElementById('authInput').value;
+  try {
+    await signInWithEmailAndPassword(auth, email, password);
+    // success — show dashboard
     document.getElementById('authGate').classList.add('hidden');
     document.getElementById('mainContent').classList.add('visible');
-    sessionStorage.setItem('unified_admin', '1');
-    onAdminReady();
-  } else {
-    const err = document.getElementById('authErr');
-    err.classList.add('show');
-    document.getElementById('authInput').value = '';
-    setTimeout(() => err.classList.remove('show'), 3000);
+  } catch (e) {
+    document.getElementById('authErr').classList.add('show');
   }
 }
-window.attemptAuth = attemptAuth;
-
-document.getElementById('authInput').addEventListener('keydown', e => { if (e.key === 'Enter') attemptAuth(); });
 
 function logout() {
   sessionStorage.removeItem('unified_admin');
