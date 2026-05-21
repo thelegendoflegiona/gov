@@ -52,6 +52,7 @@
     .auth-input:focus { border-color: var(--gold); }
     .auth-submit { width: 100%; background: var(--gold); border: 1px solid var(--gold); color: #0c0c0c; font-family: var(--fM); font-size: 10px; letter-spacing: 0.22em; text-transform: uppercase; padding: 15px; cursor: pointer; transition: all 0.2s; font-weight: 500; }
     .auth-submit:hover { background: var(--gold-l); }
+    .auth-submit:disabled { opacity: 0.5; cursor: not-allowed; }
     .auth-err { font-family: var(--fM); font-size: 9px; letter-spacing: 0.12em; color: var(--red-l); text-align: center; margin-top: 12px; display: none; }
     .auth-err.show { display: block; }
     .auth-foot { font-family: var(--fM); font-size: 8px; letter-spacing: 0.12em; color: var(--dim); text-align: center; margin-top: 20px; }
@@ -313,9 +314,7 @@
     .toast.show { display: block; }
     @keyframes toastIn { from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)} }
 
-    /* ══════════════════════════════
-       ACTIVITY LOG
-    ══════════════════════════════ */
+    /* ── ACTIVITY LOG ── */
     .log-table { width: 100%; border-collapse: collapse; }
     .log-table th { font-family: var(--fM); font-size: 7px; letter-spacing: 0.22em; color: var(--dim); text-transform: uppercase; padding: 9px 14px; border-bottom: 1px solid var(--border); text-align: left; background: var(--surface); white-space: nowrap; }
     .log-table td { padding: 11px 14px; border-bottom: 1px solid var(--border); font-size: 12px; vertical-align: middle; }
@@ -336,7 +335,6 @@
     .log-act.reinstated{ color: var(--amber-l);   border-color: var(--amber-b);    background: var(--amber-dim); }
     .log-act.edited    { color: var(--blue-l);    border-color: var(--blue-b);     background: var(--blue-dim); }
     .log-act.under_review { color: var(--blue-l); border-color: var(--blue-b);     background: var(--blue-dim); }
-    /* Citizen history thread */
     .cit-history-wrap { margin-top: 20px; border: 1px solid var(--border); background: var(--bg); }
     .cit-history-hd { padding: 10px 16px; border-bottom: 1px solid var(--border); font-family: var(--fM); font-size: 8px; letter-spacing: 0.2em; color: var(--dim); text-transform: uppercase; display: flex; align-items: center; gap: 8px; }
     .cit-history-hd-dot { width: 5px; height: 5px; background: var(--emerald-l); animation: pulse 2s infinite; flex-shrink: 0; }
@@ -349,9 +347,7 @@
     .che-note { font-size: 11px; color: var(--muted); font-weight: 300; }
     .cit-history-empty { padding: 16px; font-family: var(--fM); font-size: 9px; letter-spacing: 0.1em; color: var(--dim); text-align: center; }
 
-    /* ══════════════════════════════
-       ANNOUNCEMENTS MANAGER
-    ══════════════════════════════ */
+    /* ── ANNOUNCEMENTS ── */
     .ann-layout { display: grid; grid-template-columns: 1fr 340px; gap: 24px; align-items: start; }
     .ann-list-wrap { background: var(--card); border: 1px solid var(--border); overflow: hidden; }
     .ann-list-hd { padding: 14px 20px; border-bottom: 1px solid var(--border); font-family: var(--fM); font-size: 8px; letter-spacing: 0.2em; color: var(--muted); text-transform: uppercase; display: flex; align-items: center; justify-content: space-between; }
@@ -435,11 +431,15 @@
       <div class="auth-title">Admin Console</div>
       <div class="auth-sub">Citizenship &amp; NIS Division · Authorised Only</div>
       <div class="auth-field">
-        <label class="auth-label">Access Passphrase</label>
-        <input class="auth-input" id="authInput" type="password" placeholder="Enter passphrase" autocomplete="current-password" />
+        <label class="auth-label">Email</label>
+        <input class="auth-input" id="authEmail" type="email" placeholder="admin@email.com" autocomplete="username" />
       </div>
-      <button class="auth-submit" onclick="attemptAuth()">AUTHENTICATE →</button>
-      <div class="auth-err" id="authErr">// INCORRECT PASSPHRASE — ACCESS DENIED</div>
+      <div class="auth-field">
+        <label class="auth-label">Password</label>
+        <input class="auth-input" id="authInput" type="password" placeholder="Enter password" autocomplete="current-password" />
+      </div>
+      <button class="auth-submit" id="authSubmitBtn" onclick="attemptAuth()">AUTHENTICATE →</button>
+      <div class="auth-err" id="authErr">// INCORRECT CREDENTIALS — ACCESS DENIED</div>
     </div>
     <div class="auth-foot">THELOLGOV · The Black House · Faiz4224 Administration</div>
   </div>
@@ -450,7 +450,6 @@
 ═══════════════════════════ -->
 <div id="mainContent">
 
-  <!-- NETBAR -->
   <nav class="netbar">
     <a href="/main/">THE LOL</a>
     <a href="/gov/" class="active">GOVERNMENT</a>
@@ -459,7 +458,6 @@
     <a href="/isc/">ISC</a>
   </nav>
 
-  <!-- HEADER -->
   <header class="site-header">
     <div class="hdr-brand">
       <svg class="hdr-crest" viewBox="0 0 36 36" fill="none">
@@ -486,13 +484,12 @@
     <div class="hdr-right">
       <div class="session-badge">
         <span class="session-dot"></span>
-        <span class="session-text">Admin Session Active</span>
+        <span class="session-text" id="sessionEmail">Admin Session Active</span>
       </div>
       <button class="btn-lock" onclick="logout()">LOCK ×</button>
     </div>
   </header>
 
-  <!-- TAB NAV -->
   <nav class="admin-tabs">
     <button class="tab-btn active" onclick="switchTab('dashboard',this)">Dashboard</button>
     <button class="tab-btn" onclick="switchTab('applications',this)">
@@ -509,9 +506,7 @@
 
   <div class="admin-body">
 
-    <!-- ════════════════════════
-         DASHBOARD TAB
-    ════════════════════════ -->
+    <!-- DASHBOARD -->
     <div class="tab-panel active" id="tab-dashboard">
       <div class="sec-hdr">
         <div class="sec-hdr-left">
@@ -552,9 +547,7 @@
       </div>
     </div>
 
-    <!-- ════════════════════════
-         APPLICATIONS TAB
-    ════════════════════════ -->
+    <!-- APPLICATIONS -->
     <div class="tab-panel" id="tab-applications">
       <div class="sec-hdr">
         <div class="sec-hdr-left">
@@ -590,9 +583,7 @@
       </div>
     </div>
 
-    <!-- ════════════════════════
-         ISSUE ID TAB
-    ════════════════════════ -->
+    <!-- ISSUE ID -->
     <div class="tab-panel" id="tab-issue-id">
       <div class="sec-hdr">
         <div class="sec-hdr-left">
@@ -681,9 +672,7 @@
       </div>
     </div>
 
-    <!-- ════════════════════════
-         CITIZENS TAB
-    ════════════════════════ -->
+    <!-- CITIZENS -->
     <div class="tab-panel" id="tab-citizens">
       <div class="sec-hdr">
         <div class="sec-hdr-left">
@@ -720,9 +709,7 @@
       </div>
     </div>
 
-    <!-- ════════════════════════
-         ACTIVITY LOG TAB
-    ════════════════════════ -->
+    <!-- ACTIVITY LOG -->
     <div class="tab-panel" id="tab-activity">
       <div class="sec-hdr">
         <div class="sec-hdr-left">
@@ -749,12 +736,7 @@
       <div class="table-wrap">
         <table class="log-table">
           <thead><tr>
-            <th>Timestamp</th>
-            <th>Citizen ID</th>
-            <th>IGN</th>
-            <th>Action</th>
-            <th>Status Change</th>
-            <th>Note</th>
+            <th>Timestamp</th><th>Citizen ID</th><th>IGN</th><th>Action</th><th>Status Change</th><th>Note</th>
           </tr></thead>
           <tbody id="logTableBody">
             <tr><td colspan="6" class="tbl-loading">// Click Refresh to load the log</td></tr>
@@ -763,9 +745,7 @@
       </div>
     </div>
 
-    <!-- ════════════════════════
-         ANNOUNCEMENTS TAB
-    ════════════════════════ -->
+    <!-- ANNOUNCEMENTS -->
     <div class="tab-panel" id="tab-announcements">
       <div class="sec-hdr">
         <div class="sec-hdr-left">
@@ -774,7 +754,6 @@
         </div>
       </div>
       <div class="ann-layout">
-
         <div>
           <div class="ann-list-wrap">
             <div class="ann-list-hd">
@@ -785,33 +764,12 @@
               <div class="ann-empty">// Click Refresh to load announcements</div>
             </div>
           </div>
-
           <div class="ann-snippet-box">
             <div class="ann-snippet-title">How to display on your pages</div>
-            <div class="ann-snippet-code">// Add inside existing Firebase module script on any gov page:
-async function loadActiveBanner(db) {
-  const { collection, getDocs, where, query, orderBy }
-    = window._fire;
-  const q = query(
-    collection(db, 'announcements'),
-    where('active', '==', true),
-    orderBy('order', 'asc')
-  );
-  const snap = await getDocs(q);
-  snap.forEach(d => {
-    const a = d.data();
-    const banner = document.querySelector('.notice-banner');
-    if (!banner) return;
-    banner.innerHTML =
-      `&lt;span class="tag"&gt;${a.type.toUpperCase()}&lt;/span&gt;
-       &lt;span&gt;${a.body}${a.link
-         ? ` — &lt;a href="${a.link}"&gt;${a.linkText || 'VIEW'} →&lt;/a&gt;`
-         : ''}&lt;/span&gt;`;
-  });
-}</div>
+            <div class="ann-snippet-code">// stats.js already handles banners automatically.
+// Make sure .notice-banner exists on each page.</div>
           </div>
         </div>
-
         <div class="ann-form-box">
           <div class="ann-form-hd">
             <span class="ann-form-hd-dot"></span>
@@ -857,13 +815,10 @@ async function loadActiveBanner(db) {
             </div>
           </div>
         </div>
-
       </div>
     </div>
 
-    <!-- ════════════════════════
-         ANALYTICS TAB
-    ════════════════════════ -->
+    <!-- ANALYTICS -->
     <div class="tab-panel" id="tab-analytics">
       <div class="sec-hdr">
         <div class="sec-hdr-left">
@@ -903,17 +858,15 @@ async function loadActiveBanner(db) {
         <span class="analytics-last-updated" id="analyticsLastUpdated">// Not loaded</span>
       </div>
       <div class="analytics-note">
-        <span class="analytics-note-title">How to enable tracking on your pages</span>
-        <p>Analytics data is stored in Firestore at <code>analytics/counters</code>. Add the tracking snippet to each page's existing Firebase module script.</p>
+        <span class="analytics-note-title">How analytics work</span>
+        <p>Data is stored in Firestore at <code>analytics/counters</code> via <code>stats.js</code> on each page.</p>
       </div>
     </div>
 
-  </div><!-- /admin-body -->
-</div><!-- /mainContent -->
+  </div>
+</div>
 
-<!-- ════════════════════════════
-     REVIEW MODAL
-════════════════════════════ -->
+<!-- REVIEW MODAL -->
 <div class="modal-overlay" id="reviewModal">
   <div class="modal">
     <div class="modal-hd">
@@ -988,9 +941,7 @@ async function loadActiveBanner(db) {
   </div>
 </div>
 
-<!-- ════════════════════════════
-     EDIT MODAL (Citizens)
-════════════════════════════ -->
+<!-- EDIT MODAL -->
 <div class="modal-overlay" id="editModal">
   <div class="modal edit-modal">
     <div class="modal-hd">
@@ -1015,8 +966,6 @@ async function loadActiveBanner(db) {
         <div class="f-field"><label class="f-label">Wallet Linked</label><select class="f-select" id="edit_wallet"><option value="false">Not Linked</option><option value="true">Linked (TL$)</option></select></div>
       </div>
       <div class="f-field"><label class="f-label">Public Note</label><textarea class="f-textarea" id="edit_note"></textarea></div>
-
-      <!-- ── CITIZEN CHANGE HISTORY ── -->
       <div class="cit-history-wrap">
         <div class="cit-history-hd">
           <span class="cit-history-hd-dot"></span>
@@ -1026,7 +975,6 @@ async function loadActiveBanner(db) {
           <div class="cit-history-empty">// Open a citizen record to view their history</div>
         </div>
       </div>
-
       <div class="edit-fb" id="editFeedback"></div>
     </div>
     <div class="modal-actions-edit">
@@ -1036,75 +984,101 @@ async function loadActiveBanner(db) {
   </div>
 </div>
 
-<!-- TOAST -->
 <div class="toast" id="toast"></div>
 
 <!-- ════════════════════════════
-     FIREBASE
+     FIREBASE — single module block
+     includes Firestore + Auth
 ════════════════════════════ -->
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/12.12.1/firebase-app.js";
   import {
     getFirestore, collection, doc,
     getDoc, getDocs, updateDoc, setDoc, deleteDoc,
-    runTransaction, query, where, orderBy,
-    increment
+    runTransaction, query, where, orderBy, increment
   } from "https://www.gstatic.com/firebasejs/12.12.1/firebase-firestore.js";
+  import {
+    getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged
+  } from "https://www.gstatic.com/firebasejs/12.12.1/firebase-auth.js";
 
   const firebaseConfig = {
-    apiKey: "AIzaSyAgrLJDO8F6yyVLFubiZdRGiEl5ICRSAdQ",
-    authDomain: "the-legend-of-legiona-the-lol.firebaseapp.com",
-    projectId: "the-legend-of-legiona-the-lol",
-    storageBucket: "the-legend-of-legiona-the-lol.firebasestorage.app",
+    apiKey:            "AIzaSyAgrLJDO8F6yyVLFubiZdRGiEl5ICRSAdQ",
+    authDomain:        "the-legend-of-legiona-the-lol.firebaseapp.com",
+    projectId:         "the-legend-of-legiona-the-lol",
+    storageBucket:     "the-legend-of-legiona-the-lol.firebasestorage.app",
     messagingSenderId: "29247096448",
-    appId: "1:29247096448:web:370f536ad630c088b94865",
-    measurementId: "G-VX3M8X2P43"
+    appId:             "1:29247096448:web:370f536ad630c088b94865",
+    measurementId:     "G-VX3M8X2P43"
   };
 
-  const app = initializeApp(firebaseConfig);
-  const db  = getFirestore(app);
+  const app  = initializeApp(firebaseConfig);
+  const db   = getFirestore(app);
+  const auth = getAuth(app);
 
-  window._db    = db;
-  window._fire  = { collection, doc, getDoc, getDocs, updateDoc, setDoc, deleteDoc, runTransaction, query, where, orderBy, increment };
+  // Expose to global scope for the regular script below
+  window._db      = db;
+  window._auth    = auth;
+  window._fire    = { collection, doc, getDoc, getDocs, updateDoc, setDoc, deleteDoc, runTransaction, query, where, orderBy, increment };
   window._fbReady = true;
+
+  // Expose auth actions
+  window._signIn  = (email, password) => signInWithEmailAndPassword(auth, email, password);
+  window._signOut = () => signOut(auth);
+
+  // Auth state listener — the single source of truth for showing/hiding the dashboard
+  onAuthStateChanged(auth, user => {
+    if (user) {
+      document.getElementById('authGate').classList.add('hidden');
+      document.getElementById('mainContent').classList.add('visible');
+      const emailEl = document.getElementById('sessionEmail');
+      if (emailEl) emailEl.textContent = user.email;
+      if (typeof onAdminReady === 'function') onAdminReady();
+    } else {
+      document.getElementById('authGate').classList.remove('hidden');
+      document.getElementById('mainContent').classList.remove('visible');
+    }
+  });
 </script>
 
 <!-- ════════════════════════════
-     MAIN SCRIPT
+     MAIN SCRIPT — no import statements here
 ════════════════════════════ -->
 <script>
-// Replace your attemptAuth() function with this
-import { getAuth, signInWithEmailAndPassword } from 
-  "https://www.gstatic.com/firebasejs/12.12.1/firebase-auth.js";
 
-const auth = getAuth(app);
-
+/* ── AUTH ── */
 async function attemptAuth() {
-  const email    = document.getElementById('authEmail').value;
-  const password = document.getElementById('authInput').value;
+  const email    = (document.getElementById('authEmail').value || '').trim();
+  const password = document.getElementById('authInput').value || '';
+  const errEl    = document.getElementById('authErr');
+  const btnEl    = document.getElementById('authSubmitBtn');
+  errEl.classList.remove('show');
+  if (!email || !password) { errEl.classList.add('show'); return; }
+  btnEl.disabled = true;
+  btnEl.textContent = 'AUTHENTICATING...';
   try {
-    await signInWithEmailAndPassword(auth, email, password);
-    // success — show dashboard
-    document.getElementById('authGate').classList.add('hidden');
-    document.getElementById('mainContent').classList.add('visible');
+    await window._signIn(email, password);
+    // onAuthStateChanged in the module script handles the rest
   } catch (e) {
-    document.getElementById('authErr').classList.add('show');
+    errEl.classList.add('show');
+    document.getElementById('authInput').value = '';
+    btnEl.disabled = false;
+    btnEl.textContent = 'AUTHENTICATE →';
   }
 }
+window.attemptAuth = attemptAuth;
+
+document.getElementById('authInput').addEventListener('keydown', e => {
+  if (e.key === 'Enter') attemptAuth();
+});
+document.getElementById('authEmail').addEventListener('keydown', e => {
+  if (e.key === 'Enter') attemptAuth();
+});
 
 function logout() {
-  sessionStorage.removeItem('unified_admin');
-  document.getElementById('authGate').classList.remove('hidden');
-  document.getElementById('mainContent').classList.remove('visible');
-  document.getElementById('authInput').value = '';
+  window._signOut?.();
+  // onAuthStateChanged handles showing the auth gate again
 }
 window.logout = logout;
-
-if (sessionStorage.getItem('unified_admin') === '1') {
-  document.getElementById('authGate').classList.add('hidden');
-  document.getElementById('mainContent').classList.add('visible');
-  onAdminReady();
-}
 
 /* ── WAIT FOR FIREBASE ── */
 function waitFB(cb) {
@@ -1158,10 +1132,7 @@ function onAdminReady() {
   });
 }
 
-/* ══════════════════════════════
-   CITIZEN ACTIVITY LOGGER
-   Writes to Firestore: citizen_logs
-══════════════════════════════ */
+/* ── CITIZEN ACTIVITY LOGGER ── */
 async function logCitizenAction(citizenId, username, action, prevStatus, newStatus, note = '') {
   try {
     const { doc, setDoc } = window._fire;
@@ -1181,9 +1152,7 @@ async function logCitizenAction(citizenId, username, action, prevStatus, newStat
   }
 }
 
-/* ══════════════════════════════
-   DASHBOARD
-══════════════════════════════ */
+/* ── DASHBOARD ── */
 async function loadDashboard() {
   try {
     const { collection, getDocs } = window._fire;
@@ -1256,9 +1225,7 @@ function openFromDash(ref) {
 }
 window.openFromDash = openFromDash;
 
-/* ══════════════════════════════
-   NEXT ID PREVIEW
-══════════════════════════════ */
+/* ── NEXT ID PREVIEW ── */
 async function loadNextID() {
   const el = document.getElementById('previewIdFull') || document.getElementById('previewIdVal');
   if (!el) return;
@@ -1274,9 +1241,7 @@ async function loadNextID() {
 }
 window.loadNextID = loadNextID;
 
-/* ══════════════════════════════
-   APPLICATIONS
-══════════════════════════════ */
+/* ── APPLICATIONS ── */
 let allApps = [];
 
 async function loadAllApps() {
@@ -1352,17 +1317,14 @@ async function quickAppStatus(ref, newStatus) {
     const app = allApps.find(a=>(a.ref||a._id)===ref);
     if (app) { app.status=newStatus; if (upd.processed) app.processed=today; }
     filterApps(); loadDashboard();
-    const appIGN = app?.ign || '';
-    await logCitizenAction(ref, appIGN, newStatus === 'rejected' ? 'rejected' : 'under_review', app?.status || '', newStatus, `Quick status via applications table`);
+    await logCitizenAction(ref, app?.ign||'', newStatus==='rejected'?'rejected':'under_review', app?.status||'', newStatus, 'Quick status via applications table');
     logAct(newStatus==='rejected'?'bad':'', `${newStatus.toUpperCase()} → ${ref}`);
     showToast(`${ref} → ${newStatus}`, newStatus==='rejected'?'err':'ok');
   } catch(e) { showToast('Error: '+e.message,'err'); }
 }
 window.quickAppStatus = quickAppStatus;
 
-/* ══════════════════════════════
-   REVIEW MODAL
-══════════════════════════════ */
+/* ── REVIEW MODAL ── */
 let currentApp = null;
 let currentMode = 'approve';
 
@@ -1407,13 +1369,12 @@ function populateReviewModal(app) {
   document.getElementById('modalPublicNote').value = app.public_note||'';
   document.getElementById('modalAdminNote').value  = app.admin_note||'';
   setModalMode('approve', document.querySelector('.mode-tab.mode-approve'));
-  const fb = document.getElementById('modalFeedback'); fb.className='modal-feedback';
+  document.getElementById('modalFeedback').className = 'modal-feedback';
   document.getElementById('reviewModal').classList.add('open');
   loadNextID();
 }
 
 function statusCls(s) { return {pending:'amber',under_review:'blue',approved:'emerald',rejected:'red'}[s]||''; }
-
 function closeReviewModal() { document.getElementById('reviewModal').classList.remove('open'); currentApp=null; }
 window.closeReviewModal = closeReviewModal;
 document.getElementById('reviewModal').addEventListener('click', function(e) { if(e.target===this) closeReviewModal(); });
@@ -1424,8 +1385,8 @@ function setModalMode(mode, btn) {
   if (btn) btn.classList.add('active');
   document.querySelectorAll('.action-panel').forEach(p=>p.classList.remove('active'));
   document.getElementById('panel-'+mode)?.classList.add('active');
-  document.getElementById('approveSettings').style.display   = mode==='approve'?'block':'none';
-  document.getElementById('approveOnlyField').style.display  = mode==='approveOnly'?'block':'none';
+  document.getElementById('approveSettings').style.display  = mode==='approve'?'block':'none';
+  document.getElementById('approveOnlyField').style.display = mode==='approveOnly'?'block':'none';
   document.getElementById('notesSectionLbl').textContent = (mode==='approve'||mode==='approveOnly')?'03 // Admin Notes':'02 // Admin Notes';
 }
 window.setModalMode = setModalMode;
@@ -1436,7 +1397,6 @@ function appendPreset(text) {
 }
 window.appendPreset = appendPreset;
 
-/* ── APPROVE & ISSUE ── */
 async function approveAndIssueID() {
   if (!currentApp) return;
   const ref=currentApp.ref||currentApp._id, ign=currentApp.ign||'';
@@ -1471,7 +1431,6 @@ async function approveAndIssueID() {
 }
 window.approveAndIssueID = approveAndIssueID;
 
-/* ── APPROVE ONLY ── */
 async function approveOnly() {
   if (!currentApp) return;
   const ref=currentApp.ref||currentApp._id;
@@ -1484,7 +1443,7 @@ async function approveOnly() {
     const { doc, updateDoc } = window._fire;
     const today=new Date().toISOString().split('T')[0];
     await updateDoc(doc(window._db,'applications',ref),{status:'approved',thelol_id:nisId,processed:today,public_note:pubNote,admin_note:admNote});
-    await logCitizenAction(nisId, currentApp?.ign || '', 'approved', '', 'active', `Linked to existing ID via application ${ref}`);
+    await logCitizenAction(nisId, currentApp?.ign||'', 'approved', '', 'active', `Linked to existing ID via application ${ref}`);
     const app=allApps.find(a=>(a.ref||a._id)===ref);
     if (app){app.status='approved';app.thelol_id=nisId;app.processed=today;app.public_note=pubNote;app.admin_note=admNote;}
     showModalFb('ok',`// Approved and linked to ${nisId}`);
@@ -1496,7 +1455,6 @@ async function approveOnly() {
 }
 window.approveOnly = approveOnly;
 
-/* ── SET APP STATUS ── */
 async function setAppStatus(newStatus) {
   if (!currentApp) return;
   const ref=currentApp.ref||currentApp._id;
@@ -1510,7 +1468,7 @@ async function setAppStatus(newStatus) {
     const upd={status:newStatus,public_note:pubNote,admin_note:admNote};
     if (newStatus==='rejected') upd.processed=today;
     await updateDoc(doc(window._db,'applications',ref), upd);
-    await logCitizenAction(ref, currentApp?.ign || '', newStatus === 'rejected' ? 'rejected' : 'under_review', currentApp?.status || '', newStatus, pubNote);
+    await logCitizenAction(ref, currentApp?.ign||'', newStatus==='rejected'?'rejected':'under_review', currentApp?.status||'', newStatus, pubNote);
     const app=allApps.find(a=>(a.ref||a._id)===ref);
     if (app){app.status=newStatus;app.public_note=pubNote;app.admin_note=admNote;if(upd.processed)app.processed=today;}
     showModalFb('ok',`// Status → ${newStatus.replace('_',' ')}`);
@@ -1527,9 +1485,7 @@ function showModalFb(type, msg) {
   const el=document.getElementById('modalFeedback'); el.innerHTML=msg; el.className=`modal-feedback ${type} show`;
 }
 
-/* ══════════════════════════════
-   ISSUE ID
-══════════════════════════════ */
+/* ── ISSUE ID ── */
 async function issueID() {
   const btn=document.getElementById('btnIssue'), fb=document.getElementById('issueFeedback');
   const username=document.getElementById('f_username').value.trim();
@@ -1553,7 +1509,7 @@ async function issueID() {
       tx.set(cRef,{lastSequence:newSeq,lastYear:String(year)});
       tx.set(doc(db,'citizens',newID),{username,tier,issuedDate:issued,territory,status,platform,walletLinked:false,publicNote:note||'',issuedYear:year});
     });
-    await logCitizenAction(newID, username, 'issued', '', status, `Manually issued via Issue ID tab`);
+    await logCitizenAction(newID, username, 'issued', '', status, 'Manually issued via Issue ID tab');
     showFb(fb,'ok',`// SUCCESS — ID Issued: ${newID} → ${username}`);
     logAct('ok',`ISSUED ${newID} → ${username}`);
     showToast(`✓ ID Issued: ${newID}`,'ok');
@@ -1572,13 +1528,11 @@ function clearIssueForm() {
   document.getElementById('f_platform').value='java';
   document.getElementById('f_tier').value='citizen';
   document.getElementById('f_status').value='active';
-  const fb=document.getElementById('issueFeedback'); fb.className='issue-fb';
+  document.getElementById('issueFeedback').className='issue-fb';
 }
 window.clearIssueForm = clearIssueForm;
 
-/* ══════════════════════════════
-   MANAGE CITIZENS
-══════════════════════════════ */
+/* ── CITIZENS ── */
 let allCitizens = [];
 
 async function loadAllCitizens() {
@@ -1641,8 +1595,8 @@ async function quickCitStatus(id, newStatus) {
     await updateDoc(doc(window._db,'citizens',id),{status:newStatus});
     if (c) c.status=newStatus;
     filterCitizens(); loadDashboard();
-    const actionLabel = newStatus === 'active' ? 'reinstated' : newStatus;
-    await logCitizenAction(id, c?.username || '', actionLabel, prevStatus, newStatus, `Quick status via citizens table`);
+    const actionLabel = newStatus==='active' ? 'reinstated' : newStatus;
+    await logCitizenAction(id, c?.username||'', actionLabel, prevStatus, newStatus, 'Quick status via citizens table');
     logAct(newStatus==='revoked'?'bad':(newStatus==='suspended'?'warn':''),`${newStatus.toUpperCase()} → ${id}`);
     showToast(`${id} → ${newStatus}`, newStatus==='active'?'ok':'err');
     trackAdminEvent('status_updates');
@@ -1650,7 +1604,6 @@ async function quickCitStatus(id, newStatus) {
 }
 window.quickCitStatus = quickCitStatus;
 
-/* ── EDIT MODAL ── */
 function openEditModal(id) {
   const c=allCitizens.find(x=>x.id===id); if(!c) return;
   document.getElementById('editModalTitle').textContent=id;
@@ -1662,8 +1615,7 @@ function openEditModal(id) {
   document.getElementById('edit_issued').value=c.issuedDate||'';
   document.getElementById('edit_wallet').value=c.walletLinked?'true':'false';
   document.getElementById('edit_note').value=c.publicNote||'';
-  const fb=document.getElementById('editFeedback'); fb.className='edit-fb';
-  // Load this citizen's change history
+  document.getElementById('editFeedback').className='edit-fb';
   loadCitizenHistory(id);
   document.getElementById('editModal').classList.add('open');
 }
@@ -1692,7 +1644,7 @@ async function saveEdit() {
     const c=allCitizens.find(x=>x.id===id);
     if(c) Object.assign(c,{username,status,tier,territory:territory||'Mainland Legiona',issuedDate:issued,walletLinked:walletStr==='true',publicNote:note});
     if (prevStatus !== status) {
-      await logCitizenAction(id, username, 'edited', prevStatus, status, `Record edited via admin console`);
+      await logCitizenAction(id, username, 'edited', prevStatus, status, 'Record edited via admin console');
     }
     fb.textContent=`// Saved — ${id} updated`; logAct('',`EDITED ${id} (${username})`);
     showToast(`${id} updated`,'ok'); filterCitizens(); loadDashboard();
@@ -1702,9 +1654,7 @@ async function saveEdit() {
 }
 window.saveEdit = saveEdit;
 
-/* ══════════════════════════════
-   ACTIVITY LOG TAB
-══════════════════════════════ */
+/* ── ACTIVITY LOG ── */
 let allLogs = [];
 
 async function loadActivityLog() {
@@ -1712,7 +1662,7 @@ async function loadActivityLog() {
   body.innerHTML = '<tr><td colspan="6" class="tbl-loading">// Querying log...</td></tr>';
   try {
     const { collection, getDocs, query, orderBy } = window._fire;
-    const q    = query(collection(window._db, 'citizen_logs'), orderBy('timestamp', 'desc'));
+    const q = query(collection(window._db, 'citizen_logs'), orderBy('timestamp', 'desc'));
     const snap = await getDocs(q);
     allLogs = [];
     snap.forEach(d => allLogs.push({ _id: d.id, ...d.data() }));
@@ -1752,7 +1702,6 @@ function filterActivityLog() {
 }
 window.filterActivityLog = filterActivityLog;
 
-/* Load history thread for a specific citizen (inside edit modal) */
 async function loadCitizenHistory(citizenId) {
   const thread = document.getElementById('editHistoryThread');
   if (!thread) return;
@@ -1765,10 +1714,7 @@ async function loadCitizenHistory(citizenId) {
       orderBy('timestamp', 'desc')
     );
     const snap = await getDocs(q);
-    if (snap.empty) {
-      thread.innerHTML = '<div class="cit-history-empty">// No history recorded yet</div>';
-      return;
-    }
+    if (snap.empty) { thread.innerHTML = '<div class="cit-history-empty">// No history recorded yet</div>'; return; }
     let html = '';
     snap.forEach(d => {
       const l = d.data();
@@ -1791,9 +1737,7 @@ async function loadCitizenHistory(citizenId) {
   }
 }
 
-/* ══════════════════════════════
-   ANNOUNCEMENTS MANAGER
-══════════════════════════════ */
+/* ── ANNOUNCEMENTS ── */
 let allAnn = [];
 
 async function loadAnnouncements() {
@@ -1801,7 +1745,7 @@ async function loadAnnouncements() {
   list.innerHTML = '<div class="ann-empty">// Loading...</div>';
   try {
     const { collection, getDocs, query, orderBy } = window._fire;
-    const q    = query(collection(window._db, 'announcements'), orderBy('order', 'asc'));
+    const q = query(collection(window._db, 'announcements'), orderBy('order', 'asc'));
     const snap = await getDocs(q);
     allAnn = [];
     snap.forEach(d => allAnn.push({ _id: d.id, ...d.data() }));
@@ -1815,10 +1759,7 @@ window.loadAnnouncements = loadAnnouncements;
 
 function renderAnnList() {
   const list = document.getElementById('annList');
-  if (!allAnn.length) {
-    list.innerHTML = '<div class="ann-empty">// No announcements yet — create one on the right</div>';
-    return;
-  }
+  if (!allAnn.length) { list.innerHTML = '<div class="ann-empty">// No announcements yet — create one on the right</div>'; return; }
   list.innerHTML = allAnn.map(a => `
     <div class="ann-item ${a.active ? '' : 'inactive'}">
       <div class="ann-item-left">
@@ -1829,10 +1770,8 @@ function renderAnnList() {
           <span class="ann-active-label">Order: ${a.order??'—'} &nbsp;·&nbsp; ${a.active ? 'Active' : 'Hidden'}</span>
         </div>
       </div>
-      <div class="ann-toggle" onclick="toggleAnnActive('${a._id}', ${!!a.active})" title="${a.active?'Deactivate':'Activate'}">
-        <div class="ann-toggle-track ${a.active?'on':''}">
-          <div class="ann-toggle-thumb"></div>
-        </div>
+      <div class="ann-toggle" onclick="toggleAnnActive('${a._id}', ${!!a.active})">
+        <div class="ann-toggle-track ${a.active?'on':''}"><div class="ann-toggle-thumb"></div></div>
       </div>
       <div class="ann-item-actions">
         <button class="ann-btn edit" onclick="editAnn('${a._id}')">Edit</button>
@@ -1873,9 +1812,7 @@ async function saveAnnouncement() {
     }
     clearAnnForm();
     loadAnnouncements();
-  } catch(e) {
-    showAnnFb('err', `// ERROR: ${e.message}`);
-  }
+  } catch(e) { showAnnFb('err', `// ERROR: ${e.message}`); }
   btn.disabled = false;
 }
 window.saveAnnouncement = saveAnnouncement;
@@ -1905,8 +1842,7 @@ async function toggleAnnActive(id, current) {
 window.toggleAnnActive = toggleAnnActive;
 
 function editAnn(id) {
-  const a = allAnn.find(x => x._id === id);
-  if (!a) return;
+  const a = allAnn.find(x => x._id === id); if (!a) return;
   document.getElementById('ann_edit_id').value   = id;
   document.getElementById('ann_type').value      = a.type     || 'notice';
   document.getElementById('ann_body').value      = a.body     || '';
@@ -1921,9 +1857,7 @@ function editAnn(id) {
 window.editAnn = editAnn;
 
 function clearAnnForm() {
-  ['ann_edit_id','ann_body','ann_link','ann_link_text'].forEach(id => {
-    const el = document.getElementById(id); if(el) el.value = '';
-  });
+  ['ann_edit_id','ann_body','ann_link','ann_link_text'].forEach(id => { const el=document.getElementById(id); if(el) el.value=''; });
   document.getElementById('ann_type').value    = 'notice';
   document.getElementById('ann_order').value   = '1';
   document.getElementById('ann_active').checked = true;
@@ -1938,9 +1872,7 @@ function showAnnFb(type, msg) {
   fb.className = `ann-fb ${type} show`;
 }
 
-/* ══════════════════════════════
-   ANALYTICS
-══════════════════════════════ */
+/* ── ANALYTICS ── */
 async function loadAnalytics() {
   try {
     const { doc, getDoc } = window._fire;
