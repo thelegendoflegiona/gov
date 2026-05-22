@@ -152,6 +152,24 @@
     .ctrl-refresh { background: none; border: 1px solid var(--border); color: var(--muted); font-family: var(--fM); font-size: 9px; letter-spacing: 0.14em; text-transform: uppercase; padding: 9px 14px; cursor: pointer; transition: all 0.2s; }
     .ctrl-refresh:hover { border-color: var(--emerald); color: var(--emerald-l); }
     .ctrl-count { font-family: var(--fM); font-size: 9px; letter-spacing: 0.1em; color: var(--dim); margin-left: auto; }
+    .ctrl-export { background: none; border: 1px solid var(--border); color: var(--gold); font-family: var(--fM); font-size: 9px; letter-spacing: 0.14em; text-transform: uppercase; padding: 9px 14px; cursor: pointer; transition: all 0.2s; }
+    .ctrl-export:hover { border-color: var(--gold-border); background: var(--gold-dim); }
+
+    /* ── BULK ACTION BAR ── */
+    .bulk-action-bar {
+      display: none; align-items: center; gap: 10px; padding: 10px 14px;
+      background: rgba(58,112,168,0.08); border: 1px solid var(--blue-b);
+      margin-bottom: 10px; flex-wrap: wrap;
+    }
+    .bulk-count { font-family: var(--fM); font-size: 9px; letter-spacing: 0.14em; color: var(--blue-l); text-transform: uppercase; margin-right: 4px; }
+    .bulk-btn { font-family: var(--fM); font-size: 8px; letter-spacing: 0.12em; text-transform: uppercase; padding: 6px 14px; border: 1px solid; background: none; cursor: pointer; transition: all 0.2s; }
+    .bulk-btn.review { color: var(--blue-l); border-color: var(--blue-b); }
+    .bulk-btn.review:hover { background: var(--blue-dim); }
+    .bulk-btn.reject { color: var(--red-l); border-color: var(--red-b); }
+    .bulk-btn.reject:hover { background: var(--red-dim); }
+    .bulk-btn.cancel { color: var(--muted); border-color: var(--border); }
+    .bulk-btn.cancel:hover { border-color: #444; }
+    .bulk-check { width: 14px; height: 14px; accent-color: var(--gold); cursor: pointer; }
 
     /* ── TABLE ── */
     .table-wrap { overflow-x: auto; }
@@ -187,6 +205,7 @@
     .act-pill.edit{color:var(--muted);border-color:var(--border)} .act-pill.edit:hover{border-color:var(--gold);color:var(--gold)}
     .act-pill.suspend{color:var(--orange-l);border-color:var(--orange-b)} .act-pill.suspend:hover{background:var(--orange-dim)}
     .act-pill.revoke{color:var(--red-l);border-color:var(--red-b)} .act-pill.revoke:hover{background:var(--red-dim)}
+    .act-pill.preview{color:var(--blue-l);border-color:var(--blue-b)} .act-pill.preview:hover{background:var(--blue-dim)}
     .tbl-loading { text-align: center; padding: 48px; font-family: var(--fM); font-size: 9px; letter-spacing: 0.14em; color: var(--dim); }
     .tbl-empty { text-align: center; padding: 48px; font-family: var(--fM); font-size: 10px; letter-spacing: 0.1em; color: var(--dim); }
 
@@ -226,7 +245,7 @@
     .info-card-item:last-child { border-bottom: none; }
     .info-card-num { font-family: var(--fM); font-size: 8px; color: var(--dim); flex-shrink: 0; }
 
-    /* ── ANALYTICS TAB ── */
+    /* ── ANALYTICS ── */
     .analytics-section { margin-bottom: 28px; }
     .analytics-section-title { font-family: var(--fM); font-size: 8px; letter-spacing: 0.22em; color: var(--emerald-l); text-transform: uppercase; margin-bottom: 14px; display: flex; align-items: center; gap: 10px; }
     .analytics-section-title::before { content: ''; width: 16px; height: 1px; background: var(--emerald); }
@@ -238,7 +257,7 @@
     .a-stat-label { font-family: var(--fM); font-size: 7px; letter-spacing: 0.2em; color: var(--dim); text-transform: uppercase; }
     .a-stat-page { font-family: var(--fM); font-size: 8px; letter-spacing: 0.1em; color: var(--muted); margin-top: 2px; }
     .a-stat-val { font-family: var(--fD); font-size: 32px; font-weight: 900; color: var(--white); line-height: 1; margin-top: 4px; }
-    .a-stat-val.blue { color: var(--blue-l); } .a-stat-val.emerald { color: var(--emerald-l); } .a-stat-val.gold { color: var(--gold); } .a-stat-val.amber { color: var(--amber-l); }
+    .a-stat-val.blue{color:var(--blue-l)} .a-stat-val.emerald{color:var(--emerald-l)} .a-stat-val.gold{color:var(--gold)} .a-stat-val.amber{color:var(--amber-l)}
     .analytics-note { background: var(--card); border: 1px solid var(--border); border-left: 3px solid var(--gold); padding: 18px 22px; margin-top: 24px; }
     .analytics-note-title { font-family: var(--fM); font-size: 8px; letter-spacing: 0.2em; color: var(--gold); text-transform: uppercase; display: block; margin-bottom: 10px; }
     .analytics-note p { font-family: var(--fM); font-size: 10px; letter-spacing: 0.05em; color: var(--muted); line-height: 1.7; }
@@ -248,6 +267,30 @@
     .btn-analytics.refresh{color:var(--emerald-l);border-color:var(--emerald-b)} .btn-analytics.refresh:hover{background:var(--emerald-dim)}
     .btn-analytics.reset{color:var(--red-l);border-color:var(--red-b)} .btn-analytics.reset:hover{background:var(--red-dim)}
     .analytics-last-updated { font-family: var(--fM); font-size: 9px; letter-spacing: 0.08em; color: var(--dim); margin-left: auto; }
+
+    /* ── DAILY CHART ── */
+    .chart-panel { background: var(--card); border: 1px solid var(--border); padding: 24px; margin-bottom: 20px; }
+    .chart-panel-hd { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; }
+    .chart-panel-title { font-family: var(--fM); font-size: 8px; letter-spacing: 0.22em; color: var(--emerald-l); text-transform: uppercase; }
+    .chart-panel-meta { font-family: var(--fM); font-size: 8px; color: var(--dim); }
+    #hourlyChartWrap { min-height: 80px; }
+    #hourlyChartWrap svg text { font-family: 'DM Mono', monospace; }
+
+    /* ── FUNNEL ── */
+    .funnel-panel { background: var(--card); border: 1px solid var(--border); padding: 24px; margin-bottom: 20px; }
+    .funnel-panel-title { font-family: var(--fM); font-size: 8px; letter-spacing: 0.22em; color: var(--gold); text-transform: uppercase; margin-bottom: 20px; display: flex; align-items: center; gap: 10px; }
+    .funnel-panel-title::before { content: ''; width: 16px; height: 1px; background: var(--gold); }
+    .funnel-stages { display: flex; flex-direction: column; gap: 4px; }
+    .funnel-row { display: flex; align-items: center; gap: 12px; }
+    .funnel-lbl { font-family: var(--fM); font-size: 8px; letter-spacing: 0.1em; color: var(--dim); text-transform: uppercase; width: 140px; flex-shrink: 0; text-align: right; }
+    .funnel-track { flex: 1; background: var(--bg); height: 36px; position: relative; overflow: hidden; }
+    .funnel-fill { height: 100%; display: flex; align-items: center; padding: 0 14px; transition: width 0.6s ease; }
+    .funnel-fill-val { font-family: var(--fM); font-size: 13px; font-weight: 500; color: var(--white); }
+    .funnel-fill.submitted { background: linear-gradient(90deg, rgba(201,168,76,0.7), rgba(201,168,76,0.4)); }
+    .funnel-fill.approved  { background: linear-gradient(90deg, rgba(78,143,107,0.8), rgba(61,107,82,0.5)); }
+    .funnel-fill.issued    { background: linear-gradient(90deg, rgba(84,144,200,0.8), rgba(58,112,168,0.5)); }
+    .funnel-pct { font-family: var(--fM); font-size: 9px; color: var(--muted); width: 50px; flex-shrink: 0; }
+    .funnel-arrow { font-family: var(--fM); font-size: 8px; color: var(--dim); padding-left: 152px; margin: 2px 0; letter-spacing: 0.08em; }
 
     /* ── REVIEW MODAL ── */
     .modal-overlay { position: fixed; inset: 0; z-index: 5000; background: rgba(0,0,0,0.88); display: none; align-items: flex-start; justify-content: center; padding: 40px 24px; overflow-y: auto; }
@@ -295,6 +338,7 @@
     .reject-presets { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 10px; }
     .preset-chip { font-family: var(--fM); font-size: 8px; letter-spacing: 0.08em; padding: 4px 10px; border: 1px solid var(--border); color: var(--dim); cursor: pointer; background: none; transition: all 0.15s; }
     .preset-chip:hover { border-color: var(--red-b); color: var(--red-l); }
+    .approve-only-field { display: none; margin-bottom: 20px; }
 
     /* ── EDIT MODAL ── */
     .edit-modal { max-width: 540px; }
@@ -304,37 +348,6 @@
     .btn-save:hover { background: var(--emerald-l); }
     .edit-fb { font-family: var(--fM); font-size: 10px; letter-spacing: 0.06em; padding: 10px 14px; border: 1px solid; display: none; }
     .edit-fb.ok{color:var(--emerald-l);border-color:var(--emerald-b);background:var(--emerald-dim)} .edit-fb.err{color:var(--red-l);border-color:var(--red-b);background:var(--red-dim)} .edit-fb.show{display:block}
-
-    /* ── APPROVE ONLY FIELD ── */
-    .approve-only-field { display: none; margin-bottom: 20px; }
-
-    /* ── TOAST ── */
-    .toast { position: fixed; bottom: 28px; right: 28px; z-index: 9000; background: var(--card); border: 1px solid var(--border); padding: 13px 18px; font-family: var(--fM); font-size: 10px; letter-spacing: 0.06em; color: var(--text); display: none; max-width: 340px; animation: toastIn 0.25s ease; }
-    .toast.ok{border-left:3px solid var(--emerald-l)} .toast.err{border-left:3px solid var(--red-l)} .toast.warn{border-left:3px solid var(--amber-l)}
-    .toast.show { display: block; }
-    @keyframes toastIn { from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)} }
-
-    /* ── ACTIVITY LOG ── */
-    .log-table { width: 100%; border-collapse: collapse; }
-    .log-table th { font-family: var(--fM); font-size: 7px; letter-spacing: 0.22em; color: var(--dim); text-transform: uppercase; padding: 9px 14px; border-bottom: 1px solid var(--border); text-align: left; background: var(--surface); white-space: nowrap; }
-    .log-table td { padding: 11px 14px; border-bottom: 1px solid var(--border); font-size: 12px; vertical-align: middle; }
-    .log-table tr:last-child td { border-bottom: none; }
-    .log-table tr:hover td { background: var(--card); }
-    .log-ts-cell { font-family: var(--fM); font-size: 10px; color: var(--dim); white-space: nowrap; }
-    .log-cit-id { font-family: var(--fM); font-size: 10px; color: var(--emerald-l); }
-    .log-ign { font-size: 12px; color: var(--text); }
-    .log-note-cell { font-size: 11px; color: var(--muted); font-weight: 300; max-width: 220px; line-height: 1.5; }
-    .log-arrow { display: inline-flex; align-items: center; gap: 5px; font-family: var(--fM); font-size: 10px; color: var(--muted); }
-    .log-arrow .sep { color: var(--dim); }
-    .log-act { display: inline-block; font-family: var(--fM); font-size: 7px; letter-spacing: 0.14em; text-transform: uppercase; padding: 2px 9px; border: 1px solid; white-space: nowrap; }
-    .log-act.issued    { color: var(--gold);      border-color: var(--gold-border); background: var(--gold-dim); }
-    .log-act.approved  { color: var(--emerald-l); border-color: var(--emerald-b);  background: var(--emerald-dim); }
-    .log-act.rejected  { color: var(--red-l);     border-color: var(--red-b);      background: var(--red-dim); }
-    .log-act.suspended { color: var(--orange-l);  border-color: var(--orange-b);   background: var(--orange-dim); }
-    .log-act.revoked   { color: var(--red-l);     border-color: var(--red-b);      background: var(--red-dim); }
-    .log-act.reinstated{ color: var(--amber-l);   border-color: var(--amber-b);    background: var(--amber-dim); }
-    .log-act.edited    { color: var(--blue-l);    border-color: var(--blue-b);     background: var(--blue-dim); }
-    .log-act.under_review { color: var(--blue-l); border-color: var(--blue-b);     background: var(--blue-dim); }
     .cit-history-wrap { margin-top: 20px; border: 1px solid var(--border); background: var(--bg); }
     .cit-history-hd { padding: 10px 16px; border-bottom: 1px solid var(--border); font-family: var(--fM); font-size: 8px; letter-spacing: 0.2em; color: var(--dim); text-transform: uppercase; display: flex; align-items: center; gap: 8px; }
     .cit-history-hd-dot { width: 5px; height: 5px; background: var(--emerald-l); animation: pulse 2s infinite; flex-shrink: 0; }
@@ -360,10 +373,7 @@
     .ann-item-title { font-family: var(--fB); font-size: 13px; font-weight: 600; color: var(--text); }
     .ann-item-meta { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; margin-top: 3px; }
     .ann-type-pill { font-family: var(--fM); font-size: 7px; letter-spacing: 0.14em; text-transform: uppercase; padding: 2px 8px; border: 1px solid; }
-    .ann-type-pill.notice   { color: var(--muted);    border-color: var(--border); }
-    .ann-type-pill.alert    { color: var(--red-l);    border-color: var(--red-b);     background: var(--red-dim); }
-    .ann-type-pill.new      { color: var(--emerald-l);border-color: var(--emerald-b); background: var(--emerald-dim); }
-    .ann-type-pill.security { color: var(--amber-l);  border-color: var(--amber-b);   background: var(--amber-dim); }
+    .ann-type-pill.notice{color:var(--muted);border-color:var(--border)} .ann-type-pill.alert{color:var(--red-l);border-color:var(--red-b);background:var(--red-dim)} .ann-type-pill.new{color:var(--emerald-l);border-color:var(--emerald-b);background:var(--emerald-dim)} .ann-type-pill.security{color:var(--amber-l);border-color:var(--amber-b);background:var(--amber-dim)}
     .ann-link-ref { font-family: var(--fM); font-size: 8px; color: var(--gold); letter-spacing: 0.06em; }
     .ann-active-label { font-family: var(--fM); font-size: 8px; color: var(--dim); }
     .ann-toggle { display: flex; align-items: center; gap: 6px; cursor: pointer; flex-shrink: 0; }
@@ -373,25 +383,99 @@
     .ann-toggle-track.on .ann-toggle-thumb { background: var(--emerald-l); transform: translateX(16px); }
     .ann-item-actions { display: flex; gap: 5px; flex-shrink: 0; flex-direction: column; }
     .ann-btn { font-family: var(--fM); font-size: 7px; letter-spacing: 0.1em; text-transform: uppercase; padding: 4px 10px; border: 1px solid; background: none; cursor: pointer; transition: all 0.2s; white-space: nowrap; }
-    .ann-btn.edit  { color: var(--muted); border-color: var(--border); }
-    .ann-btn.edit:hover  { border-color: var(--gold-border); color: var(--gold); }
-    .ann-btn.del   { color: var(--dim); border-color: var(--border); }
-    .ann-btn.del:hover   { border-color: var(--red-b); color: var(--red-l); }
+    .ann-btn.edit{color:var(--muted);border-color:var(--border)} .ann-btn.edit:hover{border-color:var(--gold-border);color:var(--gold)}
+    .ann-btn.del{color:var(--dim);border-color:var(--border)} .ann-btn.del:hover{border-color:var(--red-b);color:var(--red-l)}
     .ann-empty { padding: 40px; font-family: var(--fM); font-size: 10px; letter-spacing: 0.1em; color: var(--dim); text-align: center; }
     .ann-form-box { background: var(--card); border: 1px solid var(--border); overflow: hidden; }
     .ann-form-hd { padding: 14px 20px; border-bottom: 1px solid var(--border); font-family: var(--fM); font-size: 8px; letter-spacing: 0.2em; color: var(--muted); text-transform: uppercase; display: flex; align-items: center; gap: 8px; }
     .ann-form-hd-dot { width: 5px; height: 5px; background: var(--gold); flex-shrink: 0; }
     .ann-form-body { padding: 20px; display: flex; flex-direction: column; gap: 14px; }
     .ann-fb { font-family: var(--fM); font-size: 10px; letter-spacing: 0.06em; padding: 10px 14px; border: 1px solid; display: none; }
-    .ann-fb.ok  { color: var(--emerald-l); border-color: var(--emerald-b); background: var(--emerald-dim); }
-    .ann-fb.err { color: var(--red-l);     border-color: var(--red-b);     background: var(--red-dim);    }
-    .ann-fb.show { display: block; }
+    .ann-fb.ok{color:var(--emerald-l);border-color:var(--emerald-b);background:var(--emerald-dim)} .ann-fb.err{color:var(--red-l);border-color:var(--red-b);background:var(--red-dim)} .ann-fb.show{display:block}
     .ann-snippet-box { background: var(--bg); border: 1px solid var(--border); border-left: 3px solid var(--gold); padding: 16px 18px; margin-top: 12px; }
     .ann-snippet-title { font-family: var(--fM); font-size: 8px; letter-spacing: 0.2em; color: var(--gold); text-transform: uppercase; margin-bottom: 10px; }
     .ann-snippet-code { font-family: var(--fM); font-size: 10px; color: var(--muted); line-height: 1.7; white-space: pre-wrap; word-break: break-all; }
 
+    /* ── ACTIVITY LOG ── */
+    .log-table { width: 100%; border-collapse: collapse; }
+    .log-table th { font-family: var(--fM); font-size: 7px; letter-spacing: 0.22em; color: var(--dim); text-transform: uppercase; padding: 9px 14px; border-bottom: 1px solid var(--border); text-align: left; background: var(--surface); white-space: nowrap; }
+    .log-table td { padding: 11px 14px; border-bottom: 1px solid var(--border); font-size: 12px; vertical-align: middle; }
+    .log-table tr:last-child td { border-bottom: none; }
+    .log-table tr:hover td { background: var(--card); }
+    .log-ts-cell { font-family: var(--fM); font-size: 10px; color: var(--dim); white-space: nowrap; }
+    .log-cit-id { font-family: var(--fM); font-size: 10px; color: var(--emerald-l); }
+    .log-ign { font-size: 12px; color: var(--text); }
+    .log-note-cell { font-size: 11px; color: var(--muted); font-weight: 300; max-width: 220px; line-height: 1.5; }
+    .log-arrow { display: inline-flex; align-items: center; gap: 5px; font-family: var(--fM); font-size: 10px; color: var(--muted); }
+    .log-arrow .sep { color: var(--dim); }
+    .log-act { display: inline-block; font-family: var(--fM); font-size: 7px; letter-spacing: 0.14em; text-transform: uppercase; padding: 2px 9px; border: 1px solid; white-space: nowrap; }
+    .log-act.issued{color:var(--gold);border-color:var(--gold-border);background:var(--gold-dim)}
+    .log-act.approved{color:var(--emerald-l);border-color:var(--emerald-b);background:var(--emerald-dim)}
+    .log-act.rejected{color:var(--red-l);border-color:var(--red-b);background:var(--red-dim)}
+    .log-act.suspended{color:var(--orange-l);border-color:var(--orange-b);background:var(--orange-dim)}
+    .log-act.revoked{color:var(--red-l);border-color:var(--red-b);background:var(--red-dim)}
+    .log-act.reinstated{color:var(--amber-l);border-color:var(--amber-b);background:var(--amber-dim)}
+    .log-act.edited{color:var(--blue-l);border-color:var(--blue-b);background:var(--blue-dim)}
+    .log-act.under_review{color:var(--blue-l);border-color:var(--blue-b);background:var(--blue-dim)}
+
+    /* ── SETTINGS TAB ── */
+    .settings-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; align-items: start; }
+    .settings-panel { background: var(--card); border: 1px solid var(--border); overflow: hidden; }
+    .settings-panel-hd { padding: 18px 24px; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 10px; }
+    .settings-panel-hd-dot { width: 5px; height: 5px; flex-shrink: 0; }
+    .settings-panel-hd-dot.discord { background: #5865F2; }
+    .settings-panel-hd-dot.emerald { background: var(--emerald-l); }
+    .settings-panel-lbl { font-family: var(--fM); font-size: 9px; letter-spacing: 0.18em; color: var(--muted); text-transform: uppercase; }
+    .settings-panel-body { padding: 24px; display: flex; flex-direction: column; gap: 18px; }
+    .webhook-url-row { display: flex; gap: 0; }
+    .webhook-url-input { flex: 1; background: var(--bg); border: 1px solid var(--border); color: var(--text); font-family: var(--fM); font-size: 11px; letter-spacing: 0.04em; padding: 11px 14px; outline: none; transition: border-color 0.2s; }
+    .webhook-url-input:focus { border-color: #5865F2; }
+    .webhook-url-input::placeholder { color: var(--dim); font-size: 10px; }
+    .webhook-test-btn { background: none; border: 1px solid var(--border); border-left: none; color: var(--muted); font-family: var(--fM); font-size: 9px; letter-spacing: 0.12em; text-transform: uppercase; padding: 0 16px; cursor: pointer; transition: all 0.2s; white-space: nowrap; }
+    .webhook-test-btn:hover { border-color: #5865F2; color: #5865F2; }
+    .webhook-toggles { display: flex; flex-direction: column; gap: 0; border: 1px solid var(--border); }
+    .webhook-toggle-row { display: flex; align-items: center; justify-content: space-between; padding: 11px 14px; border-bottom: 1px solid var(--border); }
+    .webhook-toggle-row:last-child { border-bottom: none; }
+    .webhook-toggle-label { font-family: var(--fM); font-size: 9px; letter-spacing: 0.1em; color: var(--muted); text-transform: uppercase; }
+    .webhook-toggle-sub { font-family: var(--fM); font-size: 8px; color: var(--dim); margin-top: 2px; }
+    .toggle-switch-wrap { display: flex; align-items: center; gap: 8px; cursor: pointer; }
+    .toggle-track { width: 34px; height: 16px; border: 1px solid var(--border); background: var(--surface); position: relative; transition: all 0.2s; flex-shrink: 0; cursor: pointer; }
+    .toggle-track.on { border-color: var(--emerald-b); background: var(--emerald-dim); }
+    .toggle-track.discord-on { border-color: rgba(88,101,242,0.4); background: rgba(88,101,242,0.12); }
+    .toggle-thumb { width: 10px; height: 10px; background: var(--dim); position: absolute; top: 2px; left: 2px; transition: all 0.2s; }
+    .toggle-track.on .toggle-thumb { background: var(--emerald-l); transform: translateX(18px); }
+    .toggle-track.discord-on .toggle-thumb { background: #5865F2; transform: translateX(18px); }
+    .webhook-save-btn { background: var(--gold); border: 1px solid var(--gold); color: #0c0c0c; font-family: var(--fM); font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; padding: 12px 24px; cursor: pointer; transition: all 0.2s; }
+    .webhook-save-btn:hover { background: var(--gold-l); }
+    .webhook-fb { font-family: var(--fM); font-size: 10px; letter-spacing: 0.06em; padding: 10px 14px; border: 1px solid; display: none; }
+    .webhook-fb.ok{color:var(--emerald-l);border-color:var(--emerald-b);background:var(--emerald-dim)} .webhook-fb.err{color:var(--red-l);border-color:var(--red-b);background:var(--red-dim)} .webhook-fb.show{display:block}
+    .webhook-note { font-family: var(--fM); font-size: 9px; letter-spacing: 0.06em; color: var(--dim); line-height: 1.65; padding: 12px 14px; border: 1px solid var(--border); background: var(--bg); border-left: 2px solid var(--gold-border); }
+    .webhook-status-row { display: flex; align-items: center; gap: 8px; }
+    .webhook-status-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--dim); }
+    .webhook-status-dot.connected { background: var(--emerald-l); animation: pulse 2s infinite; }
+    .webhook-status-text { font-family: var(--fM); font-size: 9px; letter-spacing: 0.1em; color: var(--dim); text-transform: uppercase; }
+
+    /* ── ID CARD PREVIEW MODAL ── */
+    .preview-overlay { position: fixed; inset: 0; z-index: 6000; background: rgba(0,0,0,0.92); display: none; align-items: center; justify-content: center; padding: 24px; }
+    .preview-overlay.open { display: flex; }
+    .preview-modal { background: var(--surface); border: 1px solid var(--border); width: 100%; max-width: 900px; max-height: 90vh; display: flex; flex-direction: column; animation: modalIn 0.22s ease; }
+    .preview-modal-hd { padding: 16px 24px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; background: var(--card); flex-shrink: 0; }
+    .preview-modal-title { font-family: var(--fM); font-size: 10px; letter-spacing: 0.18em; color: var(--emerald-l); text-transform: uppercase; }
+    .preview-modal-ref { font-family: var(--fM); font-size: 12px; letter-spacing: 0.08em; color: var(--gold); margin-top: 2px; }
+    .preview-modal-actions { display: flex; gap: 8px; align-items: center; }
+    .preview-open-link { font-family: var(--fM); font-size: 9px; letter-spacing: 0.12em; color: var(--muted); text-transform: uppercase; border: 1px solid var(--border); padding: 6px 14px; transition: all 0.2s; text-decoration: none; }
+    .preview-open-link:hover { border-color: var(--gold-border); color: var(--gold); }
+    .preview-iframe-wrap { flex: 1; overflow: hidden; background: #0f0f0f; }
+    .preview-iframe { width: 100%; height: 100%; min-height: 500px; border: none; }
+
+    /* ── TOAST ── */
+    .toast { position: fixed; bottom: 28px; right: 28px; z-index: 9000; background: var(--card); border: 1px solid var(--border); padding: 13px 18px; font-family: var(--fM); font-size: 10px; letter-spacing: 0.06em; color: var(--text); display: none; max-width: 340px; animation: toastIn 0.25s ease; }
+    .toast.ok{border-left:3px solid var(--emerald-l)} .toast.err{border-left:3px solid var(--red-l)} .toast.warn{border-left:3px solid var(--amber-l)}
+    .toast.show { display: block; }
+    @keyframes toastIn { from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)} }
+
     /* ── RESPONSIVE ── */
-    @media (max-width: 1100px) { .issue-layout,.ann-layout { grid-template-columns: 1fr; } }
+    @media (max-width: 1100px) { .issue-layout,.ann-layout,.settings-layout { grid-template-columns: 1fr; } }
     @media (max-width: 1000px) { .stats-grid.c5,.stats-grid.c6 { grid-template-columns: repeat(3,1fr); } }
     @media (max-width: 700px) {
       .site-header { padding: 12px 18px; } .admin-body { padding: 20px 16px; }
@@ -404,9 +488,7 @@
 </head>
 <body>
 
-<!-- ═══════════════════════════
-     AUTH GATE
-═══════════════════════════ -->
+<!-- ═══ AUTH GATE ═══ -->
 <div id="authGate">
   <div class="auth-wrap">
     <div class="auth-crest">
@@ -445,9 +527,7 @@
   </div>
 </div>
 
-<!-- ═══════════════════════════
-     MAIN CONTENT
-═══════════════════════════ -->
+<!-- ═══ MAIN CONTENT ═══ -->
 <div id="mainContent">
 
   <nav class="netbar">
@@ -502,11 +582,12 @@
     <button class="tab-btn" onclick="switchTab('activity',this)">Activity Log</button>
     <button class="tab-btn" onclick="switchTab('announcements',this)">Announcements</button>
     <button class="tab-btn" onclick="switchTab('analytics',this)">Analytics</button>
+    <button class="tab-btn" onclick="switchTab('settings',this)">Settings ⚙</button>
   </nav>
 
   <div class="admin-body">
 
-    <!-- DASHBOARD -->
+    <!-- ═══ DASHBOARD ═══ -->
     <div class="tab-panel active" id="tab-dashboard">
       <div class="sec-hdr">
         <div class="sec-hdr-left">
@@ -547,7 +628,7 @@
       </div>
     </div>
 
-    <!-- APPLICATIONS -->
+    <!-- ═══ APPLICATIONS ═══ -->
     <div class="tab-panel" id="tab-applications">
       <div class="sec-hdr">
         <div class="sec-hdr-left">
@@ -556,7 +637,7 @@
         </div>
       </div>
       <div class="controls">
-        <input class="ctrl-search" id="appSearch" type="text" placeholder="Search IGN or reference..." oninput="filterApps()" />
+        <input class="ctrl-search" id="appSearch" type="text" placeholder="Search IGN, call name or reference..." oninput="filterApps()" />
         <select class="ctrl-select" id="filterStatus" onchange="filterApps()">
           <option value="">All Status</option>
           <option value="pending">Pending</option>
@@ -570,20 +651,31 @@
           <option value="renew">Renewal</option>
         </select>
         <button class="ctrl-refresh" onclick="loadAllApps()">↻ Refresh</button>
+        <button class="ctrl-export" onclick="exportAppsCSV()">↓ CSV</button>
         <span class="ctrl-count" id="appCount">— applications</span>
       </div>
+
+      <!-- Bulk action bar -->
+      <div class="bulk-action-bar" id="bulkBar">
+        <span class="bulk-count" id="bulkCount">0 selected</span>
+        <button class="bulk-btn review" onclick="bulkSetStatus('under_review')">→ Mark Under Review</button>
+        <button class="bulk-btn reject" onclick="bulkSetStatus('rejected')">✕ Reject All</button>
+        <button class="bulk-btn cancel" onclick="clearBulkSelection()">Clear Selection</button>
+      </div>
+
       <div class="table-wrap">
         <table class="app-table">
           <thead><tr>
+            <th style="width:36px"><input type="checkbox" id="selectAllCheck" onchange="selectAllApps()" class="bulk-check" /></th>
             <th>Reference</th><th>IGN</th><th>Call Name</th><th>Type</th>
             <th>Submitted</th><th>Status</th><th>NIS ID</th><th>Actions</th>
           </tr></thead>
-          <tbody id="appTableBody"><tr><td colspan="8" class="tbl-loading">// Loading application registry...</td></tr></tbody>
+          <tbody id="appTableBody"><tr><td colspan="9" class="tbl-loading">// Loading application registry...</td></tr></tbody>
         </table>
       </div>
     </div>
 
-    <!-- ISSUE ID -->
+    <!-- ═══ ISSUE ID ═══ -->
     <div class="tab-panel" id="tab-issue-id">
       <div class="sec-hdr">
         <div class="sec-hdr-left">
@@ -672,7 +764,7 @@
       </div>
     </div>
 
-    <!-- CITIZENS -->
+    <!-- ═══ CITIZENS ═══ -->
     <div class="tab-panel" id="tab-citizens">
       <div class="sec-hdr">
         <div class="sec-hdr-left">
@@ -696,6 +788,7 @@
           <option value="founding">Founding</option>
         </select>
         <button class="ctrl-refresh" onclick="loadAllCitizens()">↻ Refresh</button>
+        <button class="ctrl-export" onclick="exportCitizensCSV()">↓ CSV</button>
         <span class="ctrl-count" id="citizenCount">0 citizens</span>
       </div>
       <div class="table-wrap">
@@ -709,7 +802,7 @@
       </div>
     </div>
 
-    <!-- ACTIVITY LOG -->
+    <!-- ═══ ACTIVITY LOG ═══ -->
     <div class="tab-panel" id="tab-activity">
       <div class="sec-hdr">
         <div class="sec-hdr-left">
@@ -745,7 +838,7 @@
       </div>
     </div>
 
-    <!-- ANNOUNCEMENTS -->
+    <!-- ═══ ANNOUNCEMENTS ═══ -->
     <div class="tab-panel" id="tab-announcements">
       <div class="sec-hdr">
         <div class="sec-hdr-left">
@@ -818,7 +911,7 @@
       </div>
     </div>
 
-    <!-- ANALYTICS -->
+    <!-- ═══ ANALYTICS ═══ -->
     <div class="tab-panel" id="tab-analytics">
       <div class="sec-hdr">
         <div class="sec-hdr-left">
@@ -826,6 +919,24 @@
           <span class="sec-title">Web Analytics</span>
         </div>
       </div>
+
+      <!-- Daily chart -->
+      <div class="chart-panel">
+        <div class="chart-panel-hd">
+          <span class="chart-panel-title">Today's Hourly Traffic</span>
+          <span class="chart-panel-meta" id="chartMeta">// Click Refresh Data to load</span>
+        </div>
+        <div id="hourlyChartWrap" style="min-height:80px;display:flex;align-items:center;justify-content:center;color:var(--dim);font-family:var(--fM);font-size:9px;letter-spacing:0.1em;">// Load analytics to display chart</div>
+      </div>
+
+      <!-- Funnel -->
+      <div class="funnel-panel">
+        <div class="funnel-panel-title">Conversion Funnel</div>
+        <div class="funnel-stages" id="funnelWrap">
+          <div style="font-family:var(--fM);font-size:9px;color:var(--dim);letter-spacing:0.1em;">// Load analytics to display funnel</div>
+        </div>
+      </div>
+
       <div class="analytics-section">
         <div class="analytics-section-title">Page Traffic — Unique Sessions</div>
         <div class="stats-grid c6">
@@ -859,14 +970,150 @@
       </div>
       <div class="analytics-note">
         <span class="analytics-note-title">How analytics work</span>
-        <p>Data is stored in Firestore at <code>analytics/counters</code> via <code>stats.js</code> on each page.</p>
+        <p>Data stored in Firestore at <code>analytics/counters</code> via <code>stats.js</code> on each page. The hourly chart reads from <code>analytics/daily_YYYY-MM-DD</code>.</p>
       </div>
     </div>
 
-  </div>
-</div>
+    <!-- ═══ SETTINGS ═══ -->
+    <div class="tab-panel" id="tab-settings">
+      <div class="sec-hdr">
+        <div class="sec-hdr-left">
+          <span class="sec-eyebrow">Configuration</span>
+          <span class="sec-title">Console Settings</span>
+        </div>
+      </div>
+      <div class="settings-layout">
 
-<!-- REVIEW MODAL -->
+        <!-- Discord Webhook -->
+        <div class="settings-panel">
+          <div class="settings-panel-hd">
+            <span class="settings-panel-hd-dot discord"></span>
+            <span class="settings-panel-lbl">Discord Webhook Integration</span>
+          </div>
+          <div class="settings-panel-body">
+            <div>
+              <div class="f-label" style="margin-bottom:8px;">Webhook URL</div>
+              <div class="webhook-url-row">
+                <input class="webhook-url-input" id="webhookUrl" type="text" placeholder="https://discord.com/api/webhooks/..." autocomplete="off" />
+                <button class="webhook-test-btn" onclick="testWebhook()">TEST</button>
+              </div>
+            </div>
+            <div class="webhook-status-row">
+              <span class="webhook-status-dot" id="webhookStatusDot"></span>
+              <span class="webhook-status-text" id="webhookStatusText">Not configured</span>
+            </div>
+            <div class="webhook-toggles">
+              <div class="webhook-toggle-row">
+                <div>
+                  <div class="webhook-toggle-label">On Application Approved + ID Issued</div>
+                  <div class="webhook-toggle-sub">Fires when approveAndIssueID() completes</div>
+                </div>
+                <div class="toggle-switch-wrap" onclick="toggleWebhookOption('notifyApproveIssue')">
+                  <div class="toggle-track" id="track_notifyApproveIssue">
+                    <div class="toggle-thumb"></div>
+                  </div>
+                </div>
+              </div>
+              <div class="webhook-toggle-row">
+                <div>
+                  <div class="webhook-toggle-label">On Application Rejected</div>
+                  <div class="webhook-toggle-sub">Fires when an application is rejected</div>
+                </div>
+                <div class="toggle-switch-wrap" onclick="toggleWebhookOption('notifyReject')">
+                  <div class="toggle-track" id="track_notifyReject">
+                    <div class="toggle-thumb"></div>
+                  </div>
+                </div>
+              </div>
+              <div class="webhook-toggle-row">
+                <div>
+                  <div class="webhook-toggle-label">On Citizenship Revoked</div>
+                  <div class="webhook-toggle-sub">Fires when a citizen's status is revoked</div>
+                </div>
+                <div class="toggle-switch-wrap" onclick="toggleWebhookOption('notifyRevoke')">
+                  <div class="toggle-track" id="track_notifyRevoke">
+                    <div class="toggle-thumb"></div>
+                  </div>
+                </div>
+              </div>
+              <div class="webhook-toggle-row">
+                <div>
+                  <div class="webhook-toggle-label">On ID Manually Issued</div>
+                  <div class="webhook-toggle-sub">Fires from Issue ID tab directly</div>
+                </div>
+                <div class="toggle-switch-wrap" onclick="toggleWebhookOption('notifyManualIssue')">
+                  <div class="toggle-track" id="track_notifyManualIssue">
+                    <div class="toggle-thumb"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="webhook-note">
+              ⚠ Webhook settings are stored in <strong>session storage only</strong> — they clear when you close or refresh the tab. Re-enter after each session. Never share your webhook URL.
+            </div>
+            <div class="webhook-fb" id="webhookFb"></div>
+            <div class="f-actions">
+              <button class="webhook-save-btn" onclick="saveWebhookSettings()">SAVE SETTINGS →</button>
+              <button class="btn-clr" onclick="clearWebhookSettings()">Clear</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Session Info -->
+        <div>
+          <div class="settings-panel" style="margin-bottom:20px;">
+            <div class="settings-panel-hd">
+              <span class="settings-panel-hd-dot emerald"></span>
+              <span class="settings-panel-lbl">Session Information</span>
+            </div>
+            <div class="settings-panel-body">
+              <div class="f-field">
+                <div class="f-label">Logged in as</div>
+                <div style="font-family:var(--fM);font-size:13px;color:var(--gold);margin-top:4px;" id="settingsSessionEmail">—</div>
+              </div>
+              <div class="f-field">
+                <div class="f-label">Firebase Project</div>
+                <div style="font-family:var(--fM);font-size:10px;color:var(--muted);margin-top:4px;">the-legend-of-legiona-the-lol</div>
+              </div>
+              <div class="f-field">
+                <div class="f-label">Console Version</div>
+                <div style="font-family:var(--fM);font-size:10px;color:var(--muted);margin-top:4px;">v2.0.0 — 2026 · Skyxion: Altaër Era</div>
+              </div>
+              <button class="btn-lock" style="margin-top:8px;padding:10px 20px;font-size:9px;" onclick="logout()">LOCK SESSION ×</button>
+            </div>
+          </div>
+          <div class="settings-panel">
+            <div class="settings-panel-hd">
+              <span class="settings-panel-hd-dot" style="background:var(--gold)"></span>
+              <span class="settings-panel-lbl">Reference Formats</span>
+            </div>
+            <div class="settings-panel-body" style="gap:10px;">
+              <div class="f-field" style="gap:3px;">
+                <div class="f-label">National ID</div>
+                <div style="font-family:var(--fM);font-size:11px;color:var(--emerald-l)">THELOL-YYYY-#####</div>
+              </div>
+              <div class="f-field" style="gap:3px;">
+                <div class="f-label">Citizenship Application</div>
+                <div style="font-family:var(--fM);font-size:11px;color:var(--amber-l)">THELOL-CTZN-YYYY-####</div>
+              </div>
+              <div class="f-field" style="gap:3px;">
+                <div class="f-label">Black House Directive</div>
+                <div style="font-family:var(--fM);font-size:11px;color:var(--gold)">BH-YYYY-####</div>
+              </div>
+              <div class="f-field" style="gap:3px;">
+                <div class="f-label">ISC Document</div>
+                <div style="font-family:var(--fM);font-size:11px;color:var(--blue-l)">ISC-YYYY-####</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /admin-body -->
+</div><!-- /mainContent -->
+
+<!-- ═══ REVIEW MODAL ═══ -->
 <div class="modal-overlay" id="reviewModal">
   <div class="modal">
     <div class="modal-hd">
@@ -941,7 +1188,7 @@
   </div>
 </div>
 
-<!-- EDIT MODAL -->
+<!-- ═══ EDIT MODAL ═══ -->
 <div class="modal-overlay" id="editModal">
   <div class="modal edit-modal">
     <div class="modal-hd">
@@ -967,10 +1214,7 @@
       </div>
       <div class="f-field"><label class="f-label">Public Note</label><textarea class="f-textarea" id="edit_note"></textarea></div>
       <div class="cit-history-wrap">
-        <div class="cit-history-hd">
-          <span class="cit-history-hd-dot"></span>
-          <span>Change History</span>
-        </div>
+        <div class="cit-history-hd"><span class="cit-history-hd-dot"></span><span>Change History</span></div>
         <div class="cit-history-thread" id="editHistoryThread">
           <div class="cit-history-empty">// Open a citizen record to view their history</div>
         </div>
@@ -984,12 +1228,28 @@
   </div>
 </div>
 
+<!-- ═══ ID CARD PREVIEW MODAL ═══ -->
+<div class="preview-overlay" id="previewModal">
+  <div class="preview-modal">
+    <div class="preview-modal-hd">
+      <div>
+        <div class="preview-modal-title">Digital ID Card Preview</div>
+        <div class="preview-modal-ref" id="previewModalTitle">—</div>
+      </div>
+      <div class="preview-modal-actions">
+        <a class="preview-open-link" id="previewOpenLink" href="#" target="_blank">Open Full Page ↗</a>
+        <button class="modal-close" onclick="closeIDPreview()">CLOSE ×</button>
+      </div>
+    </div>
+    <div class="preview-iframe-wrap">
+      <iframe class="preview-iframe" id="previewIframe" src="" title="ID Card Preview"></iframe>
+    </div>
+  </div>
+</div>
+
 <div class="toast" id="toast"></div>
 
-<!-- ════════════════════════════
-     FIREBASE — single module block
-     includes Firestore + Auth
-════════════════════════════ -->
+<!-- ═══ FIREBASE ═══ -->
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/12.12.1/firebase-app.js";
   import {
@@ -1015,23 +1275,21 @@
   const db   = getFirestore(app);
   const auth = getAuth(app);
 
-  // Expose to global scope for the regular script below
   window._db      = db;
   window._auth    = auth;
   window._fire    = { collection, doc, getDoc, getDocs, updateDoc, setDoc, deleteDoc, runTransaction, query, where, orderBy, increment };
   window._fbReady = true;
-
-  // Expose auth actions
   window._signIn  = (email, password) => signInWithEmailAndPassword(auth, email, password);
   window._signOut = () => signOut(auth);
 
-  // Auth state listener — the single source of truth for showing/hiding the dashboard
   onAuthStateChanged(auth, user => {
     if (user) {
       document.getElementById('authGate').classList.add('hidden');
       document.getElementById('mainContent').classList.add('visible');
       const emailEl = document.getElementById('sessionEmail');
       if (emailEl) emailEl.textContent = user.email;
+      const settingsEl = document.getElementById('settingsSessionEmail');
+      if (settingsEl) settingsEl.textContent = user.email;
       if (typeof onAdminReady === 'function') onAdminReady();
     } else {
       document.getElementById('authGate').classList.remove('hidden');
@@ -1040,12 +1298,12 @@
   });
 </script>
 
-<!-- ════════════════════════════
-     MAIN SCRIPT — no import statements here
-════════════════════════════ -->
+<!-- ═══ MAIN SCRIPT ═══ -->
 <script>
 
-/* ── AUTH ── */
+/* ════════════════════════════════
+   AUTH
+════════════════════════════════ */
 async function attemptAuth() {
   const email    = (document.getElementById('authEmail').value || '').trim();
   const password = document.getElementById('authInput').value || '';
@@ -1053,40 +1311,188 @@ async function attemptAuth() {
   const btnEl    = document.getElementById('authSubmitBtn');
   errEl.classList.remove('show');
   if (!email || !password) { errEl.classList.add('show'); return; }
-  btnEl.disabled = true;
-  btnEl.textContent = 'AUTHENTICATING...';
+  btnEl.disabled = true; btnEl.textContent = 'AUTHENTICATING...';
   try {
     await window._signIn(email, password);
-    // onAuthStateChanged in the module script handles the rest
-  } catch (e) {
+  } catch(e) {
     errEl.classList.add('show');
     document.getElementById('authInput').value = '';
-    btnEl.disabled = false;
-    btnEl.textContent = 'AUTHENTICATE →';
+    btnEl.disabled = false; btnEl.textContent = 'AUTHENTICATE →';
   }
 }
 window.attemptAuth = attemptAuth;
 
-document.getElementById('authInput').addEventListener('keydown', e => {
-  if (e.key === 'Enter') attemptAuth();
-});
-document.getElementById('authEmail').addEventListener('keydown', e => {
-  if (e.key === 'Enter') attemptAuth();
-});
+document.getElementById('authInput').addEventListener('keydown', e => { if(e.key==='Enter') attemptAuth(); });
+document.getElementById('authEmail').addEventListener('keydown', e => { if(e.key==='Enter') attemptAuth(); });
 
-function logout() {
-  window._signOut?.();
-  // onAuthStateChanged handles showing the auth gate again
-}
+function logout() { window._signOut?.(); }
 window.logout = logout;
 
-/* ── WAIT FOR FIREBASE ── */
+/* ════════════════════════════════
+   HELPERS
+════════════════════════════════ */
 function waitFB(cb) {
   if (window._fbReady) { cb(); return; }
   const t = setInterval(() => { if (window._fbReady) { clearInterval(t); cb(); } }, 80);
 }
 
-/* ── TABS ── */
+function showToast(msg, type = 'ok') {
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.className = `toast ${type} show`;
+  setTimeout(() => t.classList.remove('show'), 3200);
+}
+
+/* ════════════════════════════════
+   DISCORD WEBHOOK
+════════════════════════════════ */
+function getWebhookCfg() {
+  try { return JSON.parse(sessionStorage.getItem('lol_wh_cfg') || '{}'); } catch { return {}; }
+}
+
+function loadWebhookUI() {
+  const cfg = getWebhookCfg();
+  const urlEl = document.getElementById('webhookUrl');
+  if (urlEl && cfg.url) urlEl.value = cfg.url;
+
+  const opts = ['notifyApproveIssue','notifyReject','notifyRevoke','notifyManualIssue'];
+  opts.forEach(opt => {
+    const track = document.getElementById('track_' + opt);
+    if (track) {
+      if (cfg[opt]) {
+        track.classList.add('on','discord-on');
+      } else {
+        track.classList.remove('on','discord-on');
+      }
+    }
+  });
+
+  updateWebhookStatusDot();
+}
+
+function updateWebhookStatusDot() {
+  const cfg = getWebhookCfg();
+  const dot  = document.getElementById('webhookStatusDot');
+  const text = document.getElementById('webhookStatusText');
+  if (!dot||!text) return;
+  if (cfg.url && cfg.url.startsWith('https://discord.com/api/webhooks/')) {
+    dot.classList.add('connected');
+    text.textContent = 'Connected (session)';
+    text.style.color = 'var(--emerald-l)';
+  } else {
+    dot.classList.remove('connected');
+    text.textContent = 'Not configured';
+    text.style.color = 'var(--dim)';
+  }
+}
+
+function toggleWebhookOption(opt) {
+  const cfg = getWebhookCfg();
+  cfg[opt] = !cfg[opt];
+  sessionStorage.setItem('lol_wh_cfg', JSON.stringify(cfg));
+  const track = document.getElementById('track_' + opt);
+  if (track) track.classList.toggle('on', !!cfg[opt]);
+  if (track) track.classList.toggle('discord-on', !!cfg[opt]);
+}
+window.toggleWebhookOption = toggleWebhookOption;
+
+function saveWebhookSettings() {
+  const url = (document.getElementById('webhookUrl').value || '').trim();
+  const cfg = getWebhookCfg();
+  cfg.url = url;
+  sessionStorage.setItem('lol_wh_cfg', JSON.stringify(cfg));
+  updateWebhookStatusDot();
+  const fb = document.getElementById('webhookFb');
+  fb.textContent = url ? '// Settings saved to session storage.' : '// Cleared — no URL set.';
+  fb.className = 'webhook-fb ok show';
+  setTimeout(() => fb.classList.remove('show'), 2800);
+}
+window.saveWebhookSettings = saveWebhookSettings;
+
+function clearWebhookSettings() {
+  sessionStorage.removeItem('lol_wh_cfg');
+  document.getElementById('webhookUrl').value = '';
+  const opts = ['notifyApproveIssue','notifyReject','notifyRevoke','notifyManualIssue'];
+  opts.forEach(opt => {
+    const t = document.getElementById('track_' + opt);
+    if (t) t.classList.remove('on','discord-on');
+  });
+  updateWebhookStatusDot();
+  showToast('Webhook settings cleared', 'warn');
+}
+window.clearWebhookSettings = clearWebhookSettings;
+
+async function testWebhook() {
+  const url = (document.getElementById('webhookUrl').value || '').trim();
+  if (!url) { showToast('Enter a webhook URL first', 'warn'); return; }
+  const fb = document.getElementById('webhookFb');
+  fb.textContent = '// Sending test message...'; fb.className = 'webhook-fb ok show';
+  try {
+    const res = await fetch(url, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        embeds: [{
+          title: '🧪 Test — The LoL Admin Console',
+          description: 'Discord webhook integration is configured and working.',
+          color: 0x4e8f6b,
+          fields: [{ name: 'Status', value: 'Connected', inline: true }, { name: 'Era', value: 'Skyxion: Altaër', inline: true }],
+          footer: { text: 'THELOLGOV Admin Console · The Black House' },
+          timestamp: new Date().toISOString()
+        }]
+      })
+    });
+    if (res.ok || res.status === 204) {
+      fb.textContent = '// Test sent successfully. Check your Discord channel.';
+      fb.className = 'webhook-fb ok show';
+      showToast('Test webhook sent ✓', 'ok');
+    } else {
+      throw new Error(`HTTP ${res.status}`);
+    }
+  } catch(e) {
+    fb.textContent = `// Failed: ${e.message} — check the URL.`;
+    fb.className = 'webhook-fb err show';
+  }
+}
+window.testWebhook = testWebhook;
+
+async function sendWebhook(type, data) {
+  const cfg = getWebhookCfg();
+  if (!cfg.url) return;
+
+  const typeMap = {
+    approveIssue:  { enabled: cfg.notifyApproveIssue, color: 0x4e8f6b, title: '✅ Application Approved & ID Issued' },
+    reject:        { enabled: cfg.notifyReject,        color: 0xc0392b, title: '❌ Application Rejected'            },
+    revoke:        { enabled: cfg.notifyRevoke,        color: 0xe07a34, title: '⚠️ Citizenship Revoked'             },
+    manualIssue:   { enabled: cfg.notifyManualIssue,   color: 0xc9a84c, title: '🪪 National ID Manually Issued'     },
+  };
+
+  const cfg2 = typeMap[type];
+  if (!cfg2 || !cfg2.enabled) return;
+
+  const fields = Object.entries(data)
+    .filter(([,v]) => v)
+    .map(([k,v]) => ({ name: k, value: String(v), inline: true }));
+
+  try {
+    await fetch(cfg.url, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        embeds: [{
+          title: cfg2.title,
+          color: cfg2.color,
+          fields,
+          footer: { text: 'THELOLGOV Admin Console · The Black House' },
+          timestamp: new Date().toISOString()
+        }]
+      })
+    });
+  } catch(e) { console.warn('[Webhook]', e.message); }
+}
+
+/* ════════════════════════════════
+   TABS
+════════════════════════════════ */
 function switchTab(id, btn) {
   document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
   document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
@@ -1098,17 +1504,13 @@ function switchTab(id, btn) {
   if (id === 'analytics')     loadAnalytics();
   if (id === 'activity')      loadActivityLog();
   if (id === 'announcements') loadAnnouncements();
+  if (id === 'settings')      loadWebhookUI();
 }
 window.switchTab = switchTab;
 
-/* ── TOAST ── */
-function showToast(msg, type = 'ok') {
-  const t = document.getElementById('toast');
-  t.textContent = msg; t.className = `toast ${type} show`;
-  setTimeout(() => t.classList.remove('show'), 3200);
-}
-
-/* ── SESSION LOG ── */
+/* ════════════════════════════════
+   SESSION LOG
+════════════════════════════════ */
 const actLog = [];
 function logAct(type, msg) {
   const ts = new Date().toLocaleTimeString('en-GB', { hour:'2-digit', minute:'2-digit', second:'2-digit' });
@@ -1124,35 +1526,28 @@ function renderLog() {
   ).join('');
 }
 
-/* ── ON ADMIN READY ── */
+/* ════════════════════════════════
+   ON ADMIN READY
+════════════════════════════════ */
 function onAdminReady() {
-  waitFB(() => {
-    loadDashboard();
-    loadNextID();
-  });
+  waitFB(() => { loadDashboard(); loadNextID(); });
 }
 
-/* ── CITIZEN ACTIVITY LOGGER ── */
+/* ════════════════════════════════
+   CITIZEN ACTIVITY LOG (WRITE)
+════════════════════════════════ */
 async function logCitizenAction(citizenId, username, action, prevStatus, newStatus, note = '') {
   try {
     const { doc, setDoc } = window._fire;
     const tsKey = new Date().toISOString().replace(/[:.]/g, '-');
     const logRef = doc(window._db, 'citizen_logs', `${tsKey}-${Math.random().toString(36).slice(2,7)}`);
-    await setDoc(logRef, {
-      citizenId:  citizenId  || '',
-      username:   username   || '',
-      action,
-      prevStatus: prevStatus || '',
-      newStatus:  newStatus  || '',
-      note:       note       || '',
-      timestamp:  new Date().toISOString(),
-    });
-  } catch (e) {
-    console.warn('[LOG] Failed to write activity log:', e.message);
-  }
+    await setDoc(logRef, { citizenId: citizenId||'', username: username||'', action, prevStatus: prevStatus||'', newStatus: newStatus||'', note: note||'', timestamp: new Date().toISOString() });
+  } catch(e) { console.warn('[LOG]', e.message); }
 }
 
-/* ── DASHBOARD ── */
+/* ════════════════════════════════
+   DASHBOARD
+════════════════════════════════ */
 async function loadDashboard() {
   try {
     const { collection, getDocs } = window._fire;
@@ -1162,10 +1557,10 @@ async function loadDashboard() {
     appSnap.forEach(d => {
       total++;
       const s = (d.data().status || 'pending').toLowerCase();
-      if (s==='pending') { pending++; pendingList.push({id:d.id,...d.data()}); }
+      if (s==='pending')      { pending++; pendingList.push({id:d.id,...d.data()}); }
       else if (s==='under_review') under++;
-      else if (s==='approved') approved++;
-      else if (s==='rejected') rejected++;
+      else if (s==='approved')     approved++;
+      else if (s==='rejected')     rejected++;
     });
     document.getElementById('statTotal').textContent    = total;
     document.getElementById('statPending').textContent  = pending;
@@ -1225,28 +1620,31 @@ function openFromDash(ref) {
 }
 window.openFromDash = openFromDash;
 
-/* ── NEXT ID PREVIEW ── */
+/* ════════════════════════════════
+   NEXT ID PREVIEW
+════════════════════════════════ */
 async function loadNextID() {
-  const el = document.getElementById('previewIdFull') || document.getElementById('previewIdVal');
-  if (!el) return;
+  const els = [document.getElementById('previewIdFull'), document.getElementById('previewIdVal')];
   try {
     const { doc, getDoc } = window._fire;
     const snap = await getDoc(doc(window._db, 'meta', 'counter'));
     const year = new Date().getFullYear();
     const seq  = snap.exists() ? (snap.data().lastSequence||0)+1 : 1;
     const val  = `${year}-${String(seq).padStart(5,'0')}`;
-    if (document.getElementById('previewIdFull')) document.getElementById('previewIdFull').textContent = val;
-    if (document.getElementById('previewIdVal'))  document.getElementById('previewIdVal').textContent  = val;
-  } catch { if (el) el.textContent = '????-?????'; }
+    els.forEach(el => { if (el) el.textContent = val; });
+  } catch { els.forEach(el => { if (el) el.textContent = '????-?????'; }); }
 }
 window.loadNextID = loadNextID;
 
-/* ── APPLICATIONS ── */
+/* ════════════════════════════════
+   APPLICATIONS
+════════════════════════════════ */
 let allApps = [];
+let selectedApps = new Set();
 
 async function loadAllApps() {
   const body = document.getElementById('appTableBody');
-  body.innerHTML = '<tr><td colspan="8" class="tbl-loading">// Querying registry...</td></tr>';
+  body.innerHTML = '<tr><td colspan="9" class="tbl-loading">// Querying registry...</td></tr>';
   try {
     const { collection, getDocs } = window._fire;
     const snap = await getDocs(collection(window._db,'applications'));
@@ -1258,10 +1656,12 @@ async function loadAllApps() {
       if (sA!==sB) return sA-sB;
       return (b.submitted||'').localeCompare(a.submitted||'');
     });
+    selectedApps.clear();
+    updateBulkBar();
     filterApps();
     logAct('ok', `LOADED applications (${allApps.length} records)`);
   } catch(e) {
-    body.innerHTML = `<tr><td colspan="8" class="tbl-loading" style="color:var(--red-l)">// ERROR: ${e.message}</td></tr>`;
+    body.innerHTML = `<tr><td colspan="9" class="tbl-loading" style="color:var(--red-l)">// ERROR: ${e.message}</td></tr>`;
   }
 }
 window.loadAllApps = loadAllApps;
@@ -1277,10 +1677,11 @@ function filterApps() {
   });
   document.getElementById('appCount').textContent = `${filtered.length} application${filtered.length!==1?'s':''}`;
   const body = document.getElementById('appTableBody');
-  if (!filtered.length) { body.innerHTML='<tr><td colspan="8" class="tbl-empty">// No applications match this filter</td></tr>'; return; }
+  if (!filtered.length) { body.innerHTML='<tr><td colspan="9" class="tbl-empty">// No applications match this filter</td></tr>'; return; }
   body.innerHTML = filtered.map(a => {
     const ref=a.ref||a._id, status=(a.status||'pending').toLowerCase(), type=a.type==='renew'?'Renewal':'New';
     const nisId=a.thelol_id||'';
+    const checked = selectedApps.has(ref) ? 'checked' : '';
     let actions=`<button class="act-pill view" onclick="openReviewModal('${ref}')">Review</button>`;
     if (status==='pending') {
       actions+=`<button class="act-pill review" onclick="quickAppStatus('${ref}','under_review')">→ Review</button>`;
@@ -1293,6 +1694,7 @@ function filterApps() {
       actions+=`<button class="act-pill reinstate" onclick="quickAppStatus('${ref}','pending')">Reopen</button>`;
     }
     return `<tr>
+      <td><input type="checkbox" class="app-row-check bulk-check" data-ref="${ref}" ${checked} onchange="toggleAppSelect('${ref}')" /></td>
       <td class="td-ref">${ref}</td>
       <td class="td-ign">${a.ign||'—'}</td>
       <td class="td-call">${a.callName||'—'}</td>
@@ -1306,6 +1708,72 @@ function filterApps() {
 }
 window.filterApps = filterApps;
 
+/* ── Bulk actions ── */
+function toggleAppSelect(ref) {
+  if (selectedApps.has(ref)) selectedApps.delete(ref);
+  else selectedApps.add(ref);
+  updateBulkBar();
+}
+window.toggleAppSelect = toggleAppSelect;
+
+function selectAllApps() {
+  const checkboxes = document.querySelectorAll('.app-row-check');
+  const noneChecked = selectedApps.size === 0;
+  selectedApps.clear();
+  if (noneChecked) { checkboxes.forEach(cb => { selectedApps.add(cb.dataset.ref); cb.checked = true; }); }
+  else { checkboxes.forEach(cb => cb.checked = false); }
+  updateBulkBar();
+}
+window.selectAllApps = selectAllApps;
+
+function updateBulkBar() {
+  const bar   = document.getElementById('bulkBar');
+  const count = document.getElementById('bulkCount');
+  bar.style.display = selectedApps.size > 0 ? 'flex' : 'none';
+  if (count) count.textContent = `${selectedApps.size} selected`;
+  const allCheck = document.getElementById('selectAllCheck');
+  if (allCheck) {
+    const total = document.querySelectorAll('.app-row-check').length;
+    allCheck.checked       = selectedApps.size > 0 && selectedApps.size === total;
+    allCheck.indeterminate = selectedApps.size > 0 && selectedApps.size < total;
+  }
+}
+
+function clearBulkSelection() {
+  selectedApps.clear();
+  document.querySelectorAll('.app-row-check').forEach(cb => cb.checked = false);
+  const allCheck = document.getElementById('selectAllCheck');
+  if (allCheck) { allCheck.checked = false; allCheck.indeterminate = false; }
+  updateBulkBar();
+}
+window.clearBulkSelection = clearBulkSelection;
+
+async function bulkSetStatus(newStatus) {
+  if (!selectedApps.size) return;
+  if (!confirm(`Set ${selectedApps.size} application(s) to "${newStatus}"?`)) return;
+  const refs = Array.from(selectedApps);
+  let success = 0;
+  for (const ref of refs) {
+    try {
+      const { doc, updateDoc } = window._fire;
+      const today = new Date().toISOString().split('T')[0];
+      const upd = { status: newStatus };
+      if (newStatus === 'approved' || newStatus === 'rejected') upd.processed = today;
+      await updateDoc(doc(window._db, 'applications', ref), upd);
+      const app = allApps.find(a => (a.ref||a._id) === ref);
+      if (app) { app.status = newStatus; if (upd.processed) app.processed = today; }
+      success++;
+    } catch(e) { console.warn(`[Bulk] ${ref}:`, e.message); }
+  }
+  selectedApps.clear();
+  updateBulkBar();
+  filterApps(); loadDashboard();
+  showToast(`${success}/${refs.length} updated → ${newStatus}`, 'ok');
+  logAct('warn', `BULK ${newStatus.toUpperCase()} — ${success} apps`);
+}
+window.bulkSetStatus = bulkSetStatus;
+
+/* ── Quick status ── */
 async function quickAppStatus(ref, newStatus) {
   if (!confirm(`Set ${ref} → ${newStatus}?`)) return;
   try {
@@ -1317,15 +1785,53 @@ async function quickAppStatus(ref, newStatus) {
     const app = allApps.find(a=>(a.ref||a._id)===ref);
     if (app) { app.status=newStatus; if (upd.processed) app.processed=today; }
     filterApps(); loadDashboard();
-    await logCitizenAction(ref, app?.ign||'', newStatus==='rejected'?'rejected':'under_review', app?.status||'', newStatus, 'Quick status via applications table');
+    if (newStatus === 'rejected') {
+      sendWebhook('reject', { 'Reference': ref, 'IGN': app?.ign||'—', 'Processed': today });
+    }
+    await logCitizenAction(ref, app?.ign||'', newStatus==='rejected'?'rejected':'under_review', app?.status||'', newStatus, 'Quick action via applications table');
     logAct(newStatus==='rejected'?'bad':'', `${newStatus.toUpperCase()} → ${ref}`);
     showToast(`${ref} → ${newStatus}`, newStatus==='rejected'?'err':'ok');
   } catch(e) { showToast('Error: '+e.message,'err'); }
 }
 window.quickAppStatus = quickAppStatus;
 
-/* ── REVIEW MODAL ── */
-let currentApp = null;
+/* ── CSV Export ── */
+function downloadCSV(rows, filename) {
+  const csv = rows.map(r => r.map(v => `"${String(v||'').replace(/"/g,'""')}"`).join(',')).join('\n');
+  const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+  const url  = URL.createObjectURL(blob);
+  const a    = document.createElement('a');
+  a.href = url; a.download = filename;
+  document.body.appendChild(a); a.click();
+  a.remove(); setTimeout(() => URL.revokeObjectURL(url), 1000);
+  showToast(`Exported ${filename}`, 'ok');
+  logAct('ok', `EXPORTED ${filename}`);
+}
+
+function exportAppsCSV() {
+  if (!allApps.length) { showToast('Load applications first', 'warn'); return; }
+  const headers = ['Reference','IGN','Call Name','Type','Status','Submitted','Processed','NIS ID','Contact','Contact Method','Era'];
+  const rows = [headers, ...allApps.map(a => [
+    a.ref||a._id, a.ign, a.callName, a.type, a.status, a.submitted, a.processed, a.thelol_id, a.contact, a.contactMethod, a.era
+  ])];
+  downloadCSV(rows, `THELOL-applications-${new Date().toISOString().split('T')[0]}.csv`);
+}
+window.exportAppsCSV = exportAppsCSV;
+
+function exportCitizensCSV() {
+  if (!allCitizens.length) { showToast('Load citizens first', 'warn'); return; }
+  const headers = ['The LoL ID','Username','Status','Tier','Issued Date','Territory','Wallet Linked'];
+  const rows = [headers, ...allCitizens.map(c => [
+    c.id, c.username, c.status, c.tier, c.issuedDate, c.territory, c.walletLinked
+  ])];
+  downloadCSV(rows, `THELOL-citizens-${new Date().toISOString().split('T')[0]}.csv`);
+}
+window.exportCitizensCSV = exportCitizensCSV;
+
+/* ════════════════════════════════
+   REVIEW MODAL
+════════════════════════════════ */
+let currentApp  = null;
 let currentMode = 'approve';
 
 function openReviewModal(ref) {
@@ -1419,6 +1925,7 @@ async function approveAndIssueID() {
       tx.update(doc(db,'applications',ref),{status:'approved',thelol_id:newID,processed:today,public_note:pubNote,admin_note:admNote});
     });
     await logCitizenAction(newID, ign, 'issued', '', 'active', `Approved & issued via application ${ref}`);
+    await sendWebhook('approveIssue', { 'Reference': ref, 'IGN': ign, 'National ID': newID, 'Tier': tier, 'Processed': today });
     const app=allApps.find(a=>(a.ref||a._id)===ref);
     if (app){app.status='approved';app.thelol_id=newID;app.processed=today;app.public_note=pubNote;app.admin_note=admNote;}
     showModalFb('ok',`// SUCCESS — <strong style="color:var(--emerald-l)">${newID}</strong> issued to ${ign}. <a href="/gov/systems/id/id-card?id=${encodeURIComponent(newID)}" target="_blank" style="color:var(--gold);">View ID Card →</a>`);
@@ -1469,6 +1976,9 @@ async function setAppStatus(newStatus) {
     if (newStatus==='rejected') upd.processed=today;
     await updateDoc(doc(window._db,'applications',ref), upd);
     await logCitizenAction(ref, currentApp?.ign||'', newStatus==='rejected'?'rejected':'under_review', currentApp?.status||'', newStatus, pubNote);
+    if (newStatus === 'rejected') {
+      sendWebhook('reject', { 'Reference': ref, 'IGN': currentApp?.ign||'—', 'Reason': pubNote||'Not specified', 'Processed': today });
+    }
     const app=allApps.find(a=>(a.ref||a._id)===ref);
     if (app){app.status=newStatus;app.public_note=pubNote;app.admin_note=admNote;if(upd.processed)app.processed=today;}
     showModalFb('ok',`// Status → ${newStatus.replace('_',' ')}`);
@@ -1485,7 +1995,9 @@ function showModalFb(type, msg) {
   const el=document.getElementById('modalFeedback'); el.innerHTML=msg; el.className=`modal-feedback ${type} show`;
 }
 
-/* ── ISSUE ID ── */
+/* ════════════════════════════════
+   ISSUE ID
+════════════════════════════════ */
 async function issueID() {
   const btn=document.getElementById('btnIssue'), fb=document.getElementById('issueFeedback');
   const username=document.getElementById('f_username').value.trim();
@@ -1510,6 +2022,7 @@ async function issueID() {
       tx.set(doc(db,'citizens',newID),{username,tier,issuedDate:issued,territory,status,platform,walletLinked:false,publicNote:note||'',issuedYear:year});
     });
     await logCitizenAction(newID, username, 'issued', '', status, 'Manually issued via Issue ID tab');
+    await sendWebhook('manualIssue', { 'National ID': newID, 'IGN': username, 'Tier': tier, 'Territory': territory, 'Issued': issued });
     showFb(fb,'ok',`// SUCCESS — ID Issued: ${newID} → ${username}`);
     logAct('ok',`ISSUED ${newID} → ${username}`);
     showToast(`✓ ID Issued: ${newID}`,'ok');
@@ -1532,7 +2045,9 @@ function clearIssueForm() {
 }
 window.clearIssueForm = clearIssueForm;
 
-/* ── CITIZENS ── */
+/* ════════════════════════════════
+   CITIZENS
+════════════════════════════════ */
 let allCitizens = [];
 
 async function loadAllCitizens() {
@@ -1558,9 +2073,7 @@ function filterCitizens() {
   const ft=document.getElementById('filterTier').value;
   const filtered=allCitizens.filter(c=>{
     const matchQ=!q||c.id.includes(q)||(c.username||'').toUpperCase().includes(q);
-    const matchS=!fs||(c.status||'active')===fs;
-    const matchT=!ft||(c.tier||'citizen')===ft;
-    return matchQ&&matchS&&matchT;
+    return matchQ&&(!fs||(c.status||'active')===fs)&&(!ft||(c.tier||'citizen')===ft);
   });
   document.getElementById('citizenCount').textContent=`${filtered.length} citizen${filtered.length!==1?'s':''}`;
   const body=document.getElementById('citizenTableBody');
@@ -1569,6 +2082,7 @@ function filterCitizens() {
     const status=(c.status||'active').toLowerCase(), tier=(c.tier||'citizen').toLowerCase();
     const tierLabel={citizen:'Citizen',senior:'Senior',elder:'Elder',founding:'Founding'}[tier]||tier;
     let actions=`<button class="act-pill edit" onclick="openEditModal('${c.id}')">Edit</button>`;
+    actions+=`<button class="act-pill preview" onclick="openIDPreview('${c.id}')">Preview</button>`;
     if (status==='active') { actions+=`<button class="act-pill suspend" onclick="quickCitStatus('${c.id}','suspended')">Suspend</button><button class="act-pill revoke" onclick="quickCitStatus('${c.id}','revoked')">Revoke</button>`; }
     else if (status==='suspended') { actions+=`<button class="act-pill reinstate" onclick="quickCitStatus('${c.id}','active')">Reinstate</button><button class="act-pill revoke" onclick="quickCitStatus('${c.id}','revoked')">Revoke</button>`; }
     else if (status==='revoked') { actions+=`<button class="act-pill reinstate" onclick="quickCitStatus('${c.id}','active')">Reinstate</button>`; }
@@ -1595,6 +2109,9 @@ async function quickCitStatus(id, newStatus) {
     await updateDoc(doc(window._db,'citizens',id),{status:newStatus});
     if (c) c.status=newStatus;
     filterCitizens(); loadDashboard();
+    if (newStatus === 'revoked') {
+      sendWebhook('revoke', { 'The LoL ID': id, 'IGN': c?.username||'—', 'Previous Status': prevStatus });
+    }
     const actionLabel = newStatus==='active' ? 'reinstated' : newStatus;
     await logCitizenAction(id, c?.username||'', actionLabel, prevStatus, newStatus, 'Quick status via citizens table');
     logAct(newStatus==='revoked'?'bad':(newStatus==='suspended'?'warn':''),`${newStatus.toUpperCase()} → ${id}`);
@@ -1604,6 +2121,23 @@ async function quickCitStatus(id, newStatus) {
 }
 window.quickCitStatus = quickCitStatus;
 
+/* ── ID Card Preview ── */
+function openIDPreview(id) {
+  document.getElementById('previewModalTitle').textContent = id;
+  document.getElementById('previewOpenLink').href = `/gov/systems/id/id-card?id=${encodeURIComponent(id)}`;
+  document.getElementById('previewIframe').src = `/gov/systems/id/id-card?id=${encodeURIComponent(id)}`;
+  document.getElementById('previewModal').classList.add('open');
+}
+window.openIDPreview = openIDPreview;
+
+function closeIDPreview() {
+  document.getElementById('previewModal').classList.remove('open');
+  setTimeout(() => { document.getElementById('previewIframe').src = ''; }, 300);
+}
+window.closeIDPreview = closeIDPreview;
+document.getElementById('previewModal').addEventListener('click', function(e) { if(e.target===this) closeIDPreview(); });
+
+/* ── Edit Modal ── */
 function openEditModal(id) {
   const c=allCitizens.find(x=>x.id===id); if(!c) return;
   document.getElementById('editModalTitle').textContent=id;
@@ -1654,7 +2188,9 @@ async function saveEdit() {
 }
 window.saveEdit = saveEdit;
 
-/* ── ACTIVITY LOG ── */
+/* ════════════════════════════════
+   ACTIVITY LOG
+════════════════════════════════ */
 let allLogs = [];
 
 async function loadActivityLog() {
@@ -1679,14 +2215,13 @@ function filterActivityLog() {
   const fa = document.getElementById('filterLogAction')?.value || '';
   const filtered = allLogs.filter(l => {
     const matchQ = !q || (l.citizenId||'').toUpperCase().includes(q) || (l.username||'').toUpperCase().includes(q);
-    const matchA = !fa || l.action === fa;
-    return matchQ && matchA;
+    return matchQ && (!fa || l.action === fa);
   });
   document.getElementById('logCount').textContent = `${filtered.length} entr${filtered.length!==1?'ies':'y'}`;
   const body = document.getElementById('logTableBody');
   if (!filtered.length) { body.innerHTML='<tr><td colspan="6" class="tbl-empty">// No entries match this filter</td></tr>'; return; }
   body.innerHTML = filtered.map(l => {
-    const ts  = l.timestamp ? new Date(l.timestamp).toLocaleString('en-GB') : '—';
+    const ts    = l.timestamp ? new Date(l.timestamp).toLocaleString('en-GB') : '—';
     const arrow = (l.prevStatus && l.newStatus)
       ? `<span class="log-arrow"><span>${l.prevStatus}</span><span class="sep">→</span><span>${l.newStatus}</span></span>`
       : '—';
@@ -1708,11 +2243,7 @@ async function loadCitizenHistory(citizenId) {
   thread.innerHTML = '<div class="cit-history-empty">// Loading...</div>';
   try {
     const { collection, getDocs, query, where, orderBy } = window._fire;
-    const q = query(
-      collection(window._db, 'citizen_logs'),
-      where('citizenId', '==', citizenId),
-      orderBy('timestamp', 'desc')
-    );
+    const q = query(collection(window._db, 'citizen_logs'), where('citizenId', '==', citizenId), orderBy('timestamp', 'desc'));
     const snap = await getDocs(q);
     if (snap.empty) { thread.innerHTML = '<div class="cit-history-empty">// No history recorded yet</div>'; return; }
     let html = '';
@@ -1723,10 +2254,7 @@ async function loadCitizenHistory(citizenId) {
       html += `<div class="cit-history-entry">
         <span class="che-ts">${ts}</span>
         <div class="che-body">
-          <span class="che-action">
-            <span class="log-act ${l.action||''}">${(l.action||'?').replace('_',' ')}</span>
-            ${arrow ? `&nbsp;<span style="color:var(--dim);font-family:var(--fM);font-size:9px;">${arrow}</span>` : ''}
-          </span>
+          <span class="che-action"><span class="log-act ${l.action||''}">${(l.action||'?').replace('_',' ')}</span>${arrow ? `&nbsp;<span style="color:var(--dim);font-family:var(--fM);font-size:9px;">${arrow}</span>` : ''}</span>
           ${l.note ? `<span class="che-note">${l.note}</span>` : ''}
         </div>
       </div>`;
@@ -1737,7 +2265,9 @@ async function loadCitizenHistory(citizenId) {
   }
 }
 
-/* ── ANNOUNCEMENTS ── */
+/* ════════════════════════════════
+   ANNOUNCEMENTS
+════════════════════════════════ */
 let allAnn = [];
 
 async function loadAnnouncements() {
@@ -1759,7 +2289,7 @@ window.loadAnnouncements = loadAnnouncements;
 
 function renderAnnList() {
   const list = document.getElementById('annList');
-  if (!allAnn.length) { list.innerHTML = '<div class="ann-empty">// No announcements yet — create one on the right</div>'; return; }
+  if (!allAnn.length) { list.innerHTML = '<div class="ann-empty">// No announcements — create one on the right</div>'; return; }
   list.innerHTML = allAnn.map(a => `
     <div class="ann-item ${a.active ? '' : 'inactive'}">
       <div class="ann-item-left">
@@ -1784,16 +2314,14 @@ function renderAnnList() {
 async function saveAnnouncement() {
   const body = document.getElementById('ann_body').value.trim();
   if (!body) { showAnnFb('err', '// Body text is required'); return; }
-  const btn = document.getElementById('annSaveBtn');
-  btn.disabled = true;
+  const btn = document.getElementById('annSaveBtn'); btn.disabled = true;
   showAnnFb('ok', '// Saving...');
   const data = {
-    type:      document.getElementById('ann_type').value,
-    body,
-    link:      document.getElementById('ann_link').value.trim(),
-    linkText:  document.getElementById('ann_link_text').value.trim(),
-    order:     parseInt(document.getElementById('ann_order').value) || 1,
-    active:    document.getElementById('ann_active').checked,
+    type: document.getElementById('ann_type').value, body,
+    link: document.getElementById('ann_link').value.trim(),
+    linkText: document.getElementById('ann_link_text').value.trim(),
+    order: parseInt(document.getElementById('ann_order').value) || 1,
+    active: document.getElementById('ann_active').checked,
     updatedAt: new Date().toISOString(),
   };
   try {
@@ -1801,29 +2329,25 @@ async function saveAnnouncement() {
     const { doc, setDoc, updateDoc } = window._fire;
     if (editId) {
       await updateDoc(doc(window._db, 'announcements', editId), data);
-      showAnnFb('ok', '// Announcement updated');
-      logAct('ok', `UPDATED announcement (${editId})`);
+      showAnnFb('ok', '// Updated'); logAct('ok', `UPDATED announcement (${editId})`);
     } else {
       data.createdAt = new Date().toISOString();
       const newRef = doc(window._db, 'announcements', `ann-${Date.now()}`);
       await setDoc(newRef, data);
-      showAnnFb('ok', '// Announcement created');
-      logAct('ok', 'CREATED new announcement');
+      showAnnFb('ok', '// Created'); logAct('ok', 'CREATED new announcement');
     }
-    clearAnnForm();
-    loadAnnouncements();
+    clearAnnForm(); loadAnnouncements();
   } catch(e) { showAnnFb('err', `// ERROR: ${e.message}`); }
   btn.disabled = false;
 }
 window.saveAnnouncement = saveAnnouncement;
 
 async function deleteAnn(id) {
-  if (!confirm('Delete this announcement? This cannot be undone.')) return;
+  if (!confirm('Delete this announcement?')) return;
   try {
     const { doc, deleteDoc } = window._fire;
     await deleteDoc(doc(window._db, 'announcements', id));
-    showToast('Announcement deleted', 'warn');
-    logAct('warn', `DELETED announcement (${id})`);
+    showToast('Announcement deleted', 'warn'); logAct('warn', `DELETED announcement (${id})`);
     loadAnnouncements();
   } catch(e) { showToast('Delete failed: '+e.message, 'err'); }
 }
@@ -1858,8 +2382,8 @@ window.editAnn = editAnn;
 
 function clearAnnForm() {
   ['ann_edit_id','ann_body','ann_link','ann_link_text'].forEach(id => { const el=document.getElementById(id); if(el) el.value=''; });
-  document.getElementById('ann_type').value    = 'notice';
-  document.getElementById('ann_order').value   = '1';
+  document.getElementById('ann_type').value   = 'notice';
+  document.getElementById('ann_order').value  = '1';
   document.getElementById('ann_active').checked = true;
   document.getElementById('annFormTitle').textContent = 'New Announcement';
   document.getElementById('annFb').className = 'ann-fb';
@@ -1868,62 +2392,184 @@ window.clearAnnForm = clearAnnForm;
 
 function showAnnFb(type, msg) {
   const fb = document.getElementById('annFb');
-  fb.textContent = msg;
-  fb.className = `ann-fb ${type} show`;
+  fb.textContent = msg; fb.className = `ann-fb ${type} show`;
 }
 
-/* ── ANALYTICS ── */
+/* ── ANALYTICS + CHART + FUNNEL ── */
 async function loadAnalytics() {
   try {
-    const { doc, getDoc } = window._fire;
-    const snap = await getDoc(doc(window._db,'analytics','counters'));
+    const { doc, getDoc, collection, getDocs } = window._fire;
+
+    const snap = await getDoc(doc(window._db, 'analytics', 'counters'));
     const data = snap.exists() ? snap.data() : {};
-    const set = (id, val) => { const el=document.getElementById(id); if(el) el.textContent = (val||0).toLocaleString(); };
+
+    const set = (id, val) => {
+      const el = document.getElementById(id);
+      if (el) el.textContent = (val || 0).toLocaleString();
+    };
+
     set('an_page_citizenship', data.page_citizenship);
-    set('an_page_apply',       data.page_apply);
-    set('an_page_status',      data.page_status);
-    set('an_page_id_card',     data.page_id_card);
-    set('an_page_registry',    data.page_registry);
-    const total=(data.page_citizenship||0)+(data.page_apply||0)+(data.page_status||0)+(data.page_id_card||0)+(data.page_registry||0);
+    set('an_page_apply', data.page_apply);
+    set('an_page_status', data.page_status);
+    set('an_page_id_card', data.page_id_card);
+    set('an_page_registry', data.page_registry);
+
+    const total =
+      (data.page_citizenship || 0) +
+      (data.page_apply || 0) +
+      (data.page_status || 0) +
+      (data.page_id_card || 0) +
+      (data.page_registry || 0);
+
     set('an_total_sessions', total);
-    set('an_app_submissions',   data.app_submissions);
-    set('an_status_checks',     data.status_checks);
-    set('an_id_card_lookups',   data.id_card_lookups);
+    set('an_app_submissions', data.app_submissions);
+    set('an_status_checks', data.status_checks);
+    set('an_id_card_lookups', data.id_card_lookups);
     set('an_id_card_downloads', data.id_card_downloads);
-    set('an_id_card_prints',    data.id_card_prints);
+    set('an_id_card_prints', data.id_card_prints);
     set('an_registry_searches', data.registry_searches);
-    set('an_ids_issued',        data.ids_issued);
-    set('an_status_updates',    data.status_updates);
-    document.getElementById('analyticsLastUpdated').textContent = `// Last loaded: ${new Date().toLocaleTimeString('en-GB')}`;
-    logAct('ok','LOADED analytics data');
-  } catch(e) {
-    document.getElementById('analyticsLastUpdated').textContent = `// Error: ${e.message}`;
+    set('an_ids_issued', data.ids_issued);
+    set('an_status_updates', data.status_updates);
+
+    const last = document.getElementById('analyticsLastUpdated');
+    if (last) last.textContent = `// Last loaded: ${new Date().toLocaleTimeString('en-GB')}`;
+
+    logAct('ok', 'LOADED analytics data');
+
+    const submitted = data.app_submissions || 0;
+    const issued = data.ids_issued || 0;
+
+    try {
+      const appSnap = await getDocs(collection(window._db, 'applications'));
+      let approved = 0;
+      appSnap.forEach(d => {
+        if ((d.data().status || '') === 'approved') approved++;
+      });
+      renderFunnel(submitted, approved, issued);
+    } catch {
+      renderFunnel(submitted, 0, issued);
+    }
+
+    await loadDailyChart();
+  } catch (e) {
+    const last = document.getElementById('analyticsLastUpdated');
+    if (last) last.textContent = `// Error: ${e.message}`;
   }
 }
 window.loadAnalytics = loadAnalytics;
+
+function renderFunnel(submitted, approved, issued) {
+  const wrap = document.getElementById('funnelWrap');
+  if (!wrap) return;
+
+  const max = Math.max(submitted, approved, issued, 1);
+
+  const stage = (label, value, cls) => {
+    const pct = Math.max(6, Math.round((value / max) * 100));
+    return `
+      <div style="display:flex;flex-direction:column;gap:6px;margin-bottom:12px;">
+        <div style="display:flex;justify-content:space-between;align-items:center;font-family:var(--fM);font-size:9px;letter-spacing:0.1em;color:var(--muted);text-transform:uppercase;">
+          <span>${label}</span>
+          <span style="color:var(--text)">${value.toLocaleString()}</span>
+        </div>
+        <div style="height:12px;background:var(--surface);border:1px solid var(--border);overflow:hidden;">
+          <div style="height:100%;width:${pct}%;background:var(--${cls});"></div>
+        </div>
+      </div>
+    `;
+  };
+
+  wrap.innerHTML = `
+    ${stage('Applications', submitted, 'amber-l')}
+    ${stage('Approved', approved, 'blue-l')}
+    ${stage('Issued', issued, 'emerald-l')}
+  `;
+}
+
+async function loadDailyChart() {
+  const wrap = document.getElementById('hourlyChartWrap');
+  const meta = document.getElementById('chartMeta');
+  if (!wrap) return;
+
+  try {
+    const { doc, getDoc } = window._fire;
+    const today = new Date().toISOString().split('T')[0];
+    const snap = await getDoc(doc(window._db, 'analytics', `daily_${today}`));
+    const data = snap.exists() ? snap.data() : {};
+
+    const hours = Array.from({ length: 24 }, (_, h) => {
+      const v =
+        data.hours?.[h] ??
+        data[`h${h}`] ??
+        data[`hour_${h}`] ??
+        data[`hour${h}`] ??
+        0;
+      return Number(v) || 0;
+    });
+
+    const max = Math.max(...hours, 1);
+
+    wrap.innerHTML = `
+      <div style="display:flex;align-items:flex-end;gap:4px;width:100%;height:140px;padding:8px 0;">
+        ${hours.map((v, h) => {
+          const height = Math.max(2, Math.round((v / max) * 120));
+          return `
+            <div style="flex:1;display:flex;flex-direction:column;justify-content:flex-end;align-items:stretch;min-width:0;">
+              <div title="${String(h).padStart(2, '0')}:00 — ${v}" style="height:${height}px;background:rgba(201,168,76,0.22);border:1px solid rgba(201,168,76,0.3);"></div>
+              <div style="margin-top:4px;text-align:center;font-family:var(--fM);font-size:7px;color:var(--dim);">${h}</div>
+            </div>
+          `;
+        }).join('')}
+      </div>
+    `;
+
+    if (meta) meta.textContent = `// Loaded ${today}`;
+  } catch (e) {
+    wrap.textContent = `// Chart error: ${e.message}`;
+    if (meta) meta.textContent = '// Chart unavailable';
+  }
+}
 
 async function resetAnalytics() {
   if (!confirm('Reset ALL analytics counters to 0? This cannot be undone.')) return;
   try {
     const { doc, setDoc } = window._fire;
-    await setDoc(doc(window._db,'analytics','counters'), {
-      page_citizenship:0, page_apply:0, page_status:0, page_id_card:0, page_registry:0,
-      app_submissions:0, status_checks:0, id_card_lookups:0, id_card_downloads:0, id_card_prints:0,
-      registry_searches:0, ids_issued:0, status_updates:0
+    await setDoc(doc(window._db, 'analytics', 'counters'), {
+      page_citizenship: 0,
+      page_apply: 0,
+      page_status: 0,
+      page_id_card: 0,
+      page_registry: 0,
+      app_submissions: 0,
+      status_checks: 0,
+      id_card_lookups: 0,
+      id_card_downloads: 0,
+      id_card_prints: 0,
+      registry_searches: 0,
+      ids_issued: 0,
+      status_updates: 0,
     });
+
     showToast('Analytics counters reset', 'warn');
-    logAct('warn','RESET analytics counters');
+    logAct('warn', 'RESET analytics counters');
     loadAnalytics();
-  } catch(e) { showToast('Reset failed: '+e.message,'err'); }
+  } catch (e) {
+    showToast('Reset failed: ' + e.message, 'err');
+  }
 }
 window.resetAnalytics = resetAnalytics;
 
 async function trackAdminEvent(eventName) {
   try {
     const { doc, setDoc, increment } = window._fire;
-    await setDoc(doc(window._db,'analytics','counters'), {[eventName]: increment(1)}, {merge:true});
+    await setDoc(
+      doc(window._db, 'analytics', 'counters'),
+      { [eventName]: increment(1) },
+      { merge: true }
+    );
   } catch {}
 }
+window.trackAdminEvent = trackAdminEvent;
 </script>
 </body>
 </html>
