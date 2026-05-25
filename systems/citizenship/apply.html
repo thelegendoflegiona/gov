@@ -42,7 +42,7 @@
     <a href="/gov/systems/archives/">ARCHIVES</a>
   </div>
 
-  <div style="padding: 16px 28px;">
+  <div style="padding: 16px 28px; border-bottom: 1px solid var(--border-solid);">
     <div class="breadcrumb">
       <a href="/gov/">Government</a>
       <span>//</span>
@@ -214,17 +214,43 @@
   </main>
 
   <footer>
-    <div class="footer-bottom">
-      <p>© 2026 THE LEGEND OF LEGIONA // CITIZENSHIP PORTAL</p>
-      <a href="/gov/systems/citizenship/">← Citizenship Info</a>
+    <div class="footer-inner">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <h3>The Legend of <em>Legiona</em></h3>
+          <p>Official citizenship portal of The LoL — a sovereign nation on Skyxion Minecraft server, est. 2021. Egalitarian governance. Open to all active players.</p>
+        </div>
+        <div class="footer-col">
+          <h4>Citizenship</h4>
+          <ul>
+            <li><a href="/gov/systems/citizenship/">Overview</a></li>
+            <li><a href="/gov/systems/citizenship/apply">Apply / Renew</a></li>
+            <li><a href="/gov/systems/citizenship/status">Check Status</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Government</h4>
+          <ul>
+            <li><a href="/gov/">Gov Portal</a></li>
+            <li><a href="/gov/systems/archives/">Legal Archive</a></li>
+            <li><a href="/gov/systems/id/">ID Card Portal</a></li>
+            <li><a href="/isc/">ISC Portal</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <div class="copy">© 2026 THE LEGEND OF LEGIONA // CITIZENSHIP PORTAL</div>
+        <div class="era">SKYXION: ALTAËR ERA // THELOL.GOV</div>
+      </div>
+      <p class="disclaimer">
+        <strong>LEGAL DISCLAIMER:</strong> The Legend of Legiona (The LoL) is an independent community project within Minecraft.
+        The terms "Skyxion" and "Altaër" used within this project and era designation are not affiliated with, or associated with Kawaiisho.
+        This project is NOT AN OFFICIAL MINECRAFT PRODUCT. Not approved by or associated with Mojang AB or Microsoft Corporation.
+      </p>
     </div>
-    <p class="disclaimer">
-      <strong>LEGAL DISCLAIMER:</strong> The Legend of Legiona (The LoL) is an independent community project within Minecraft. Not affiliated with Kawaiisho, Mojang AB, or Microsoft Corporation.
-    </p>
   </footer>
 
   <script>
-    // ── Hamburger ──
     const burger = document.getElementById('burger');
     const mobileNav = document.getElementById('mobileNav');
     burger.addEventListener('click', () => {
@@ -238,14 +264,12 @@
       });
     });
 
-    // ── Pre-select type from URL param ──
     (function () {
       const params = new URLSearchParams(window.location.search);
       const t = params.get('type');
       if (t === 'renew') selectType('renew');
     })();
 
-    // ── Type selector ──
     function selectType(type) {
       document.getElementById('appType').value = type;
       document.querySelectorAll('.type-btn').forEach(btn => {
@@ -255,7 +279,6 @@
         type === 'renew' ? 'Submit Renewal →' : 'Submit Application →';
     }
 
-    // ── Contact method toggle ──
     function setContact(method) {
       document.getElementById('contactMethod').value = method;
       document.getElementById('ctDiscord').classList.toggle('active', method === 'discord');
@@ -270,42 +293,30 @@
       }
     }
 
-    // ── Validation ──
     function setFieldError(id, msg) {
       const el = document.getElementById(id);
       el.classList.add('invalid');
-      if (msg) {
-        const errEl = el.querySelector('.field-error');
-        if (errEl) errEl.textContent = msg;
-      }
+      if (msg) { const errEl = el.querySelector('.field-error'); if (errEl) errEl.textContent = msg; }
     }
-    function clearFieldError(id) {
-      document.getElementById(id)?.classList.remove('invalid');
-    }
+    function clearFieldError(id) { document.getElementById(id)?.classList.remove('invalid'); }
 
     function validateForm() {
       let valid = true;
       const callName = document.getElementById('callName').value.trim();
-      if (!callName) { setFieldError('fieldCallName'); valid = false; }
-      else clearFieldError('fieldCallName');
+      if (!callName) { setFieldError('fieldCallName'); valid = false; } else clearFieldError('fieldCallName');
       const ign = document.getElementById('ign').value.trim();
-      if (!ign) { setFieldError('fieldIGN'); valid = false; }
-      else clearFieldError('fieldIGN');
+      if (!ign) { setFieldError('fieldIGN'); valid = false; } else clearFieldError('fieldIGN');
       const contact = document.getElementById('contactInput').value.trim();
-      if (!contact) { document.getElementById('fieldContact').classList.add('invalid'); valid = false; }
-      else clearFieldError('fieldContact');
-      const checks     = document.querySelectorAll('.decl-check');
+      if (!contact) { document.getElementById('fieldContact').classList.add('invalid'); valid = false; } else clearFieldError('fieldContact');
+      const checks = document.querySelectorAll('.decl-check');
       const allChecked = Array.from(checks).every(c => c.checked);
       if (!allChecked) { document.getElementById('declError').style.display = 'block'; valid = false; }
       else document.getElementById('declError').style.display = 'none';
       return valid;
     }
 
-    // ── IGN DUPLICATE CHECK ──
-    let ignCheckTimer  = null;
-    let ignBlocked     = false;
-    let ignFoundRecord = null;
-    const ignInput  = document.getElementById('ign');
+    let ignCheckTimer = null, ignBlocked = false, ignFoundRecord = null;
+    const ignInput = document.getElementById('ign');
     const ignResult = document.getElementById('ignCheckResult');
     const ignField  = document.getElementById('fieldIGN');
 
@@ -318,21 +329,17 @@
       if (!window._nisReady) { ignResult.style.display = 'none'; ignBlocked = false; return; }
       try {
         const { collection, query, where, getDocs } = window._nisQuery;
-        const q    = query(collection(window._nisDB, 'citizens'), where('username', '==', username));
+        const q = query(collection(window._nisDB, 'citizens'), where('username', '==', username));
         const snap = await getDocs(q);
         if (snap.empty) { ignResult.style.display = 'none'; ignBlocked = false; ignFoundRecord = null; ignField.classList.remove('ign-blocked'); return; }
-        const docData  = snap.docs[0].data();
-        const docId    = snap.docs[0].id;
-        const status   = (docData.status || 'active').toLowerCase();
+        const docData = snap.docs[0].data();
+        const docId   = snap.docs[0].id;
+        const status  = (docData.status || 'active').toLowerCase();
         ignFoundRecord = { ...docData, id: docId };
         if (status === 'active' || status === 'suspended') {
           ignBlocked = true; ignField.classList.add('ign-blocked');
-          const statusLabel  = status === 'suspended' ? 'Suspended' : 'Active';
-          const statusColor  = status === 'suspended' ? 'color:var(--amber,#c9a84c)' : 'color:var(--gold)';
-          const idCardLink   = `/gov/systems/id/id-card?id=${encodeURIComponent(docId)}`;
-          const registryLink = `/gov/systems/id/registry?id=${encodeURIComponent(docId)}`;
-          const renewLink    = `/gov/systems/citizenship/apply?type=renew`;
-          // Stats
+          const statusLabel = status === 'suspended' ? 'Suspended' : 'Active';
+          const statusColor = status === 'suspended' ? 'color:var(--amber,#c9a84c)' : 'color:var(--gold)';
           window.statsTrackEvent?.('ign_check_hits');
           ignResult.innerHTML = `
             <div class="ign-check-box found-active">
@@ -342,13 +349,12 @@
                 This Minecraft username already holds a citizenship record in the NIS.<br>
                 National ID: <strong style="font-family:var(--fm);${statusColor}">${docId}</strong>
                 ${status === 'suspended' ? '<br><br>Note: this citizenship is currently <strong>suspended</strong> and under review by The Black House.' : ''}
-                <br><br>If this is you, use the links below to view your ID card or submit a renewal.
-                If this is not you, contact the Government — username conflicts must be resolved before applying.
+                <br><br>If this is you, use the links below to view your ID card or submit a renewal. If this is not you, contact the Government — username conflicts must be resolved before applying.
               </p>
               <div class="ign-check-actions">
-                <a href="${idCardLink}" class="ign-check-btn ign-check-btn-gold" target="_blank">View My ID Card →</a>
-                <a href="${registryLink}" class="ign-check-btn ign-check-btn-ghost" target="_blank">Check Registry</a>
-                <a href="${renewLink}" class="ign-check-btn ign-check-btn-ghost">Submit Renewal →</a>
+                <a href="/gov/systems/id/id-card?id=${encodeURIComponent(docId)}" class="ign-check-btn ign-check-btn-gold" target="_blank">View My ID Card →</a>
+                <a href="/gov/systems/id/registry?id=${encodeURIComponent(docId)}" class="ign-check-btn ign-check-btn-ghost" target="_blank">Check Registry</a>
+                <a href="/gov/systems/citizenship/apply?type=renew" class="ign-check-btn ign-check-btn-ghost">Submit Renewal →</a>
               </div>
             </div>`;
         } else if (status === 'revoked') {
@@ -357,7 +363,7 @@
             <div class="ign-check-box found-revoked">
               <span class="ign-check-tag">// NIS Record Found · Revoked</span>
               <div class="ign-check-title">Previous citizenship revoked</div>
-              <p class="ign-check-body">A previous citizenship record was found for this username but it has been <strong>revoked</strong>. You may still submit a new application — however, your prior record will be visible to The Government during review. Applications from previously revoked citizens are subject to additional scrutiny.</p>
+              <p class="ign-check-body">A previous citizenship record was found for this username but it has been <strong>revoked</strong>. You may still submit a new application — however, your prior record will be visible to The Government during review.</p>
               <div class="ign-check-actions">
                 <button class="ign-check-btn ign-check-btn-red" onclick="this.closest('.ign-check-box').style.display='none'">I Understand — Continue</button>
               </div>
@@ -373,28 +379,23 @@
     });
     ignInput.addEventListener('blur', () => { clearTimeout(ignCheckTimer); const val = ignInput.value.trim(); if (val.length >= 3) checkIgnExists(val); });
 
-    // ── Generate reference number ──
     function genRef() {
       const year = new Date().getFullYear();
       const num  = String(Math.floor(1000 + Math.random() * 8999 + (Date.now() % 97))).slice(0, 4);
       return `THELOL-CTZN-${year}-${num}`;
     }
 
-    // ── Copy reference number ──
     function copyRef() {
       const ref = document.getElementById('successRef').textContent;
       navigator.clipboard.writeText(ref).then(() => {
-        const btn  = document.getElementById('copyBtn');
+        const btn = document.getElementById('copyBtn');
         const icon = document.getElementById('copyIcon');
         const txt  = document.getElementById('copyTxt');
         btn.classList.add('copied'); icon.textContent = '✓'; txt.textContent = 'Copied!';
         setTimeout(() => { btn.classList.remove('copied'); icon.textContent = '⧉'; txt.textContent = 'Copy Reference'; }, 2500);
-      }).catch(() => {
-        const el = document.createElement('textarea'); el.value = ref; document.body.appendChild(el); el.select(); document.execCommand('copy'); document.body.removeChild(el);
       });
     }
 
-    // ── Write application to Firestore (fire and forget) ──
     async function writeApplicationToFirestore(data) {
       try {
         let attempts = 0;
@@ -402,27 +403,14 @@
         if (!window._nisReady || !window._nisWrite) return;
         const { doc, setDoc } = window._nisWrite;
         await setDoc(doc(window._nisDB, 'applications', data.ref), {
-          ref:           data.ref,
-          status:        'pending',
-          ign:           data.ign,
-          callName:      data.callName,
-          type:          data.type,
-          contact:       data.contact,
-          contactMethod: data.contactMethod,
-          submitted:     new Date().toISOString().split('T')[0],
-          processed:     '',
-          era:           'SKYXION: ALTAËR ERA',
-          thelol_id:     '',
-          public_note:   '',
-          admin_note:    '',
+          ref: data.ref, status: 'pending', ign: data.ign, callName: data.callName,
+          type: data.type, contact: data.contact, contactMethod: data.contactMethod,
+          submitted: new Date().toISOString().split('T')[0], processed: '',
+          era: 'SKYXION: ALTAËR ERA', thelol_id: '', public_note: '', admin_note: '',
         });
-      } catch (e) {
-        // Silent fail — Formspree already captured the submission
-        console.warn('[NIS] Application Firestore write failed:', e.message);
-      }
+      } catch (e) { console.warn('[NIS] Application Firestore write failed:', e.message); }
     }
 
-    // ── Submit to Formspree ──
     document.getElementById('citizenForm').addEventListener('submit', async function (e) {
       e.preventDefault();
       if (!validateForm()) return;
@@ -451,25 +439,18 @@
       try {
         const res  = await fetch('https://formspree.io/f/xvzldagr', { method: 'POST', body: fd, headers: { 'Accept': 'application/json' } });
         const data = await res.json();
-
         if (res.ok && data.ok) {
-          // Write to Firestore — non-blocking
           writeApplicationToFirestore({ ref, ign, callName, type, contact, contactMethod: contactMethodVal });
-          // Stats
           window.statsTrackEvent?.('app_submissions');
-
           document.getElementById('formWrapper').style.display = 'none';
           document.getElementById('successRef').textContent = ref;
           document.getElementById('statusLink').href = `/gov/systems/citizenship/status?ref=${encodeURIComponent(ref)}`;
           document.getElementById('panelSuccess').classList.add('show');
           window.scrollTo({ top: 0, behavior: 'smooth' });
         } else {
-          const errMsg = (data.errors && data.errors.length)
-            ? data.errors.map(err => err.message).join(' ')
-            : 'Submission rejected by server. Check your details and try again.';
+          const errMsg = (data.errors && data.errors.length) ? data.errors.map(err => err.message).join(' ') : 'Submission rejected by server. Check your details and try again.';
           throw new Error(errMsg);
         }
-
       } catch (err) {
         document.getElementById('panelError').classList.add('show');
         document.getElementById('errorMsg').textContent = err.message || 'An error occurred. Check your connection and try again.';
@@ -495,11 +476,9 @@
     });
   </script>
 
-  <!-- ── Firebase ── -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/12.12.1/firebase-app.js";
     import { getFirestore, collection, getDocs, query, where, doc, setDoc } from "https://www.gstatic.com/firebasejs/12.12.1/firebase-firestore.js";
-
     const firebaseConfig = {
       apiKey: "AIzaSyAgrLJDO8F6yyVLFubiZdRGiEl5ICRSAdQ",
       authDomain: "the-legend-of-legiona-the-lol.firebaseapp.com",
@@ -509,13 +488,11 @@
       appId: "1:29247096448:web:370f536ad630c088b94865",
       measurementId: "G-VX3M8X2P43"
     };
-
     const app = initializeApp(firebaseConfig);
     const db  = getFirestore(app);
-
     window._nisDB    = db;
     window._nisQuery = { collection, query, where, getDocs };
-    window._nisWrite = { doc, setDoc };   // ← for writing applications
+    window._nisWrite = { doc, setDoc };
     window._nisReady = true;
   </script>
   <script type="module" src="/gov/assets/js/stats.js"></script>
