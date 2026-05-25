@@ -37,11 +37,12 @@
     <a href="/main/">THE LOL</a>
     <a href="/gov/">GOVERNMENT</a>
     <a href="/gov/systems/citizenship/" class="active">CITIZENSHIP</a>
+    <a href="/gov/systems/id/">IDENTITY CARD</a>
     <a href="/isc/">ISC</a>
     <a href="/gov/systems/archives/">ARCHIVES</a>
   </div>
 
-  <div style="padding: 16px 28px;">
+  <div style="padding: 16px 28px; border-bottom: 1px solid var(--border-solid);">
     <div class="breadcrumb">
       <a href="/gov/">Government</a>
       <span>//</span>
@@ -52,6 +53,7 @@
   </div>
 
   <main class="page">
+
     <div class="page-hd">
       <span class="page-tag">THELOL.GOV // CITIZENSHIP STATUS // ALTAËR ERA</span>
       <h1>Application <em>Status</em></h1>
@@ -125,23 +127,48 @@
   </main>
 
   <footer>
-    <div class="footer-bottom">
-      <p>© 2026 THE LEGEND OF LEGIONA // CITIZENSHIP PORTAL</p>
-      <a href="/gov/systems/citizenship/">← Citizenship Info</a>
+    <div class="footer-inner">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <h3>The Legend of <em>Legiona</em></h3>
+          <p>Official citizenship portal of The LoL — a sovereign nation on Skyxion Minecraft server, est. 2021. Egalitarian governance. Open to all active players.</p>
+        </div>
+        <div class="footer-col">
+          <h4>Citizenship</h4>
+          <ul>
+            <li><a href="/gov/systems/citizenship/">Overview</a></li>
+            <li><a href="/gov/systems/citizenship/apply">Apply / Renew</a></li>
+            <li><a href="/gov/systems/citizenship/status">Check Status</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Government</h4>
+          <ul>
+            <li><a href="/gov/">Gov Portal</a></li>
+            <li><a href="/gov/systems/archives/">Legal Archive</a></li>
+            <li><a href="/gov/systems/id/">ID Card Portal</a></li>
+            <li><a href="/isc/">ISC Portal</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <div class="copy">© 2026 THE LEGEND OF LEGIONA // CITIZENSHIP PORTAL</div>
+        <div class="era">SKYXION: ALTAËR ERA // THELOL.GOV</div>
+      </div>
+      <p class="disclaimer">
+        <strong>LEGAL DISCLAIMER:</strong> The Legend of Legiona (The LoL) is an independent community project within Minecraft.
+        The terms "Skyxion" and "Altaër" used within this project and era designation are not affiliated with, or associated with Kawaiisho.
+        This project is NOT AN OFFICIAL MINECRAFT PRODUCT. Not approved by or associated with Mojang AB or Microsoft Corporation.
+      </p>
     </div>
-    <p class="disclaimer">
-      <strong>LEGAL DISCLAIMER:</strong> The Legend of Legiona (The LoL) is an independent community project within Minecraft. Not affiliated with Kawaiisho, Mojang AB, or Microsoft Corporation.
-    </p>
   </footer>
 
   <script>
-    /* ── Hamburger ── */
     const burger = document.getElementById('burger');
     const mobileNav = document.getElementById('mobileNav');
     burger.addEventListener('click', () => { burger.classList.toggle('open'); mobileNav.classList.toggle('open'); });
     mobileNav.querySelectorAll('a').forEach(a => { a.addEventListener('click', () => { burger.classList.remove('open'); mobileNav.classList.remove('open'); }); });
 
-    /* ── Status config ── */
     const STATUS_CONFIG = {
       approved: {
         label: 'Approved', badgeClass: 'badge-approved', cardClass: 'status-approved',
@@ -180,7 +207,6 @@
       }
     };
 
-    /* ── URL param auto-fill ── */
     (function () {
       const params = new URLSearchParams(window.location.search);
       const ref = params.get('ref');
@@ -190,7 +216,6 @@
       }
     })();
 
-    /* ── NIS block builder ── */
     function buildNisBlock(entry) {
       if (entry.status === 'approved' && entry.thelol_id) {
         const id = entry.thelol_id.toUpperCase();
@@ -223,7 +248,6 @@
       return '';
     }
 
-    /* ── Copy NIS ID ── */
     function copyNisId(id, btn) {
       navigator.clipboard.writeText(id).then(() => {
         btn.classList.add('copied'); btn.textContent = '✓ Copied!';
@@ -231,7 +255,6 @@
       });
     }
 
-    /* ── Render result ── */
     function renderResult(entry) {
       const panel  = document.getElementById('resultPanel');
       const config = STATUS_CONFIG[entry.status] || STATUS_CONFIG['not_found'];
@@ -240,12 +263,11 @@
       if (entry.ref && entry.ref.match(/^THELOL-CTZN-\d{4}-\d{4}$/)) {
         history.replaceState(null, '', `?ref=${encodeURIComponent(entry.ref)}`);
       }
-      // Stats
       window.statsTrackEvent?.('status_checks');
       if (entry.status && entry.status !== 'not_found') {
         window.statsTrackEvent?.('status_result_' + entry.status);
       }
-      
+
       const cells = [];
       if (entry.ref)       cells.push({ lbl: 'Reference', val: entry.ref });
       if (entry.ign)       cells.push({ lbl: 'IGN',       val: entry.ign });
@@ -254,11 +276,11 @@
       if (entry.processed) cells.push({ lbl: 'Processed', val: entry.processed });
       if (entry.era)       cells.push({ lbl: 'Era',       val: entry.era });
 
-      const metaHTML   = cells.length ? `<div class="result-meta-grid">${cells.map(c => `<div class="meta-cell"><span class="meta-lbl">${c.lbl}</span><span class="meta-val">${c.val}</span></div>`).join('')}</div>` : '';
-      const publicNote = (entry.public_note || '').trim();
-      const noteHTML   = publicNote ? `<div class="result-public-note"><span class="note-lbl">Note from the Office of the President</span>${publicNote}</div>` : '';
+      const metaHTML    = cells.length ? `<div class="result-meta-grid">${cells.map(c => `<div class="meta-cell"><span class="meta-lbl">${c.lbl}</span><span class="meta-val">${c.val}</span></div>`).join('')}</div>` : '';
+      const publicNote  = (entry.public_note || '').trim();
+      const noteHTML    = publicNote ? `<div class="result-public-note"><span class="note-lbl">Note from the Office of the President</span>${publicNote}</div>` : '';
       const actionsHTML = config.actions.map(a => `<a href="${a.href}" class="action-btn ${a.primary ? 'action-btn-primary' : 'action-btn-ghost'}">${a.label}</a>`).join('');
-      const nisHTML    = buildNisBlock(entry);
+      const nisHTML     = buildNisBlock(entry);
 
       panel.innerHTML = `
         <div class="result-card ${config.cardClass}">
@@ -288,7 +310,6 @@
       panel.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
 
-    /* ── Main check — queries Firestore directly ── */
     async function checkStatus() {
       const input = document.getElementById('refInput').value.trim().toUpperCase();
       const btn   = document.getElementById('checkBtn');
@@ -304,7 +325,6 @@
       btn.classList.add('loading'); btn.disabled = true;
       panel.classList.remove('show');
 
-      // Wait for Firebase to be ready
       let attempts = 0;
       while (!window._fbReady && attempts < 40) { await new Promise(r => setTimeout(r, 100)); attempts++; }
 
@@ -317,7 +337,6 @@
       try {
         const { doc, getDoc } = window._statusFire;
         const snap = await getDoc(doc(window._statusDB, 'applications', input));
-
         if (!snap.exists()) {
           renderResult({ status: 'not_found', ref: input });
         } else {
@@ -348,11 +367,9 @@
     });
   </script>
 
-  <!-- ── Firebase ── -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/12.12.1/firebase-app.js";
     import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/12.12.1/firebase-firestore.js";
-
     const firebaseConfig = {
       apiKey: "AIzaSyAgrLJDO8F6yyVLFubiZdRGiEl5ICRSAdQ",
       authDomain: "the-legend-of-legiona-the-lol.firebaseapp.com",
@@ -362,10 +379,8 @@
       appId: "1:29247096448:web:370f536ad630c088b94865",
       measurementId: "G-VX3M8X2P43"
     };
-
     const app = initializeApp(firebaseConfig);
     const db  = getFirestore(app);
-
     window._statusDB   = db;
     window._statusFire = { doc, getDoc };
     window._fbReady    = true;
