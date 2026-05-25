@@ -15,7 +15,7 @@
 
   <!-- NOTICE BAR -->
   <div class="notice-bar">
-    CITIZENSHIP APPLICATION SUBMITTED? — TRACK YOUR PROGRESS // 
+    CITIZENSHIP APPLICATION SUBMITTED? — TRACK YOUR PROGRESS //
     <a href="/gov/systems/citizenship/status">CHECK YOUR STATUS →</a>
   </div>
 
@@ -35,11 +35,12 @@
     </button>
   </nav>
 
-  <!-- MOBILE NAV -->
-  <div class="mobile-nav" id="mobileNav">
+  <!-- MOBILE NAV — fixed class -->
+  <div class="mobile-menu" id="mobileNav">
     <a href="/main/">THE LOL</a>
     <a href="/gov/">GOVERNMENT</a>
-    <a href=" " class="active">CITIZENSHIP</a>
+    <a href="/gov/systems/citizenship/" class="active">CITIZENSHIP</a>
+    <a href="/gov/systems/id/">ID CARD</a>
     <a href="/isc/">ISC</a>
     <a href="/gov/systems/archives/">ARCHIVES</a>
     <a href="/gov/systems/citizenship/apply">APPLY / RENEW →</a>
@@ -143,7 +144,7 @@
             </li>
             <li>
               <span class="req-icon">✓</span>
-              <div><strong>Willingness to Comply</strong>Full agreement to all obligations of citizenship as defined in this portal and the Rights Charter (<a href="https://drive.google.com/file/d/15_uhF4AtnEgzm6EBqear4qNtDO0_CgUZ/view?usp=drive_link" target="blank">THELOLGOV-29-03-2026-0003</a>).</div>
+              <div><strong>Willingness to Comply</strong>Full agreement to all obligations of citizenship as defined in this portal and the Rights Charter (<a href="https://drive.google.com/file/d/15_uhF4AtnEgzm6EBqear4qNtDO0_CgUZ/view?usp=drive_link" target="_blank">THELOLGOV-29-03-2026-0003</a>).</div>
             </li>
           </ul>
         </div>
@@ -199,7 +200,7 @@
           <div class="step-n">02</div>
           <span class="step-tag">STEP-02 // SUBMIT</span>
           <h4>Submit Application</h4>
-          <p>Complete the official form. Provide your call name, Minecraft IGN (case-sensitive), contact details, and upload a screenshot of your Minecraft skin avatar. Choose Apply or Renew.</p>
+          <p>Complete the official form. Provide your call name, Minecraft IGN (case-sensitive), and contact details. Choose Apply or Renew as appropriate.</p>
         </div>
         <div class="step">
           <div class="step-n">03</div>
@@ -303,7 +304,6 @@
         </p>
       </div>
 
-      <!-- EXCERPT 1: CITIZENSHIP ACT -->
       <div class="doc-box">
         <div class="doc-box-hd">
           <div>
@@ -313,10 +313,6 @@
           <span class="doc-badge">Excerpt</span>
         </div>
         <div class="doc-body">
-          <!-- ============================================================
-               REPLACE THIS BLOCK WITH YOUR ACTUAL DOCUMENT CONTENT.
-               Copy the relevant Articles/Sections from the .docx file.
-               ============================================================ -->
           <div class="doc-article">
             <span class="doc-art-title">Article I — Establishment of Citizenship</span>
             <span class="doc-line">Section 1.1 — The Legend of Legiona hereby establishes a formal citizenship framework applicable to all players within the sovereign territory of The LoL on the Skyxion server.</span>
@@ -336,7 +332,6 @@
         </div>
       </div>
 
-      <!-- EXCERPT 2: REVOCATION ORDINANCE -->
       <div class="doc-box">
         <div class="doc-box-hd">
           <div>
@@ -346,9 +341,6 @@
           <span class="doc-badge">Excerpt</span>
         </div>
         <div class="doc-body">
-          <!-- ============================================================
-               REPLACE THIS BLOCK WITH YOUR ACTUAL DOCUMENT CONTENT.
-               ============================================================ -->
           <div class="doc-article">
             <span class="doc-art-title">Article I — Authority of Revocation</span>
             <span class="doc-line">Section 1.1 — The Office of the President of The Legend of Legiona reserves the unconditional right to revoke the citizenship of any individual at any time and from any location, without prior notice, and without the requirement for stated justification.</span>
@@ -386,7 +378,7 @@
       <div class="footer-grid">
         <div class="footer-brand">
           <h3>The Legend of <em>Legiona</em></h3>
-          <p>Official citizenship portal of The LoL — a sovereign nation on Skyxion Minecraft server, est. 2023. Egalitarian governance. Open to all players.</p>
+          <p>Official citizenship portal of The LoL — a sovereign nation on Skyxion Minecraft server, est. 2021. Egalitarian governance. Open to all active players.</p>
         </div>
         <div class="footer-col">
           <h4>Citizenship</h4>
@@ -396,6 +388,7 @@
             <li><a href="#process">Process</a></li>
             <li><a href="#obligations">Obligations</a></li>
             <li><a href="/gov/systems/citizenship/apply">Apply / Renew</a></li>
+            <li><a href="/gov/systems/citizenship/status">Check Status</a></li>
           </ul>
         </div>
         <div class="footer-col">
@@ -403,6 +396,7 @@
           <ul>
             <li><a href="/gov/">Gov Portal</a></li>
             <li><a href="/gov/systems/archives/">Legal Archive</a></li>
+            <li><a href="/gov/systems/id/">ID Card Portal</a></li>
             <li><a href="/isc/">ISC Portal</a></li>
             <li><a href="/gov/about/">About The LoL</a></li>
           </ul>
@@ -412,14 +406,42 @@
         <div class="copy">© 2026 THE LEGEND OF LEGIONA // CITIZENSHIP PORTAL</div>
         <div class="era">SKYXION: ALTAËR ERA // THELOL.GOV</div>
       </div>
-      <div style="margin-top: 25px; font-family: 'DM Mono', monospace; font-size: 9px; color: var(--text-dim); border-top: 1px solid rgba(255,255,255,0.05); padding-top: 15px; opacity: 0.8; line-height: 1.6;">
+      <p class="disclaimer">
         <strong>LEGAL DISCLAIMER:</strong> The Legend of Legiona (The LoL) is an independent community project within Minecraft.
         The terms "Skyxion" and "Altaër" used within this project and era designation are not affiliated with, or associated with Kawaiisho.
         This project is NOT AN OFFICIAL MINECRAFT PRODUCT. Not approved by or associated with Mojang AB or Microsoft Corporation.
-      </div>
+      </p>
     </div>
   </footer>
 
+  <script>
+    const burger = document.getElementById('burger');
+    const mobileNav = document.getElementById('mobileNav');
+    burger.addEventListener('click', () => {
+      burger.classList.toggle('open');
+      mobileNav.classList.toggle('open');
+    });
+    mobileNav.querySelectorAll('a').forEach(a => {
+      a.addEventListener('click', () => {
+        burger.classList.remove('open');
+        mobileNav.classList.remove('open');
+      });
+    });
+
+    // Active snav on scroll
+    const snavLinks = document.querySelectorAll('.snav a[href^="#"]');
+    const sections  = document.querySelectorAll('section[id]');
+    const observer  = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          snavLinks.forEach(l => l.classList.remove('active'));
+          const active = document.querySelector(`.snav a[href="#${e.target.id}"]`);
+          if (active) active.classList.add('active');
+        }
+      });
+    }, { rootMargin: '-40% 0px -55% 0px' });
+    sections.forEach(s => observer.observe(s));
+  </script>
   <script src="/gov/systems/citizenship/assets/js/script.js"></script>
   <script type="module" src="/gov/assets/js/stats.js"></script>
 </body>
