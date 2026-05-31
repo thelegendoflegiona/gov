@@ -18,6 +18,7 @@
       <a href="/main/">HUB</a>
       <a href="/gov/">GOVERNMENT</a>
       <a href="/gov/systems/citizenship/">CITIZENSHIP</a>
+      <a href="/gov/systems/id/">IDENTITY CARD</a>
       <a href="/gov/systems/archives/">ARCHIVES</a>
       <a href="/isc/">ISC</a>
     </div>
@@ -247,6 +248,7 @@
         </div>
         <div class="footer-col">
           <h5>Documents</h5>
+          <a href="/gov/systems/id/">Identity Card (ID)</a>
           <a href="/gov/systems/archives/">Legal Archive</a>
           <a href="/gov/about/">About This Portal</a>
         </div>
@@ -263,10 +265,7 @@
     </div>
   </footer>
 
-  <!-- ════════════════════════════════════════════
-       pAIz CHATBOT WIDGET
-  ════════════════════════════════════════════ -->
-
+  <!-- pAIz CHATBOT WIDGET -->
   <button id="paiz-toggle" onclick="togglePaiz()" aria-label="Open pAIz chatbot">
     <span class="toggle-icon" id="paiz-icon">✦</span>
     <span class="toggle-label">pAIz</span>
@@ -299,26 +298,17 @@
     <div class="paiz-powered">pAIz v5.3 // PAIZ CORP INTELLIGENCE DIVISION // SKYXION: ALTAËR ERA</div>
   </div>
 
-  <!-- ════════════════════════════════════════════
-       pAIz ENGINE (external KB + logic)
-  ════════════════════════════════════════════ -->
   <script src="https://faizzzlol.github.io/paizcorp/assets/js/pAIz-engine.js"></script>
 
-  <!-- ════════════════════════════════════════════
-       pAIz WIDGET CONTROLLER
-  ════════════════════════════════════════════ -->
   <script>
-    /* ── NAV TOGGLE (hamburger) ── */
     function toggleMenu() {
       document.getElementById('mobileMenu').classList.toggle('open');
     }
 
-    /* ── WIDGET STATE ── */
     let paizOpen        = false;
     let paizBusy        = false;
     let paizInitialized = false;
 
-    /* ── TOGGLE / OPEN ── */
     function togglePaiz() {
       paizOpen = !paizOpen;
       document.getElementById('paiz-panel').classList.toggle('open', paizOpen);
@@ -329,7 +319,6 @@
       if (!paizOpen) togglePaiz();
     }
 
-    /* ── GREETING ── */
     function _initGreeting() {
       paizInitialized = true;
       _waitForEngine(() => {
@@ -347,7 +336,6 @@
       });
     }
 
-    /* ── ENGINE READY GUARD ── */
     function _waitForEngine(cb) {
       if (window.PaizEngine) { cb(); return; }
       const t = setInterval(() => {
@@ -355,18 +343,14 @@
       }, 80);
     }
 
-    /* ── PROCESS QUERY (main) ── */
     function processQuery(text) {
       if (paizBusy || !text.trim()) return;
       paizBusy = true;
-
       document.getElementById('paiz-input').value = '';
       document.getElementById('paiz-suggestions').innerHTML = '';
       appendMsg('user', escapeHtml(text));
-
       const typing = showTyping();
       const delay  = 360 + Math.random() * 260;
-
       setTimeout(() => {
         typing.remove();
         _waitForEngine(() => {
@@ -380,14 +364,7 @@
     function _respond(text) {
       const bm = PaizEngine.detectBM(text);
       const q  = text.trim().toLowerCase();
-
-      /* ── SLASH COMMANDS ── */
-      if (q.startsWith('/')) {
-        _handleSlash(q, bm);
-        return;
-      }
-
-      /* ── SHOW INTENT (photo first) ── */
+      if (q.startsWith('/')) { _handleSlash(q, bm); return; }
       if (PaizEngine.isShowIntent(text)) {
         const m = PaizEngine.bestMatch(text);
         if (m && m.type === 'image') {
@@ -396,8 +373,6 @@
           return;
         }
       }
-
-      /* ── SEARCH INTENT ── */
       if (PaizEngine.isSearchIntent(text)) {
         const sq      = text.replace(/^(search|cari|find|look for|lookup|look up|apa ada pasal|ada tak|seach)\s*/i, '').trim();
         const portals = PaizEngine.searchPortals(sq);
@@ -408,8 +383,6 @@
           return;
         }
       }
-
-      /* ── BEST MATCH ── */
       const m = PaizEngine.bestMatch(text);
       if (m) {
         if (m.type === 'image') {
@@ -425,12 +398,10 @@
       }
     }
 
-    /* ── SLASH COMMAND HANDLER ── */
     function _handleSlash(cmd, bm) {
       const parts = cmd.slice(1).split(/\s+/);
       const base  = parts[0];
       const rest  = parts.slice(1).join(' ').trim();
-
       const _quick = (query, chips) => {
         const m = PaizEngine.bestMatch(query);
         if (m && m.type === 'text') {
@@ -438,105 +409,41 @@
           showSuggestions(m.entry.fup || chips || PaizEngine.ALL_CHIPS.all);
         }
       };
-
       switch (base) {
-        case 'help':
-          _quick('help commands', PaizEngine.ALL_CHIPS.all);
-          break;
-
+        case 'help': _quick('help commands', PaizEngine.ALL_CHIPS.all); break;
         case 'clear':
           document.getElementById('paiz-messages').innerHTML = '';
           document.getElementById('paiz-suggestions').innerHTML = '';
           appendMsg('bot', bm ? 'Chat dibersihkan. 🧹' : 'Chat cleared. 🧹');
-          showSuggestions(PaizEngine.ALL_CHIPS.all);
-          break;
-
-        case 'gov':
-          _quick('government structure', PaizEngine.ALL_CHIPS.gov);
-          break;
-
-        case 'isc':
-          _quick('isc agency', PaizEngine.ALL_CHIPS.gov);
-          break;
-
-        case 'fn':
-          _quick('freaky niggas', PaizEngine.ALL_CHIPS.fn);
-          break;
-
-        case 'fnsmp':
-          _quick('fn smp overview', PaizEngine.ALL_CHIPS.fnsmp);
-          break;
-
+          showSuggestions(PaizEngine.ALL_CHIPS.all); break;
+        case 'gov': _quick('government structure', PaizEngine.ALL_CHIPS.gov); break;
+        case 'isc': _quick('isc agency', PaizEngine.ALL_CHIPS.gov); break;
+        case 'fn': _quick('freaky niggas', PaizEngine.ALL_CHIPS.fn); break;
+        case 'fnsmp': _quick('fn smp overview', PaizEngine.ALL_CHIPS.fnsmp); break;
         case 'search': {
-          if (!rest) {
-            appendMsg('bot', bm ? 'Taip <kbd>/search [topik]</kbd>' : 'Type <kbd>/search [topic]</kbd>');
-            showSuggestions(PaizEngine.ALL_CHIPS.all);
-            break;
-          }
+          if (!rest) { appendMsg('bot', bm ? 'Taip <kbd>/search [topik]</kbd>' : 'Type <kbd>/search [topic]</kbd>'); showSuggestions(PaizEngine.ALL_CHIPS.all); break; }
           const portals = PaizEngine.searchPortals(rest);
           const kbHits  = PaizEngine.searchAllKB(rest);
-          if (!portals.length && !kbHits.length) {
-            appendMsg('bot', PaizEngine.fallback(bm));
-            showSuggestions(PaizEngine.ALL_CHIPS.all);
-            break;
-          }
+          if (!portals.length && !kbHits.length) { appendMsg('bot', PaizEngine.fallback(bm)); showSuggestions(PaizEngine.ALL_CHIPS.all); break; }
           let html = `<strong>${bm ? 'Carian' : 'Search'}: "${escapeHtml(rest)}"</strong><br><br>`;
-          if (portals.length) {
-            html += `<strong>${bm ? 'Portal:' : 'Portals:'}</strong><br>` +
-                    portals.map(p => `<a href="${p.url}">→ ${p.name}</a>`).join('<br>') + '<br><br>';
-          }
-          if (kbHits.length) {
-            const topHit = kbHits[0];
-            if (topHit.type === 'text' && topHit.entry.r) {
-              html += `<strong>${bm ? 'Info teratas:' : 'Top result:'}</strong><br>` + topHit.entry.r(bm);
-            }
-          }
+          if (portals.length) html += `<strong>${bm ? 'Portal:' : 'Portals:'}</strong><br>` + portals.map(p => `<a href="${p.url}">→ ${p.name}</a>`).join('<br>') + '<br><br>';
+          if (kbHits.length) { const topHit = kbHits[0]; if (topHit.type === 'text' && topHit.entry.r) html += `<strong>${bm ? 'Info teratas:' : 'Top result:'}</strong><br>` + topHit.entry.r(bm); }
           appendMsg('bot', html);
-          showSuggestions(kbHits[0]?.entry?.fup || PaizEngine.ALL_CHIPS.all);
-          break;
+          showSuggestions(kbHits[0]?.entry?.fup || PaizEngine.ALL_CHIPS.all); break;
         }
-
         case 'show': {
-          if (!rest) {
-            appendMsg('bot', bm ? 'Taip <kbd>/show [topik]</kbd> — contoh: <kbd>/show tlcc</kbd>' : 'Type <kbd>/show [topic]</kbd> — e.g. <kbd>/show tlcc</kbd>');
-            showSuggestions(PaizEngine.ALL_CHIPS.images);
-            break;
-          }
+          if (!rest) { appendMsg('bot', bm ? 'Taip <kbd>/show [topik]</kbd> — contoh: <kbd>/show tlcc</kbd>' : 'Type <kbd>/show [topic]</kbd> — e.g. <kbd>/show tlcc</kbd>'); showSuggestions(PaizEngine.ALL_CHIPS.images); break; }
           const m = PaizEngine.bestMatch('show ' + rest);
-          if (m && m.type === 'image') {
-            appendMsg('bot', PaizEngine.imgGrid(m.entry.images, m.entry.era) + '<br>' + m.entry.r(bm));
-            showSuggestions(m.entry.fup || PaizEngine.ALL_CHIPS.images);
-          } else if (m && m.type === 'text') {
-            appendMsg('bot', m.entry.r(bm));
-            showSuggestions(m.entry.fup || PaizEngine.ALL_CHIPS.images);
-          } else {
-            appendMsg('bot', bm
-              ? `Gambar untuk <em>"${escapeHtml(rest)}"</em> tidak ditemui. Cuba: <kbd>/show tlcc</kbd> · <kbd>/show tlsrl</kbd> · <kbd>/show neverland</kbd>`
-              : `No photos found for <em>"${escapeHtml(rest)}"</em>. Try: <kbd>/show tlcc</kbd> · <kbd>/show tlsrl</kbd> · <kbd>/show neverland</kbd>`
-            );
-            showSuggestions(PaizEngine.ALL_CHIPS.images);
-          }
+          if (m && m.type === 'image') { appendMsg('bot', PaizEngine.imgGrid(m.entry.images, m.entry.era) + '<br>' + m.entry.r(bm)); showSuggestions(m.entry.fup || PaizEngine.ALL_CHIPS.images); }
+          else if (m && m.type === 'text') { appendMsg('bot', m.entry.r(bm)); showSuggestions(m.entry.fup || PaizEngine.ALL_CHIPS.images); }
+          else { appendMsg('bot', bm ? `Gambar untuk <em>"${escapeHtml(rest)}"</em> tidak ditemui. Cuba: <kbd>/show tlcc</kbd> · <kbd>/show tlsrl</kbd> · <kbd>/show neverland</kbd>` : `No photos found for <em>"${escapeHtml(rest)}"</em>. Try: <kbd>/show tlcc</kbd> · <kbd>/show tlsrl</kbd> · <kbd>/show neverland</kbd>`); showSuggestions(PaizEngine.ALL_CHIPS.images); }
           break;
         }
-
-        case 'theme':
-          appendMsg('bot', bm
-            ? 'Tema toggle akan datang untuk portal kerajaan ini! 🎨'
-            : 'Theme toggle coming soon for this gov portal! 🎨'
-          );
-          showSuggestions(PaizEngine.ALL_CHIPS.all);
-          break;
-
-        default:
-          appendMsg('bot', bm
-            ? `Arahan <code>/${escapeHtml(base)}</code> tidak dikenali. Cuba <kbd>/help</kbd>.`
-            : `Unknown command <code>/${escapeHtml(base)}</code>. Try <kbd>/help</kbd>.`
-          );
-          showSuggestions(PaizEngine.ALL_CHIPS.all);
+        case 'theme': appendMsg('bot', bm ? 'Tema toggle akan datang untuk portal kerajaan ini! 🎨' : 'Theme toggle coming soon for this gov portal! 🎨'); showSuggestions(PaizEngine.ALL_CHIPS.all); break;
+        default: appendMsg('bot', bm ? `Arahan <code>/${escapeHtml(base)}</code> tidak dikenali. Cuba <kbd>/help</kbd>.` : `Unknown command <code>/${escapeHtml(base)}</code>. Try <kbd>/help</kbd>.`); showSuggestions(PaizEngine.ALL_CHIPS.all);
       }
     }
 
-    /* ── UI HELPERS ── */
     function appendMsg(role, html) {
       const container = document.getElementById('paiz-messages');
       const msg       = document.createElement('div');
@@ -549,17 +456,9 @@
       container.scrollTop = container.scrollHeight;
       return msg;
     }
-
     function showTyping() {
-      return appendMsg('bot',
-        '<div class="typing-indicator">' +
-        '<div class="typing-dot"></div>' +
-        '<div class="typing-dot"></div>' +
-        '<div class="typing-dot"></div>' +
-        '</div>'
-      );
+      return appendMsg('bot', '<div class="typing-indicator"><div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div></div>');
     }
-
     function showSuggestions(chips) {
       const s = document.getElementById('paiz-suggestions');
       s.innerHTML = '';
@@ -571,25 +470,16 @@
         s.appendChild(chip);
       });
     }
-
     function escapeHtml(str) {
-      return String(str)
-        .replace(/&/g, '&amp;')
-        .replace(/</g, '&lt;')
-        .replace(/>/g, '&gt;');
+      return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
     }
-
-    /* ── SEND ── */
     function paizSend() {
       const text = document.getElementById('paiz-input').value.trim();
       if (text) processQuery(text);
     }
-
     document.getElementById('paiz-input').addEventListener('keydown', e => {
       if (e.key === 'Enter') paizSend();
     });
-
-    /* ── AUTO-OPEN if coming from a direct link with hash ── */
     if (window.location.hash === '#paiz') openPaiz();
   </script>
   <script type="module" src="/gov/assets/js/stats.js"></script>
