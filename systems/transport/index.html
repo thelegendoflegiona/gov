@@ -1,0 +1,713 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ministry of Transport — The Legend of Legiona</title>
+  <link rel="icon" type="image/png" href="/gov/assets/images/logo.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="preload" as="style"
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=DM+Mono:wght@300;400;500&family=Outfit:wght@300;400;500;600;700&display=swap"
+        onload="this.onload=null;this.rel='stylesheet'">
+  <noscript>
+    <link rel="stylesheet"
+          href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=DM+Mono:wght@300;400;500&family=Outfit:wght@300;400;500;600;700&display=swap">
+  </noscript>
+  <link rel="stylesheet" href="/gov/assets/css/style.css">
+  <style>
+    /* ── MOT-SPECIFIC STYLES ── */
+
+    /* Mandate grid */
+    .mandate-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2px;
+      background: var(--border-solid);
+      border: 1px solid var(--border-solid);
+      margin-top: 2.5rem;
+    }
+    .mandate-card {
+      background: var(--bg-2);
+      padding: 2rem 1.8rem;
+      transition: background 0.2s;
+    }
+    .mandate-card:hover { background: var(--bg-3); }
+    .mandate-num {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.44rem;
+      letter-spacing: 2.5px;
+      color: var(--text-dim);
+      margin-bottom: 1rem;
+    }
+    .mandate-card h4 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.05rem;
+      color: var(--text-bright);
+      margin-bottom: 0.5rem;
+    }
+    .mandate-card p {
+      font-size: 0.86rem;
+      color: var(--text-mid);
+      line-height: 1.75;
+      font-weight: 300;
+    }
+
+    /* Featured operator card */
+    .operator-card {
+      background: var(--bg-2);
+      border: 1px solid var(--border-solid);
+      padding: 2.5rem;
+      display: grid;
+      grid-template-columns: 1fr 280px;
+      gap: 48px;
+      align-items: center;
+      transition: border-color 0.3s;
+      position: relative;
+      overflow: hidden;
+      margin-top: 2.5rem;
+    }
+    .operator-card:hover { border-color: rgba(201,168,76,0.2); }
+    .operator-card::before {
+      content: 'TLR';
+      position: absolute;
+      right: -20px; top: 50%;
+      transform: translateY(-50%);
+      font-family: 'Playfair Display', serif;
+      font-size: 10rem;
+      color: rgba(52,160,106,0.04);
+      line-height: 1;
+      pointer-events: none;
+    }
+    .op-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-family: 'DM Mono', monospace;
+      font-size: 0.46rem;
+      letter-spacing: 2px;
+      padding: 4px 10px;
+      border: 1px solid rgba(52,160,106,0.3);
+      color: #34a06a;
+      background: rgba(52,160,106,0.07);
+      margin-bottom: 1rem;
+    }
+    .op-badge-dot {
+      width: 5px; height: 5px;
+      border-radius: 50%;
+      background: #34a06a;
+      animation: blink-dot 2s infinite;
+    }
+    @keyframes blink-dot { 0%,100%{opacity:1} 50%{opacity:0.2} }
+    .operator-card h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.9rem;
+      color: var(--text-bright);
+      margin-bottom: 0.3rem;
+    }
+    .operator-card h3 em { font-style: italic; color: var(--gold); }
+    .op-sub {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.48rem;
+      letter-spacing: 2px;
+      color: var(--text-dim);
+      margin-bottom: 1rem;
+    }
+    .operator-card > div > p {
+      font-size: 0.9rem;
+      color: var(--text-mid);
+      line-height: 1.8;
+      font-weight: 300;
+      margin-bottom: 1.5rem;
+    }
+    .op-links { display: flex; gap: 10px; flex-wrap: wrap; }
+    .op-link-primary {
+      display: inline-block;
+      padding: 10px 22px;
+      background: var(--gold);
+      color: #000;
+      font-family: 'DM Mono', monospace;
+      font-size: 0.54rem;
+      letter-spacing: 2px;
+      text-decoration: none;
+      transition: background 0.2s;
+    }
+    .op-link-primary:hover { background: #b8952f; }
+    .op-link-ghost {
+      display: inline-block;
+      padding: 10px 22px;
+      border: 1px solid var(--border-solid);
+      color: var(--text-mid);
+      font-family: 'DM Mono', monospace;
+      font-size: 0.54rem;
+      letter-spacing: 2px;
+      text-decoration: none;
+      transition: all 0.2s;
+    }
+    .op-link-ghost:hover { border-color: rgba(255,255,255,0.25); color: var(--text-bright); }
+    .op-spec-box {
+      background: var(--bg-3);
+      border: 1px solid var(--border-solid);
+      padding: 1.5rem;
+    }
+    .op-spec-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.65rem 0;
+      border-bottom: 1px solid rgba(255,255,255,0.04);
+    }
+    .op-spec-row:last-child { border-bottom: none; }
+    .op-spec-key {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.46rem;
+      letter-spacing: 1.5px;
+      color: var(--text-dim);
+    }
+    .op-spec-val {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.54rem;
+      letter-spacing: 1px;
+      color: var(--text-mid);
+    }
+    .op-spec-val.green { color: #34a06a; }
+    .op-spec-val.gold-c { color: var(--gold); }
+
+    /* Future operator placeholder */
+    .future-op {
+      border: 1px dashed var(--border-solid);
+      padding: 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      gap: 6px;
+      margin-top: 2px;
+      opacity: 0.45;
+    }
+    .future-op p {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.48rem;
+      letter-spacing: 2px;
+      color: var(--text-dim);
+    }
+
+    /* Network grid */
+    .network-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 2px;
+      background: var(--border-solid);
+      margin-top: 2.5rem;
+    }
+    .net-card {
+      background: var(--bg-2);
+      padding: 1.8rem 1.5rem;
+      border-top: 3px solid;
+      transition: background 0.2s;
+      text-decoration: none;
+      display: block;
+    }
+    .net-card:hover { background: var(--bg-3); }
+    .net-card.tlsrl { border-color: #34a06a; }
+    .net-card.mono  { border-color: #5b9cf6; }
+    .net-card.lrt   { border-color: #f6a035; }
+    .net-card.hsb   { border-color: #38c9c9; }
+    .net-code {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 3px 10px;
+      font-family: 'DM Mono', monospace;
+      font-size: 0.5rem;
+      font-weight: 500;
+      letter-spacing: 1.5px;
+      color: #fff;
+      margin-bottom: 1rem;
+    }
+    .net-card.tlsrl .net-code { background: #34a06a; }
+    .net-card.mono  .net-code { background: #5b9cf6; }
+    .net-card.lrt   .net-code { background: #f6a035; }
+    .net-card.hsb   .net-code { background: #38c9c9; }
+    .net-card h4 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1rem;
+      color: var(--text-bright);
+      margin-bottom: 0.3rem;
+      line-height: 1.25;
+    }
+    .net-route {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.44rem;
+      letter-spacing: 0.8px;
+      color: var(--text-dim);
+      margin-bottom: 0.8rem;
+      line-height: 1.6;
+    }
+    .net-status {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.42rem;
+      letter-spacing: 1.5px;
+      padding: 2px 8px;
+      border: 1px solid;
+      display: inline-block;
+    }
+    .net-card.tlsrl .net-status { border-color: rgba(52,160,106,.35);  color: #34a06a; background: rgba(52,160,106,.07); }
+    .net-card.mono  .net-status { border-color: rgba(91,156,246,.35);  color: #5b9cf6; background: rgba(91,156,246,.07); }
+    .net-card.lrt   .net-status { border-color: rgba(246,160,53,.35);  color: #f6a035; background: rgba(246,160,53,.07); }
+    .net-card.hsb   .net-status { border-color: rgba(56,201,201,.35);  color: #38c9c9; background: rgba(56,201,201,.07); }
+    .net-view {
+      display: block;
+      margin-top: 1rem;
+      font-family: 'DM Mono', monospace;
+      font-size: 0.42rem;
+      letter-spacing: 1.5px;
+      color: var(--text-dim);
+      transition: color 0.2s;
+    }
+    .net-card:hover .net-view { color: var(--gold); }
+
+    /* Policy docs */
+    .policy-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2px;
+      background: var(--border-solid);
+      margin-top: 2.5rem;
+    }
+    .policy-card {
+      background: var(--bg-2);
+      padding: 1.8rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.8rem;
+      transition: background 0.2s;
+    }
+    .policy-card:hover { background: var(--bg-3); }
+    .policy-ref {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.44rem;
+      letter-spacing: 2px;
+      color: var(--text-dim);
+    }
+    .policy-card h4 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1rem;
+      color: var(--text-bright);
+      line-height: 1.3;
+    }
+    .policy-card p {
+      font-size: 0.84rem;
+      color: var(--text-mid);
+      line-height: 1.75;
+      font-weight: 300;
+      flex: 1;
+    }
+    .policy-status {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.42rem;
+      letter-spacing: 1.5px;
+      padding: 2px 8px;
+      border: 1px solid;
+      display: inline-block;
+      align-self: flex-start;
+    }
+    .policy-status.active  { border-color: rgba(52,160,106,.35);  color: #34a06a; }
+    .policy-status.pending { border-color: rgba(201,168,76,.35);  color: var(--gold); }
+    .policy-link {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.46rem;
+      letter-spacing: 1.5px;
+      color: var(--gold);
+      text-decoration: none;
+      align-self: flex-start;
+      border-bottom: 1px solid rgba(201,168,76,0.25);
+      padding-bottom: 1px;
+      transition: border-color 0.2s;
+    }
+    .policy-link:hover { border-color: rgba(201,168,76,0.6); }
+
+    /* Layout helpers */
+    .mot-wrap    { max-width: 1200px; margin: 0 auto; padding: 5rem 5%; }
+    .mot-alt     { background: var(--bg-2); border-top: 1px solid var(--border-solid); border-bottom: 1px solid var(--border-solid); }
+
+    .sec-eyebrow {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.5rem;
+      letter-spacing: 3px;
+      color: var(--gold);
+      margin-bottom: 0.4rem;
+    }
+    .sec-title-m {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.6rem, 2.8vw, 2.2rem);
+      color: var(--text-bright);
+      margin-bottom: 0.5rem;
+    }
+    .sec-title-m em { font-style: italic; color: var(--gold); }
+    .sec-desc-m {
+      font-size: 0.91rem;
+      color: var(--text-mid);
+      line-height: 1.8;
+      font-weight: 300;
+      max-width: 600px;
+    }
+    .sec-hd-m {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      padding-bottom: 1.2rem;
+      border-bottom: 1px solid var(--border-solid);
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-bottom: 0;
+    }
+    .sec-hd-right {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.47rem;
+      letter-spacing: 1.5px;
+      color: var(--text-dim);
+      text-align: right;
+      line-height: 2;
+    }
+    .archive-cta {
+      margin-top: 1.5rem;
+      text-align: center;
+    }
+    .archive-cta a {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.5rem;
+      letter-spacing: 2px;
+      color: var(--gold);
+      text-decoration: none;
+      border-bottom: 1px solid rgba(201,168,76,0.3);
+      padding-bottom: 2px;
+      transition: border-color 0.2s;
+    }
+    .archive-cta a:hover { border-color: rgba(201,168,76,0.7); }
+
+    /* Responsive */
+    @media (max-width: 1000px) {
+      .mandate-grid  { grid-template-columns: 1fr 1fr; }
+      .network-grid  { grid-template-columns: 1fr 1fr; }
+      .operator-card { grid-template-columns: 1fr; }
+      .operator-card::before { display: none; }
+    }
+    @media (max-width: 600px) {
+      .mandate-grid { grid-template-columns: 1fr; }
+      .network-grid { grid-template-columns: 1fr; }
+      .policy-grid  { grid-template-columns: 1fr; }
+      .mot-wrap     { padding: 3rem 5%; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- TOPBAR -->
+  <div id="topbar">
+    <div class="topbar-inner">
+      <a href="/main/">HUB</a>
+      <a href="/gov/">GOVERNMENT</a>
+      <a href="/gov/systems/citizenship/">CITIZENSHIP</a>
+      <a href="/gov/systems/id/">IDENTITY CARD</a>
+      <a href="/gov/systems/archives/">ARCHIVES</a>
+      <a href="/isc/">ISC</a>
+    </div>
+  </div>
+
+  <!-- NOTICE BANNER -->
+  <div class="notice-banner"></div>
+
+  <!-- NAV WRAPPER -->
+  <div class="nav-wrapper">
+    <nav>
+      <div class="nav-logo">THELOL.GOV</div>
+      <ul class="nav-links">
+        <li><a href="#mandate">Mandate</a></li>
+        <li><a href="#operators">Operators</a></li>
+        <li><a href="#network">Network</a></li>
+        <li><a href="#policy">Policy</a></li>
+        <li><a href="/gov/">← Gov Home</a></li>
+      </ul>
+      <button class="hamburger" onclick="toggleMenu()" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </nav>
+    <div class="mobile-menu" id="mobileMenu">
+      <a href="#mandate"   onclick="toggleMenu()">Mandate</a>
+      <a href="#operators" onclick="toggleMenu()">Operators</a>
+      <a href="#network"   onclick="toggleMenu()">Network</a>
+      <a href="#policy"    onclick="toggleMenu()">Policy</a>
+      <a href="/gov/"      onclick="toggleMenu()">← Gov Home</a>
+    </div>
+  </div>
+
+  <!-- PAGE HERO -->
+  <div class="page-hero">
+    <div class="inner">
+      <div class="breadcrumb">
+        <a href="/gov/">Government</a>
+        <span> / Departments / Ministry of Transport</span>
+      </div>
+      <h1>Ministry of <em>Transport</em></h1>
+      <p>DEPT-04 — The regulatory body overseeing all national transport infrastructure, licensed operators, and network policy in The Legend of Legiona.</p>
+      <div class="hero-meta">
+        <div class="stat"><div class="num">4</div><div class="label">Active Lines</div></div>
+        <div class="stat"><div class="num">1</div><div class="label">Licensed Operator</div></div>
+        <div class="stat"><div class="num">3,066</div><div class="label">Blocks // TLSRL</div></div>
+        <div class="stat"><div class="num">2023</div><div class="label">Network Est.</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ MANDATE ══ -->
+  <div id="mandate">
+    <div class="mot-wrap">
+      <div class="sec-hd-m">
+        <div>
+          <div class="sec-eyebrow">01 // MANDATE</div>
+          <h2 class="sec-title-m">What the MOT <em>Does.</em></h2>
+          <p class="sec-desc-m">The Ministry of Transport is the government body responsible for regulating, licensing, and setting policy for all transport operations within and across The LoL's sovereign territory on Skyxion.</p>
+        </div>
+        <div class="sec-hd-right">DEPT-04 // GOVT OF THE LOL<br>ALTAËR ERA // 2023–PRESENT</div>
+      </div>
+      <div class="mandate-grid">
+        <div class="mandate-card">
+          <div class="mandate-num">MND-01 // REGULATION</div>
+          <h4>Regulatory Oversight</h4>
+          <p>The MOT sets and enforces standards for all transport operators in The LoL. Licensed operators must comply with national policy, safety requirements, and service-level expectations defined by this Ministry.</p>
+        </div>
+        <div class="mandate-card">
+          <div class="mandate-num">MND-02 // LICENSING</div>
+          <h4>Operator Licensing</h4>
+          <p>All transport operators — rail, water, or otherwise — must hold a licence issued by the Ministry of Transport. TL Railways is currently the sole licensed national operator under MOT jurisdiction.</p>
+        </div>
+        <div class="mandate-card">
+          <div class="mandate-num">MND-03 // PLANNING</div>
+          <h4>Network Planning</h4>
+          <p>The MOT coordinates national transport planning — approving new routes, endorsing expansion phases, and ensuring transport development aligns with The LoL's wider infrastructure goals.</p>
+        </div>
+        <div class="mandate-card">
+          <div class="mandate-num">MND-04 // POLICY</div>
+          <h4>Transport Policy</h4>
+          <p>Responsible for drafting, maintaining, and publishing all national transport policy documents. Policies are deposited in the Legal Archive and remain in force until amended by the Office of the President.</p>
+        </div>
+        <div class="mandate-card">
+          <div class="mandate-num">MND-05 // COORDINATION</div>
+          <h4>Cross-Agency Coordination</h4>
+          <p>Works alongside Paiz™ Construction for infrastructure delivery, ISC for security of transport assets, and the Office of the President for megaproject approvals and national strategy.</p>
+        </div>
+        <div class="mandate-card">
+          <div class="mandate-num">MND-06 // PUBLIC INTEREST</div>
+          <h4>Citizen Access</h4>
+          <p>The MOT advocates for accessible, reliable transport for all citizens of The LoL. Regular, Express, and Cargo service tiers on TLSRL were defined under this mandate to serve all travel needs.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ OPERATORS ══ -->
+  <div class="mot-alt" id="operators">
+    <div class="mot-wrap">
+      <div class="sec-hd-m">
+        <div>
+          <div class="sec-eyebrow">02 // LICENSED OPERATORS</div>
+          <h2 class="sec-title-m">National <em>Operators.</em></h2>
+          <p class="sec-desc-m">Transport operators are licensed entities authorised by the Ministry to run services across The LoL's territory. All operations are conducted under a MOT-issued licence.</p>
+        </div>
+        <div class="sec-hd-right">1 ACTIVE LICENCE<br>UNDER MOT JURISDICTION</div>
+      </div>
+
+      <div class="operator-card">
+        <div>
+          <div class="op-badge"><span class="op-badge-dot"></span> LICENCE ACTIVE — MOT-TLR-001</div>
+          <h3>TL <em>Railways</em></h3>
+          <div class="op-sub">SUBSIDIARY OF PAIZ® CORP // NATIONAL RAIL OPERATOR</div>
+          <p>
+            TL Railways is the sole licensed national transport operator of The Legend of Legiona, operating 4 lines
+            across Skyxion — TLSRL, Monorail, LRT/MRT, and the High-Speed Boat Link. As a Paiz® Corp subsidiary,
+            TL Railways is state-adjacent: built, maintained, and operated under the oversight of this Ministry.
+            All route expansions and new service tiers require MOT endorsement prior to launch.
+          </p>
+          <div class="op-links">
+            <a href="/tlrailways/" class="op-link-primary">VISIT TL RAILWAYS →</a>
+            <a href="/tlrailways/tlsrl/" class="op-link-ghost">TLSRL ROUTE DOCS</a>
+          </div>
+        </div>
+        <div class="op-spec-box">
+          <div class="op-spec-row">
+            <span class="op-spec-key">LICENCE NO.</span>
+            <span class="op-spec-val gold-c">MOT-TLR-001</span>
+          </div>
+          <div class="op-spec-row">
+            <span class="op-spec-key">STATUS</span>
+            <span class="op-spec-val green">ACTIVE</span>
+          </div>
+          <div class="op-spec-row">
+            <span class="op-spec-key">LINES OPERATED</span>
+            <span class="op-spec-val">4</span>
+          </div>
+          <div class="op-spec-row">
+            <span class="op-spec-key">FLAGSHIP ROUTE</span>
+            <span class="op-spec-val">TLSRL</span>
+          </div>
+          <div class="op-spec-row">
+            <span class="op-spec-key">PARENT COMPANY</span>
+            <span class="op-spec-val">Paiz® Corp</span>
+          </div>
+          <div class="op-spec-row">
+            <span class="op-spec-key">NETWORK EST.</span>
+            <span class="op-spec-val">2023</span>
+          </div>
+          <div class="op-spec-row">
+            <span class="op-spec-key">CONSTRUCTOR</span>
+            <span class="op-spec-val">Paiz™ Construction</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="future-op">
+        <p>FUTURE OPERATOR LICENCE SLOT — OPEN</p>
+        <p style="opacity:0.6;">CONTACT THE MINISTRY OF TRANSPORT TO APPLY FOR A TRANSPORT OPERATOR LICENCE</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ NETWORK ══ -->
+  <div id="network">
+    <div class="mot-wrap">
+      <div class="sec-hd-m">
+        <div>
+          <div class="sec-eyebrow">03 // ACTIVE NETWORK</div>
+          <h2 class="sec-title-m">The LoL Transport <em>Network.</em></h2>
+          <p class="sec-desc-m">All active lines under MOT oversight, operated by TL Railways. The network connects The LoL to Spawn and across Skyxion.</p>
+        </div>
+        <div class="sec-hd-right">4 LINES // ALL OPERATIONAL<br>OPERATED BY TL RAILWAYS</div>
+      </div>
+      <div class="network-grid">
+        <a href="/tlrailways/tlsrl/" class="net-card tlsrl">
+          <div class="net-code">TLSRL</div>
+          <h4>The LoL–Spawn Railway Link</h4>
+          <div class="net-route">EAST START ⟷ MALACCA STN<br>⟷ THE LOL VALLEY</div>
+          <div class="net-status">FLAGSHIP // OPERATIONAL</div>
+          <span class="net-view">View Route Docs →</span>
+        </a>
+        <a href="/tlrailways/#lines" class="net-card mono">
+          <div class="net-code">MONO</div>
+          <h4>TL Monorail</h4>
+          <div class="net-route">THE LOL CITY<br>⟷ NORTH HUB</div>
+          <div class="net-status">OPERATIONAL</div>
+          <span class="net-view">View on TL Railways →</span>
+        </a>
+        <a href="/tlrailways/#lines" class="net-card lrt">
+          <div class="net-code">LRT</div>
+          <h4>LRT / MRT Rapid Transit</h4>
+          <div class="net-route">LOL CENTRAL<br>⟷ EAST DISTRICT</div>
+          <div class="net-status">OPERATIONAL</div>
+          <span class="net-view">View on TL Railways →</span>
+        </a>
+        <a href="/tlrailways/#lines" class="net-card hsb">
+          <div class="net-code">HSB</div>
+          <h4>High-Speed Boat Link</h4>
+          <div class="net-route">THE LOL ⟷ HARBOUR<br>⟷ SPAWN</div>
+          <div class="net-status">OPERATIONAL</div>
+          <span class="net-view">View on TL Railways →</span>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ POLICY ══ -->
+  <div class="mot-alt" id="policy">
+    <div class="mot-wrap">
+      <div class="sec-hd-m">
+        <div>
+          <div class="sec-eyebrow">04 // POLICY &amp; DOCUMENTS</div>
+          <h2 class="sec-title-m">Transport <em>Policy.</em></h2>
+          <p class="sec-desc-m">Official policy instruments governing transport operations in The LoL. Full documents are hosted in the Legal Archive.</p>
+        </div>
+        <div class="sec-hd-right">LEGAL ARCHIVE<br>THELOL.GOV // ARCHIVES</div>
+      </div>
+      <div class="policy-grid">
+        <div class="policy-card">
+          <div class="policy-ref">MOT-POL-001 // 2023–PRESENT</div>
+          <h4>National Transport Mandate</h4>
+          <p>The founding mandate of the Ministry of Transport, establishing MOT's authority to regulate and license all transport operators within The LoL's sovereign territory on Skyxion.</p>
+          <div class="policy-status pending">PENDING ARCHIVE UPLOAD</div>
+        </div>
+        <div class="policy-card">
+          <div class="policy-ref">MOT-LIC-001 // TL RAILWAYS</div>
+          <h4>TL Railways Operator Licence</h4>
+          <p>The instrument granting TL Railways its status as The LoL's licensed national transport operator. Sets out the terms, obligations, and service conditions of the licence.</p>
+          <div class="policy-status pending">PENDING ARCHIVE UPLOAD</div>
+        </div>
+        <div class="policy-card">
+          <div class="policy-ref">MEGAPROJECT-01 // TLSRL</div>
+          <h4>TLSRL — Megaproject Endorsement</h4>
+          <p>MOT endorsement of TLSRL as a national megaproject. Covers Phase 1 (1,892 blocks), Phase 2 (1,174 blocks), and the planned Phase 3 extension toward Spawn.</p>
+          <div class="policy-status pending">PENDING ARCHIVE UPLOAD</div>
+        </div>
+        <div class="policy-card">
+          <div class="policy-ref">DOC-003 // 2026 // ACTIVE</div>
+          <h4>Government Policy Framework</h4>
+          <p>The LoL's primary governing document — includes provisions applicable to national infrastructure and megaprojects under MOT oversight.</p>
+          <div class="policy-status active">ACTIVE</div>
+          <a href="https://drive.google.com/file/d/1csjE7ptfQfGiueJVecn8rGOgd60_Djk5/view?usp=drive_link"
+             target="_blank" class="policy-link">↗ VIEW IN ARCHIVE</a>
+        </div>
+      </div>
+      <div class="archive-cta">
+        <a href="/gov/systems/archives/">VIEW ALL LEGAL DOCUMENTS IN THE ARCHIVE →</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-top">
+        <div class="footer-brand">
+          <div class="name">The Legend of <em>Legiona</em></div>
+          <p>The official government of The LoL — a sovereign nation built on unity, equality, and the resilience of its people across the Skyxion world since 2021.</p>
+        </div>
+        <div class="footer-col">
+          <h5>Government</h5>
+          <a href="/gov/#proclamation">Proclamation</a>
+          <a href="/gov/#history">History</a>
+          <a href="/gov/#departments">Departments</a>
+          <a href="/gov/#founders">Founders</a>
+        </div>
+        <div class="footer-col">
+          <h5>Agencies</h5>
+          <a href="/isc/">ISC Portal</a>
+          <a href="/isc/national/">ISC Transparency</a>
+          <a href="/isc/search/">ISC Public Archive</a>
+        </div>
+        <div class="footer-col">
+          <h5>Documents</h5>
+          <a href="/gov/systems/id/">Identity Card (ID)</a>
+          <a href="/gov/systems/archives/">Legal Archive</a>
+          <a href="/gov/about/">About This Portal</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <div class="copy">© 2026 THE LEGEND OF LEGIONA // MINISTRY OF TRANSPORT</div>
+        <div class="era">SKYXION: ALTAËR ERA // DEPT-04 // ALL SERVICES OPERATIONAL</div>
+      </div>
+      <div style="margin-top:25px;font-family:'DM Mono',monospace;font-size:9px;color:var(--text-dim);border-top:1px solid rgba(255,255,255,0.05);padding-top:15px;opacity:0.8;line-height:1.6;">
+        <strong>LEGAL DISCLAIMER:</strong> The Legend of Legiona (The LoL) is an independent community project within Minecraft.
+        The terms "Skyxion" and "Altaër" used within this project and era designation are not affiliated with, or associated with Kawaiisho.
+        This project is NOT AN OFFICIAL MINECRAFT PRODUCT. Not approved by or associated with Mojang AB or Microsoft Corporation.
+      </div>
+    </div>
+  </footer>
+
+  <script src="/gov/assets/js/script.js" defer></script>
+  <script type="module" src="/gov/assets/js/stats.js"></script>
+  <script>
+    function toggleMenu() {
+      document.getElementById('mobileMenu').classList.toggle('open');
+    }
+  </script>
+</body>
+</html>
