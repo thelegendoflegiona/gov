@@ -1,0 +1,720 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Public Works Division — The Legend of Legiona</title>
+  <link rel="icon" type="image/png" href="/gov/assets/images/logo.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="preload" as="style"
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=DM+Mono:wght@300;400;500&family=Outfit:wght@300;400;500;600;700&display=swap"
+        onload="this.onload=null;this.rel='stylesheet'">
+  <noscript>
+    <link rel="stylesheet"
+          href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=DM+Mono:wght@300;400;500&family=Outfit:wght@300;400;500;600;700&display=swap">
+  </noscript>
+  <link rel="stylesheet" href="/gov/assets/css/style.css">
+  <style>
+    /* ── PWD-SPECIFIC STYLES ── */
+
+    /* Mandate grid */
+    .mandate-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2px;
+      background: var(--border-solid);
+      border: 1px solid var(--border-solid);
+      margin-top: 2.5rem;
+    }
+    .mandate-card {
+      background: var(--bg-2);
+      padding: 2rem 1.8rem;
+      transition: background 0.2s;
+    }
+    .mandate-card:hover { background: var(--bg-3); }
+    .mandate-num {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.44rem;
+      letter-spacing: 2.5px;
+      color: var(--text-dim);
+      margin-bottom: 1rem;
+    }
+    .mandate-card h4 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.05rem;
+      color: var(--text-bright);
+      margin-bottom: 0.5rem;
+    }
+    .mandate-card p {
+      font-size: 0.86rem;
+      color: var(--text-mid);
+      line-height: 1.75;
+      font-weight: 300;
+    }
+
+    /* Megaproject grid */
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 2px;
+      background: var(--border-solid);
+      margin-top: 2.5rem;
+    }
+    .project-card {
+      background: var(--bg-2);
+      padding: 2rem 1.8rem;
+      position: relative;
+      overflow: hidden;
+      transition: background 0.2s;
+      border-top: 3px solid var(--gold);
+    }
+    .project-card:hover { background: var(--bg-3); }
+    .project-card.completed { border-top-color: #34a06a; }
+    .project-card.operational { border-top-color: #5b9cf6; }
+    .project-card.planning { border-top-color: rgba(201,168,76,0.5); }
+    .project-bg {
+      position: absolute;
+      right: -10px; bottom: -20px;
+      font-family: 'Playfair Display', serif;
+      font-size: 7rem;
+      font-weight: 900;
+      color: rgba(255,255,255,0.025);
+      line-height: 1;
+      pointer-events: none;
+    }
+    .project-id {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.44rem;
+      letter-spacing: 2.5px;
+      color: var(--text-dim);
+      margin-bottom: 0.8rem;
+    }
+    .project-card h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.2rem;
+      color: var(--text-bright);
+      margin-bottom: 0.4rem;
+      line-height: 1.25;
+      position: relative;
+    }
+    .project-card h3 em { font-style: italic; color: var(--gold); }
+    .project-card p {
+      font-size: 0.86rem;
+      color: var(--text-mid);
+      line-height: 1.75;
+      font-weight: 300;
+      margin-bottom: 1rem;
+      position: relative;
+    }
+    .project-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 8px;
+      padding-top: 1rem;
+      border-top: 1px solid var(--border-solid);
+      position: relative;
+    }
+    .proj-status {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.42rem;
+      letter-spacing: 1.5px;
+      padding: 3px 9px;
+      border: 1px solid;
+      display: inline-block;
+    }
+    .proj-status.completed  { border-color: rgba(52,160,106,.35);  color: #34a06a;  background: rgba(52,160,106,.07);  }
+    .proj-status.operational{ border-color: rgba(91,156,246,.35);  color: #5b9cf6;  background: rgba(91,156,246,.07);  }
+    .proj-status.active     { border-color: rgba(201,168,76,.35);  color: var(--gold); background: rgba(201,168,76,.07); }
+    .proj-status.planning   { border-color: var(--border-solid);   color: var(--text-dim); }
+    .proj-link {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.44rem;
+      letter-spacing: 1.5px;
+      color: var(--gold);
+      text-decoration: none;
+      border-bottom: 1px solid rgba(201,168,76,0.25);
+      padding-bottom: 1px;
+      transition: border-color 0.2s;
+    }
+    .proj-link:hover { border-color: rgba(201,168,76,0.7); }
+
+    /* Sub-projects list inside a card */
+    .subproject-list {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      margin-bottom: 1rem;
+    }
+    .subproject-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 0.84rem;
+      color: var(--text-mid);
+      font-weight: 300;
+      padding: 6px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.04);
+    }
+    .subproject-item:last-child { border-bottom: none; }
+    .sp-dot {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: #5b9cf6;
+      flex-shrink: 0;
+    }
+    .sp-dot.green { background: #34a06a; }
+    .sp-dot.gold  { background: var(--gold); }
+
+    /* Contractor card */
+    .contractor-card {
+      background: var(--bg-2);
+      border: 1px solid var(--border-solid);
+      padding: 2.5rem;
+      display: grid;
+      grid-template-columns: 1fr 260px;
+      gap: 48px;
+      align-items: center;
+      transition: border-color 0.3s;
+      position: relative;
+      overflow: hidden;
+      margin-top: 2.5rem;
+    }
+    .contractor-card:hover { border-color: rgba(201,168,76,0.2); }
+    .contractor-card::before {
+      content: 'PWD';
+      position: absolute;
+      right: -15px; top: 50%;
+      transform: translateY(-50%);
+      font-family: 'Playfair Display', serif;
+      font-size: 9rem;
+      color: rgba(201,168,76,0.04);
+      line-height: 1;
+      pointer-events: none;
+    }
+    .ct-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-family: 'DM Mono', monospace;
+      font-size: 0.46rem;
+      letter-spacing: 2px;
+      padding: 4px 10px;
+      border: 1px solid rgba(201,168,76,0.3);
+      color: var(--gold);
+      background: rgba(201,168,76,0.07);
+      margin-bottom: 1rem;
+    }
+    .contractor-card h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.9rem;
+      color: var(--text-bright);
+      margin-bottom: 0.3rem;
+    }
+    .contractor-card h3 em { font-style: italic; color: var(--gold); }
+    .ct-sub {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.48rem;
+      letter-spacing: 2px;
+      color: var(--text-dim);
+      margin-bottom: 1rem;
+    }
+    .contractor-card > div > p {
+      font-size: 0.9rem;
+      color: var(--text-mid);
+      line-height: 1.8;
+      font-weight: 300;
+      margin-bottom: 1.5rem;
+    }
+    .ct-links { display: flex; gap: 10px; flex-wrap: wrap; }
+    .ct-link-primary {
+      display: inline-block;
+      padding: 10px 22px;
+      background: var(--gold);
+      color: #000;
+      font-family: 'DM Mono', monospace;
+      font-size: 0.54rem;
+      letter-spacing: 2px;
+      text-decoration: none;
+      transition: background 0.2s;
+    }
+    .ct-link-primary:hover { background: #b8952f; }
+    .ct-spec-box {
+      background: var(--bg-3);
+      border: 1px solid var(--border-solid);
+      padding: 1.5rem;
+    }
+    .ct-spec-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.65rem 0;
+      border-bottom: 1px solid rgba(255,255,255,0.04);
+    }
+    .ct-spec-row:last-child { border-bottom: none; }
+    .ct-spec-key {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.46rem;
+      letter-spacing: 1.5px;
+      color: var(--text-dim);
+    }
+    .ct-spec-val {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.54rem;
+      letter-spacing: 1px;
+      color: var(--text-mid);
+    }
+    .ct-spec-val.green { color: #34a06a; }
+    .ct-spec-val.gold-c { color: var(--gold); }
+
+    /* Infrastructure inventory */
+    .inventory-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2px;
+      background: var(--border-solid);
+      margin-top: 2.5rem;
+    }
+    .inv-card {
+      background: var(--bg-2);
+      padding: 1.8rem 1.5rem;
+      transition: background 0.2s;
+    }
+    .inv-card:hover { background: var(--bg-3); }
+    .inv-icon {
+      font-size: 1.4rem;
+      display: block;
+      margin-bottom: 0.8rem;
+    }
+    .inv-card h4 {
+      font-family: 'Playfair Display', serif;
+      font-size: 0.98rem;
+      color: var(--text-bright);
+      margin-bottom: 0.4rem;
+    }
+    .inv-card p {
+      font-size: 0.83rem;
+      color: var(--text-mid);
+      line-height: 1.75;
+      font-weight: 300;
+      margin-bottom: 0.8rem;
+    }
+    .inv-count {
+      font-family: 'Playfair Display', serif;
+      font-size: 2rem;
+      color: var(--gold);
+      display: block;
+      line-height: 1;
+    }
+    .inv-count em { font-style: italic; }
+    .inv-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.44rem;
+      letter-spacing: 2px;
+      color: var(--text-dim);
+    }
+
+    /* Layout helpers */
+    .pwd-wrap  { max-width: 1200px; margin: 0 auto; padding: 5rem 5%; }
+    .pwd-alt   { background: var(--bg-2); border-top: 1px solid var(--border-solid); border-bottom: 1px solid var(--border-solid); }
+
+    .sec-eyebrow {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.5rem;
+      letter-spacing: 3px;
+      color: var(--gold);
+      margin-bottom: 0.4rem;
+    }
+    .sec-title-p {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.6rem, 2.8vw, 2.2rem);
+      color: var(--text-bright);
+      margin-bottom: 0.5rem;
+    }
+    .sec-title-p em { font-style: italic; color: var(--gold); }
+    .sec-desc-p {
+      font-size: 0.91rem;
+      color: var(--text-mid);
+      line-height: 1.8;
+      font-weight: 300;
+      max-width: 600px;
+    }
+    .sec-hd-p {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      padding-bottom: 1.2rem;
+      border-bottom: 1px solid var(--border-solid);
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-bottom: 0;
+    }
+    .sec-hd-right {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.47rem;
+      letter-spacing: 1.5px;
+      color: var(--text-dim);
+      text-align: right;
+      line-height: 2;
+    }
+
+    /* Responsive */
+    @media (max-width: 1000px) {
+      .mandate-grid    { grid-template-columns: 1fr 1fr; }
+      .inventory-grid  { grid-template-columns: 1fr 1fr; }
+      .contractor-card { grid-template-columns: 1fr; }
+      .contractor-card::before { display: none; }
+    }
+    @media (max-width: 700px) {
+      .mandate-grid  { grid-template-columns: 1fr; }
+      .projects-grid { grid-template-columns: 1fr; }
+      .inventory-grid{ grid-template-columns: 1fr; }
+      .pwd-wrap      { padding: 3rem 5%; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- TOPBAR -->
+  <div id="topbar">
+    <div class="topbar-inner">
+      <a href="/main/">HUB</a>
+      <a href="/gov/">GOVERNMENT</a>
+      <a href="/gov/systems/citizenship/">CITIZENSHIP</a>
+      <a href="/gov/systems/id/">IDENTITY CARD</a>
+      <a href="/gov/systems/archives/">ARCHIVES</a>
+      <a href="/isc/">ISC</a>
+    </div>
+  </div>
+
+  <!-- NOTICE BANNER -->
+  <div class="notice-banner"></div>
+
+  <!-- NAV WRAPPER -->
+  <div class="nav-wrapper">
+    <nav>
+      <div class="nav-logo">THELOL.GOV</div>
+      <ul class="nav-links">
+        <li><a href="#mandate">Mandate</a></li>
+        <li><a href="#projects">Projects</a></li>
+        <li><a href="#contractor">Contractor</a></li>
+        <li><a href="#infrastructure">Infrastructure</a></li>
+        <li><a href="/gov/">← Gov Home</a></li>
+      </ul>
+      <button class="hamburger" onclick="toggleMenu()" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </nav>
+    <div class="mobile-menu" id="mobileMenu">
+      <a href="#mandate"       onclick="toggleMenu()">Mandate</a>
+      <a href="#projects"      onclick="toggleMenu()">Projects</a>
+      <a href="#contractor"    onclick="toggleMenu()">Contractor</a>
+      <a href="#infrastructure"onclick="toggleMenu()">Infrastructure</a>
+      <a href="/gov/"          onclick="toggleMenu()">← Gov Home</a>
+    </div>
+  </div>
+
+  <!-- PAGE HERO -->
+  <div class="page-hero">
+    <div class="inner">
+      <div class="breadcrumb">
+        <a href="/gov/">Government</a>
+        <span> / Departments / Public Works Division</span>
+      </div>
+      <h1>Public Works <em>Division</em></h1>
+      <p>DEPT-05 — The government body overseeing all national construction, infrastructure, roads, and public works projects in The Legend of Legiona.</p>
+      <div class="hero-meta">
+        <div class="stat"><div class="num">4</div><div class="label">Megaprojects</div></div>
+        <div class="stat"><div class="num">3</div><div class="label">Active Farms</div></div>
+        <div class="stat"><div class="num">1</div><div class="label">Main Contractor</div></div>
+        <div class="stat"><div class="num">2023</div><div class="label">Division Est.</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ MANDATE ══ -->
+  <div id="mandate">
+    <div class="pwd-wrap">
+      <div class="sec-hd-p">
+        <div>
+          <div class="sec-eyebrow">01 // MANDATE</div>
+          <h2 class="sec-title-p">What the PWD <em>Does.</em></h2>
+          <p class="sec-desc-p">The Public Works Division commissions, oversees, and maintains all physical infrastructure across The LoL's sovereign territory — from roads and bridges to towers and automated farms.</p>
+        </div>
+        <div class="sec-hd-right">DEPT-05 // GOVT OF THE LOL<br>ALTAËR ERA // 2023–PRESENT</div>
+      </div>
+      <div class="mandate-grid">
+        <div class="mandate-card">
+          <div class="mandate-num">MND-01 // CONSTRUCTION</div>
+          <h4>Project Commissioning</h4>
+          <p>The PWD commissions all government-approved construction projects within The LoL. From the initial brief to final handover, every national build passes through this Division.</p>
+        </div>
+        <div class="mandate-card">
+          <div class="mandate-num">MND-02 // ROADS</div>
+          <h4>Roads &amp; Pathways</h4>
+          <p>Responsible for planning, building, and maintaining all national roads, pathways, and land routes connecting The LoL's districts, outposts, and points of interest across Skyxion.</p>
+        </div>
+        <div class="mandate-card">
+          <div class="mandate-num">MND-03 // STRUCTURES</div>
+          <h4>Public Structures</h4>
+          <p>Overseeing all major built structures — towers, landmarks, civic buildings, and defensive walls — ensuring they meet national standards and are maintained in good condition.</p>
+        </div>
+        <div class="mandate-card">
+          <div class="mandate-num">MND-04 // MAINTENANCE</div>
+          <h4>Upkeep &amp; Repairs</h4>
+          <p>The PWD is responsible for the ongoing upkeep of all national infrastructure. This includes post-incident repairs — such as the restoration of TLCC following the 2023 TNT attack.</p>
+        </div>
+        <div class="mandate-card">
+          <div class="mandate-num">MND-05 // RESOURCES</div>
+          <h4>Resource Infrastructure</h4>
+          <p>Planning and maintaining national resource facilities — automated farms, storage depots, and production infrastructure — that underpin The LoL's economic and citizen welfare capacity.</p>
+        </div>
+        <div class="mandate-card">
+          <div class="mandate-num">MND-06 // COORDINATION</div>
+          <h4>Multi-Agency Delivery</h4>
+          <p>Works alongside the Ministry of Transport on transport infrastructure, ISC on security of public assets, and reports megaproject progress directly to the Office of the President.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ PROJECTS ══ -->
+  <div class="pwd-alt" id="projects">
+    <div class="pwd-wrap">
+      <div class="sec-hd-p">
+        <div>
+          <div class="sec-eyebrow">02 // NATIONAL MEGAPROJECTS</div>
+          <h2 class="sec-title-p">Public Works <em>Projects.</em></h2>
+          <p class="sec-desc-p">All major national construction projects commissioned and overseen by the Public Works Division — past, present, and planned.</p>
+        </div>
+        <div class="sec-hd-right">4 MEGAPROJECTS TOTAL<br>ALL ACTIVE OR COMPLETED</div>
+      </div>
+      <div class="projects-grid">
+
+        <!-- TLCC Twin Towers -->
+        <div class="project-card completed">
+          <div class="project-bg">02</div>
+          <div class="project-id">MEGAPROJECT-02 // ARCHITECTURE // 2023</div>
+          <h3>TLCC <em>Twin Towers</em></h3>
+          <p>
+            The LoL Convention Centre Twin Towers — the most iconic landmark in The LoL City and the centrepiece of the nation's skyline. Fully restored by Paiz™ Construction following the 2023 TNT attack during the conflict era. A symbol of national resilience and determination.
+          </p>
+          <div class="project-footer">
+            <span class="proj-status completed">COMPLETED &amp; RESTORED</span>
+          </div>
+        </div>
+
+        <!-- National Farm Complex -->
+        <div class="project-card operational">
+          <div class="project-bg">03</div>
+          <div class="project-id">MEGAPROJECT-03 // ECONOMY // 2023</div>
+          <h3>National <em>Farm Complex</em></h3>
+          <p>A trio of automated resource farms powering The LoL's economic engine and citizen welfare. Provides a continuous supply of essential resources to all citizens and national stockpiles.</p>
+          <div class="subproject-list">
+            <div class="subproject-item"><span class="sp-dot green"></span>Iron Farm — Automated iron production</div>
+            <div class="subproject-item"><span class="sp-dot green"></span>Totem Farm — Automated totem of undying</div>
+            <div class="subproject-item"><span class="sp-dot gold"></span>Gold Farm — Automated gold production</div>
+          </div>
+          <div class="project-footer">
+            <span class="proj-status operational">OPERATIONAL</span>
+          </div>
+        </div>
+
+        <!-- Road Network -->
+        <div class="project-card operational">
+          <div class="project-bg">04</div>
+          <div class="project-id">MEGAPROJECT-04 // TRANSPORT SUPPORT // ONGOING</div>
+          <h3>National <em>Road Network</em></h3>
+          <p>
+            The LoL's land-based road and pathway network — connecting districts, outposts, and key landmarks within sovereign territory. Roads are developed by Paiz™ Construction in parallel with rail expansion. Transport routes are regulated by the Ministry of Transport; road infrastructure is a PWD responsibility.
+          </p>
+          <div class="project-footer">
+            <span class="proj-status operational">OPERATIONAL // EXPANDING</span>
+          </div>
+        </div>
+
+        <!-- TLSRL (cross-referenced, not PWD-primary) -->
+        <div class="project-card">
+          <div class="project-bg">01</div>
+          <div class="project-id">MEGAPROJECT-01 // TRANSPORT // CROSS-REF</div>
+          <h3>TLSRL <em>Railway</em></h3>
+          <p>
+            The LoL–Spawn Railway Link — built by Paiz™ Construction under PWD oversight and handed over to TL Railways for operation under the Ministry of Transport. The physical infrastructure (bridges, tunnels, stations) remains a PWD asset; the transport service is regulated by MOT.
+          </p>
+          <div class="project-footer">
+            <span class="proj-status operational">BUILT BY PWD // OPERATED UNDER MOT</span>
+            <a href="/gov/systems/transport/" class="proj-link">→ MOT PAGE</a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ CONTRACTOR ══ -->
+  <div id="contractor">
+    <div class="pwd-wrap">
+      <div class="sec-hd-p">
+        <div>
+          <div class="sec-eyebrow">03 // NATIONAL CONTRACTOR</div>
+          <h2 class="sec-title-p">Government <em>Contractor.</em></h2>
+          <p class="sec-desc-p">The Public Works Division delivers all projects through its accredited national contractor — Paiz™ Construction, a subsidiary of Paiz® Corp.</p>
+        </div>
+        <div class="sec-hd-right">1 ACCREDITED CONTRACTOR<br>ALL PWD PROJECTS</div>
+      </div>
+
+      <div class="contractor-card">
+        <div>
+          <div class="ct-badge">ACCREDITED NATIONAL CONTRACTOR</div>
+          <h3>Paiz™ <em>Construction</em></h3>
+          <div class="ct-sub">SUBSIDIARY OF PAIZ® CORP // NATIONAL CONSTRUCTION CONTRACTOR</div>
+          <p>
+            Paiz™ Construction is The LoL's sole accredited national construction contractor — the company behind every major build in the nation's history. From the TLCC Twin Towers to 3,066 blocks of TLSRL track, 11 bridges, 2 tunnels, and the full national farm complex, Paiz™ Construction is the physical force behind The LoL's infrastructure. All government commissions are fulfilled under a PWD-issued contract.
+          </p>
+          <div class="ct-links">
+            <a href="/paizcorp/" class="ct-link-primary">VISIT PAIZ® CORP →</a>
+          </div>
+        </div>
+        <div class="ct-spec-box">
+          <div class="ct-spec-row">
+            <span class="ct-spec-key">CONTRACT NO.</span>
+            <span class="ct-spec-val gold-c">PWD-CON-001</span>
+          </div>
+          <div class="ct-spec-row">
+            <span class="ct-spec-key">STATUS</span>
+            <span class="ct-spec-val green">ACTIVE</span>
+          </div>
+          <div class="ct-spec-row">
+            <span class="ct-spec-key">MEGAPROJECTS BUILT</span>
+            <span class="ct-spec-val">4</span>
+          </div>
+          <div class="ct-spec-row">
+            <span class="ct-spec-key">TLSRL TRACK BUILT</span>
+            <span class="ct-spec-val">3,066 blocks</span>
+          </div>
+          <div class="ct-spec-row">
+            <span class="ct-spec-key">BRIDGES BUILT</span>
+            <span class="ct-spec-val">11</span>
+          </div>
+          <div class="ct-spec-row">
+            <span class="ct-spec-key">TUNNELS BORED</span>
+            <span class="ct-spec-val">2</span>
+          </div>
+          <div class="ct-spec-row">
+            <span class="ct-spec-key">PARENT COMPANY</span>
+            <span class="ct-spec-val">Paiz® Corp</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ INFRASTRUCTURE INVENTORY ══ -->
+  <div class="pwd-alt" id="infrastructure">
+    <div class="pwd-wrap">
+      <div class="sec-hd-p">
+        <div>
+          <div class="sec-eyebrow">04 // INFRASTRUCTURE INVENTORY</div>
+          <h2 class="sec-title-p">What The LoL <em>Has Built.</em></h2>
+          <p class="sec-desc-p">A summary of all confirmed national infrastructure assets under PWD stewardship as of the current Altaër era survey.</p>
+        </div>
+        <div class="sec-hd-right">ALTAËR ERA SURVEY<br>SKYXION: 2023–2026</div>
+      </div>
+      <div class="inventory-grid">
+        <div class="inv-card">
+          <span class="inv-icon">🏗️</span>
+          <h4>Bridges</h4>
+          <p>River, ravine, and terrain crossings built along the TLSRL route and road network. Each bridge is a permanent national infrastructure asset maintained by PWD.</p>
+          <span class="inv-count"><em>11</em></span>
+          <span class="inv-label">CONFIRMED BRIDGES</span>
+        </div>
+        <div class="inv-card">
+          <span class="inv-icon">🪨</span>
+          <h4>Tunnels</h4>
+          <p>Bored sections through elevated terrain. Tunnel boring is the most demanding construction task on any build — both confirmed tunnels are on the TLSRL route.</p>
+          <span class="inv-count"><em>2</em></span>
+          <span class="inv-label">CONFIRMED TUNNELS</span>
+        </div>
+        <div class="inv-card">
+          <span class="inv-icon">🌿</span>
+          <h4>Biomes Developed</h4>
+          <p>Distinct biome zones crossed or developed across the TLSRL route and national road network — reflecting the geographic reach of The LoL's built environment.</p>
+          <span class="inv-count"><em>7</em></span>
+          <span class="inv-label">BIOMES TRAVERSED</span>
+        </div>
+        <div class="inv-card">
+          <span class="inv-icon">🏭</span>
+          <h4>Automated Farms</h4>
+          <p>Iron, Totem, and Gold farms — all operational. Each farm is a permanent national resource facility maintained under the National Farm Complex megaproject.</p>
+          <span class="inv-count"><em>3</em></span>
+          <span class="inv-label">ACTIVE FARM FACILITIES</span>
+        </div>
+        <div class="inv-card">
+          <span class="inv-icon">🏙️</span>
+          <h4>Landmark Structures</h4>
+          <p>Major built landmarks under PWD stewardship — including the TLCC Twin Towers, Malacca Station, The LoL Valley Station, and civic buildings across The LoL City.</p>
+          <span class="inv-count"><em>4+</em></span>
+          <span class="inv-label">LANDMARK STRUCTURES</span>
+        </div>
+        <div class="inv-card">
+          <span class="inv-icon">🛣️</span>
+          <h4>Road &amp; Path Network</h4>
+          <p>The land route network connecting The LoL's districts and outposts. Expanding in parallel with rail — roads fill the gaps where TLSRL does not yet reach.</p>
+          <span class="inv-count"><em>Active</em></span>
+          <span class="inv-label">NETWORK EXPANDING</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-top">
+        <div class="footer-brand">
+          <div class="name">The Legend of <em>Legiona</em></div>
+          <p>The official government of The LoL — a sovereign nation built on unity, equality, and the resilience of its people across the Skyxion world since 2021.</p>
+        </div>
+        <div class="footer-col">
+          <h5>Government</h5>
+          <a href="/gov/#proclamation">Proclamation</a>
+          <a href="/gov/#history">History</a>
+          <a href="/gov/#departments">Departments</a>
+          <a href="/gov/#founders">Founders</a>
+        </div>
+        <div class="footer-col">
+          <h5>Agencies</h5>
+          <a href="/isc/">ISC Portal</a>
+          <a href="/isc/national/">ISC Transparency</a>
+          <a href="/isc/search/">ISC Public Archive</a>
+        </div>
+        <div class="footer-col">
+          <h5>Documents</h5>
+          <a href="/gov/systems/id/">Identity Card (ID)</a>
+          <a href="/gov/systems/archives/">Legal Archive</a>
+          <a href="/gov/about/">About This Portal</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <div class="copy">© 2026 THE LEGEND OF LEGIONA // PUBLIC WORKS DIVISION</div>
+        <div class="era">SKYXION: ALTAËR ERA // DEPT-05 // BUILT FOR THE PEOPLE</div>
+      </div>
+      <div style="margin-top:25px;font-family:'DM Mono',monospace;font-size:9px;color:var(--text-dim);border-top:1px solid rgba(255,255,255,0.05);padding-top:15px;opacity:0.8;line-height:1.6;">
+        <strong>LEGAL DISCLAIMER:</strong> The Legend of Legiona (The LoL) is an independent community project within Minecraft.
+        The terms "Skyxion" and "Altaër" used within this project and era designation are not affiliated with, or associated with Kawaiisho.
+        This project is NOT AN OFFICIAL MINECRAFT PRODUCT. Not approved by or associated with Mojang AB or Microsoft Corporation.
+      </div>
+    </div>
+  </footer>
+
+  <script src="/gov/assets/js/script.js" defer></script>
+  <script type="module" src="/gov/assets/js/stats.js"></script>
+  <script>
+    function toggleMenu() {
+      document.getElementById('mobileMenu').classList.toggle('open');
+    }
+  </script>
+</body>
+</html>
