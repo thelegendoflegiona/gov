@@ -17,30 +17,18 @@
   <link rel="stylesheet" href="/gov/assets/css/style.css">
   <style>
     /* ── CONVERTER-SPECIFIC VARIABLES ────────────────────────────── */
-    :root {
-      --c-bg2:      #111111;
-      --c-bg3:      #161616;
-      --c-bg4:      #1c1c1c;
-      --c-border:   rgba(255,255,255,0.09);
-      --c-border2:  rgba(255,255,255,0.05);
-      --c-gold-dim: rgba(201,168,76,0.10);
-      --c-txt:      #e8e4d9;
-      --c-txt2:     rgba(232,228,217,0.78);
-      --c-txt3:     rgba(232,228,217,0.52);
-      --c-txt4:     rgba(232,228,217,0.28);
-    }
 
     /* ── ITEM IMAGES ── */
     .item-img { image-rendering: pixelated; image-rendering: -moz-crisp-edges; display: inline-block; vertical-align: middle; flex-shrink: 0 }
-    .tls-badge { display: inline-flex; align-items: center; justify-content: center; width: 22px; height: 22px; background: var(--c-gold-dim); border: 1px solid rgba(201,168,76,0.35); color: var(--gold); font-family: 'DM Mono', monospace; font-size: 0.38rem; letter-spacing: 0.5px; font-weight: 500; flex-shrink: 0; vertical-align: middle; border-radius: 2px }
+    .tls-badge { display: inline-flex; align-items: center; justify-content: center; width: 22px; height: 22px; background: var(--gold-dim); border: 1px solid rgba(201,168,76,0.35); color: var(--gold); font-family: 'DM Mono', monospace; font-size: 0.38rem; letter-spacing: 0.5px; font-weight: 500; flex-shrink: 0; vertical-align: middle; border-radius: 2px }
     .tls-badge.lg { width: 40px; height: 40px; font-size: 0.65rem }
 
     /* ── LANGUAGE SWITCHER ── */
-    .lang-switcher { display: flex; gap: 0; border: 1px solid var(--c-border); overflow: hidden; flex-shrink: 0; margin-right: 8px }
-    .lang-btn { font-family: 'DM Mono', monospace; font-size: 0.48rem; letter-spacing: 2px; padding: 5px 12px; background: none; border: none; color: var(--c-txt4); cursor: pointer; transition: all 0.2s; border-right: 1px solid var(--c-border) }
+    .lang-switcher { display: flex; gap: 0; border: 1px solid var(--border); overflow: hidden; flex-shrink: 0; margin-right: 8px }
+    .lang-btn { font-family: 'DM Mono', monospace; font-size: 0.48rem; letter-spacing: 2px; padding: 5px 12px; background: none; border: none; color: var(--text-dim); cursor: pointer; transition: all 0.2s; border-right: 1px solid var(--border) }
     .lang-btn:last-child { border-right: none }
-    .lang-btn:hover { color: var(--c-txt); background: rgba(255,255,255,0.05) }
-    .lang-btn.active { background: var(--c-gold-dim); color: var(--gold); border-color: rgba(201,168,76,0.3) }
+    .lang-btn:hover { color: var(--text); background: rgba(255,255,255,0.05) }
+    .lang-btn.active { background: var(--gold-dim); color: var(--gold); border-color: rgba(201,168,76,0.3) }
 
     /* ── LANG TRANSITION ── */
     [data-i18n] { transition: opacity 0.18s ease }
@@ -50,70 +38,70 @@
     .conv-main { max-width: 1100px; margin: 0 auto; padding: 3rem 24px; display: grid; grid-template-columns: 1fr 340px; gap: 24px; align-items: start }
 
     /* ── CONVERTER BOX ── */
-    .converter { background: var(--c-bg2); border: 1px solid var(--c-border) }
-    .conv-hd { padding: 1.4rem 1.6rem; border-bottom: 1px solid var(--c-border); display: flex; align-items: center; justify-content: space-between }
-    .conv-hd-title { font-family: 'Playfair Display', serif; font-size: 1.1rem; font-weight: 700; color: var(--c-txt) }
-    .conv-tag { font-family: 'DM Mono', monospace; font-size: 0.45rem; letter-spacing: 2px; padding: 3px 8px; background: var(--c-gold-dim); border: 1px solid rgba(201,168,76,0.25); color: var(--gold) }
+    .converter { background: var(--bg-2); border: 1px solid var(--border) }
+    .conv-hd { padding: 1.4rem 1.6rem; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between }
+    .conv-hd-title { font-family: 'Playfair Display', serif; font-size: 1.1rem; font-weight: 700; color: var(--text) }
+    .conv-tag { font-family: 'DM Mono', monospace; font-size: 0.45rem; letter-spacing: 2px; padding: 3px 8px; background: var(--gold-dim); border: 1px solid rgba(201,168,76,0.25); color: var(--gold) }
     .conv-body { padding: 1.8rem 1.6rem }
     .conv-row { display: grid; grid-template-columns: 1fr 50px 1fr; gap: 12px; align-items: end; margin-bottom: 1.2rem }
-    .conv-label { font-family: 'DM Mono', monospace; font-size: 0.48rem; letter-spacing: 2px; color: var(--c-txt4); display: block; margin-bottom: 0.45rem }
-    .conv-swap { text-align: center; color: var(--c-txt4); font-size: 1.2rem; padding-bottom: 8px; cursor: pointer; transition: all 0.2s; user-select: none }
+    .conv-label { font-family: 'DM Mono', monospace; font-size: 0.48rem; letter-spacing: 2px; color: var(--text-dim); display: block; margin-bottom: 0.45rem }
+    .conv-swap { text-align: center; color: var(--text-dim); font-size: 1.2rem; padding-bottom: 8px; cursor: pointer; transition: all 0.2s; user-select: none }
     .conv-swap:hover { color: var(--gold) }
 
     /* ── CUSTOM SELECT ── */
     .cs-wrap { position: relative; width: 100% }
-    .cs-trigger { width: 100%; padding: 9px 12px; background: var(--c-bg3); border: 1px solid var(--c-border); color: var(--c-txt); cursor: pointer; display: flex; align-items: center; gap: 10px; transition: border-color 0.2s; min-height: 42px; user-select: none }
+    .cs-trigger { width: 100%; padding: 9px 12px; background: var(--bg-3); border: 1px solid var(--border); color: var(--text); cursor: pointer; display: flex; align-items: center; gap: 10px; transition: border-color 0.2s; min-height: 42px; user-select: none }
     .cs-trigger:hover, .cs-wrap.open .cs-trigger { border-color: var(--gold) }
-    .cs-name { font-family: 'Outfit', sans-serif; font-size: 0.88rem; flex: 1; color: var(--c-txt) }
-    .cs-arrow { font-family: 'DM Mono', monospace; font-size: 0.6rem; color: var(--c-txt4); transition: transform 0.2s; flex-shrink: 0 }
+    .cs-name { font-family: 'Outfit', sans-serif; font-size: 0.88rem; flex: 1; color: var(--text) }
+    .cs-arrow { font-family: 'DM Mono', monospace; font-size: 0.6rem; color: var(--text-dim); transition: transform 0.2s; flex-shrink: 0 }
     .cs-wrap.open .cs-arrow { transform: rotate(180deg) }
-    .cs-panel { display: none; position: absolute; top: calc(100% + 2px); left: 0; right: 0; background: var(--c-bg4); border: 1px solid var(--c-border); z-index: 300; max-height: 260px; overflow-y: auto }
+    .cs-panel { display: none; position: absolute; top: calc(100% + 2px); left: 0; right: 0; background: var(--bg-4); border: 1px solid var(--border); z-index: 300; max-height: 260px; overflow-y: auto }
     .cs-panel.open { display: block }
-    .cs-option { display: flex; align-items: center; gap: 10px; padding: 9px 12px; cursor: pointer; transition: background 0.15s; font-size: 0.88rem; color: var(--c-txt2) }
-    .cs-option:hover { background: var(--c-bg3) }
-    .cs-option.active { background: var(--c-gold-dim); color: var(--gold) }
+    .cs-option { display: flex; align-items: center; gap: 10px; padding: 9px 12px; cursor: pointer; transition: background 0.15s; font-size: 0.88rem; color: var(--text-mid) }
+    .cs-option:hover { background: var(--bg-3) }
+    .cs-option.active { background: var(--gold-dim); color: var(--gold) }
 
     /* ── AMOUNT & BUTTON ── */
-    .conv-amount { width: 100%; padding: 11px 14px; background: var(--c-bg3); border: 1px solid var(--c-border); color: var(--c-txt); font-family: 'DM Mono', monospace; font-size: 1rem; outline: none; transition: border-color 0.2s; margin-bottom: 1.2rem }
+    .conv-amount { width: 100%; padding: 11px 14px; background: var(--bg-3); border: 1px solid var(--border); color: var(--text); font-family: 'DM Mono', monospace; font-size: 1rem; outline: none; transition: border-color 0.2s; margin-bottom: 1.2rem }
     .conv-amount:focus { border-color: var(--gold) }
-    .conv-amount::placeholder { color: var(--c-txt4) }
+    .conv-amount::placeholder { color: var(--text-dim) }
     .conv-btn { width: 100%; padding: 13px; background: var(--gold); color: #000; border: none; cursor: pointer; font-family: 'DM Mono', monospace; font-size: 0.6rem; font-weight: 500; letter-spacing: 2.5px; transition: background 0.2s; margin-bottom: 1.2rem }
     .conv-btn:hover { background: #b8952f }
 
     /* ── RESULT ── */
-    .result-box { background: var(--c-bg3); border: 1px solid var(--c-border); padding: 1.4rem; text-align: center; display: none }
+    .result-box { background: var(--bg-3); border: 1px solid var(--border); padding: 1.4rem; text-align: center; display: none }
     .result-box.show { display: block }
-    .result-from { font-family: 'DM Mono', monospace; font-size: 0.52rem; letter-spacing: 1.5px; color: var(--c-txt4); margin-bottom: 0.5rem; display: flex; align-items: center; justify-content: center; gap: 6px }
-    .result-arrow { color: var(--c-txt4); margin: 0.5rem 0; font-size: 1rem }
+    .result-from { font-family: 'DM Mono', monospace; font-size: 0.52rem; letter-spacing: 1.5px; color: var(--text-dim); margin-bottom: 0.5rem; display: flex; align-items: center; justify-content: center; gap: 6px }
+    .result-arrow { color: var(--text-dim); margin: 0.5rem 0; font-size: 1rem }
     .result-main { display: flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: 4px }
     .result-val { font-family: 'Playfair Display', serif; font-size: 2.8rem; font-weight: 900; color: var(--gold); line-height: 1 }
-    .result-unit { font-family: 'DM Mono', monospace; font-size: 0.55rem; letter-spacing: 2px; color: var(--c-txt3) }
-    .result-rate { font-family: 'DM Mono', monospace; font-size: 0.46rem; letter-spacing: 1.5px; color: var(--c-txt4); margin-top: 0.8rem; padding-top: 0.8rem; border-top: 1px solid var(--c-border2) }
+    .result-unit { font-family: 'DM Mono', monospace; font-size: 0.55rem; letter-spacing: 2px; color: var(--text-dim) }
+    .result-rate { font-family: 'DM Mono', monospace; font-size: 0.46rem; letter-spacing: 1.5px; color: var(--text-dim); margin-top: 0.8rem; padding-top: 0.8rem; border-top: 1px solid var(--border) }
 
     /* ── MULTI RESULT ── */
     .multi-result { margin-top: 1rem; display: none }
     .multi-result.show { display: block }
-    .multi-hd { font-family: 'DM Mono', monospace; font-size: 0.48rem; letter-spacing: 2px; color: var(--c-txt4); margin-bottom: 0.5rem }
-    .multi-row { display: flex; justify-content: space-between; align-items: center; padding: 8px 12px; background: var(--c-bg3); border: 1px solid var(--c-border2); margin-bottom: 2px }
+    .multi-hd { font-family: 'DM Mono', monospace; font-size: 0.48rem; letter-spacing: 2px; color: var(--text-dim); margin-bottom: 0.5rem }
+    .multi-row { display: flex; justify-content: space-between; align-items: center; padding: 8px 12px; background: var(--bg-3); border: 1px solid var(--border); margin-bottom: 2px }
     .mr-left { display: flex; align-items: center; gap: 8px }
-    .mr-currency { font-size: 0.85rem; color: var(--c-txt2) }
+    .mr-currency { font-size: 0.85rem; color: var(--text-mid) }
     .mr-val { font-family: 'DM Mono', monospace; font-size: 0.65rem; color: var(--gold) }
 
     /* ── RIGHT PANEL ── */
-    .panel-box { background: var(--c-bg2); border: 1px solid var(--c-border); overflow: hidden }
-    .pb-hd { padding: 1.1rem 1.4rem; border-bottom: 1px solid var(--c-border) }
-    .pb-title { font-family: 'DM Mono', monospace; font-size: 0.5rem; letter-spacing: 2.5px; color: var(--c-txt4) }
+    .panel-box { background: var(--bg-2); border: 1px solid var(--border); overflow: hidden }
+    .pb-hd { padding: 1.1rem 1.4rem; border-bottom: 1px solid var(--border) }
+    .pb-title { font-family: 'DM Mono', monospace; font-size: 0.5rem; letter-spacing: 2.5px; color: var(--text-dim) }
     .rates-table { width: 100%; border-collapse: collapse }
-    .rates-table tr { border-bottom: 1px solid var(--c-border2); transition: background 0.15s }
+    .rates-table tr { border-bottom: 1px solid var(--border); transition: background 0.15s }
     .rates-table tr:last-child { border-bottom: none }
-    .rates-table tr:hover { background: var(--c-bg3) }
-    .rates-table td { padding: 10px 14px; font-size: 0.85rem; color: var(--c-txt2); vertical-align: middle }
+    .rates-table tr:hover { background: var(--bg-3) }
+    .rates-table td { padding: 10px 14px; font-size: 0.85rem; color: var(--text-mid); vertical-align: middle }
     .rates-table .curr-icon { width: 40px; text-align: center }
     .rates-table .curr-val { font-family: 'DM Mono', monospace; font-size: 0.7rem; color: var(--gold); text-align: right }
-    .rates-table .curr-tls { font-family: 'DM Mono', monospace; font-size: 0.55rem; color: var(--c-txt4); text-align: right }
+    .rates-table .curr-tls { font-family: 'DM Mono', monospace; font-size: 0.55rem; color: var(--text-dim); text-align: right }
 
     /* ── NOTE ── */
-    .note { background: var(--c-gold-dim); border: 1px solid rgba(201,168,76,0.2); padding: 1rem 1.2rem; margin-top: 12px; font-size: 0.8rem; color: var(--c-txt2); font-weight: 300; line-height: 1.8 }
+    .note { background: var(--gold-dim); border: 1px solid rgba(201,168,76,0.2); padding: 1rem 1.2rem; margin-top: 12px; font-size: 0.8rem; color: var(--text-mid); font-weight: 300; line-height: 1.8 }
     .note strong { color: var(--gold); font-weight: 500 }
 
     /* ── RESPONSIVE ── */
@@ -529,8 +517,8 @@ function buildQuickTable() {
   document.getElementById('quick-table').innerHTML = rows.map(([label, val], i) => {
     const ik   = iconKeys[i];
     const cell = ik
-      ? `<td style="display:flex;align-items:center;gap:8px;padding:10px 14px;font-size:0.8rem;color:var(--c-txt2)">${iconHTML(ik,18)}<span>${label}</span></td>`
-      : `<td style="padding:10px 14px;font-size:0.8rem;color:var(--c-txt2)">${label}</td>`;
+      ? `<td style="display:flex;align-items:center;gap:8px;padding:10px 14px;font-size:0.8rem;color:var(--text-mid)">${iconHTML(ik,18)}<span>${label}</span></td>`
+      : `<td style="padding:10px 14px;font-size:0.8rem;color:var(--text-mid)">${label}</td>`;
     return `<tr>${cell}<td class="curr-val">${val}</td></tr>`;
   }).join('');
 }
