@@ -4,7 +4,23 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Ministry of Transport — The Legend of Legiona</title>
+  <meta name="description" content="Ministry of Transport of The Legend of Legiona — rail, roads, and national transit infrastructure, including the TLSRL railway." />
+  <link rel="canonical" href="https://thelegendoflegiona.github.io/gov/systems/transport/" />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Ministry of Transport — The Legend of Legiona" />
+  <meta property="og:description" content="Ministry of Transport of The Legend of Legiona — rail, roads, and national transit infrastructure, including the TLSRL railway." />
+  <meta property="og:url" content="https://thelegendoflegiona.github.io/gov/systems/transport/" />
+  <meta property="og:site_name" content="The Legend of Legiona" />
+  <meta property="og:image" content="https://thelegendoflegiona.github.io/gov/assets/images/logo.png" />
+  <meta property="og:image:width" content="500" />
+  <meta property="og:image:height" content="500" />
+  <meta property="og:image:type" content="image/png" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Ministry of Transport — The Legend of Legiona" />
+  <meta name="twitter:description" content="Ministry of Transport of The Legend of Legiona — rail, roads, and national transit infrastructure, including the TLSRL railway." />
+  <meta name="twitter:image" content="https://thelegendoflegiona.github.io/gov/assets/images/logo.png" />
   <link rel="icon" type="image/png" href="/gov/assets/images/logo.png" />
+  <meta name="theme-color" content="#C9A84C" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link rel="preload" as="style"
@@ -403,14 +419,20 @@
 </head>
 <body>
 
-  <!-- TOPBAR -- loaded from /gov/assets/partials/topbar.html by partials.js.
-       Edit the topbar in that shared file, never here. -->
-  <div id="topbar-placeholder"></div>
+  <!-- TOPBAR -->
+  <div id="topbar">
+    <div class="topbar-inner">
+      <a href="/main/">HUB</a>
+      <a href="/gov/">GOVERNMENT</a>
+      <a href="/gov/systems/citizenship/">CITIZENSHIP</a>
+      <a href="/gov/systems/id/">IDENTITY CARD</a>
+      <a href="/gov/systems/archives/">ARCHIVES</a>
+      <a href="/isc/">ISC</a>
+    </div>
+  </div>
 
   <!-- NOTICE BANNER -->
   <div class="notice-banner"></div>
-
-  <script src="/gov/assets/js/partials.js"></script>
 
   <!-- NAV WRAPPER -->
   <div class="nav-wrapper">
@@ -656,9 +678,45 @@
     </div>
   </div>
 
-  <!-- FOOTER -- loaded from /gov/assets/partials/footer.html by partials.js.
-       Edit the footer in that shared file, never here. -->
-  <div id="footer-placeholder"></div>
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-top">
+        <div class="footer-brand">
+          <div class="name">The Legend of <em>Legiona</em></div>
+          <p>The official government of The LoL — a sovereign nation built on unity, equality, and the resilience of its people across the Skyxion world since 2021.</p>
+        </div>
+        <div class="footer-col">
+          <h5>Government</h5>
+          <a href="/gov/#proclamation">Proclamation</a>
+          <a href="/gov/#history">History</a>
+          <a href="/gov/#departments">Departments</a>
+          <a href="/gov/#founders">Founders</a>
+        </div>
+        <div class="footer-col">
+          <h5>Agencies</h5>
+          <a href="/isc/">ISC Portal</a>
+          <a href="/isc/national/">ISC Transparency</a>
+          <a href="/isc/search/">ISC Public Archive</a>
+        </div>
+        <div class="footer-col">
+          <h5>Documents</h5>
+          <a href="/gov/systems/id/">Identity Card (ID)</a>
+          <a href="/gov/systems/archives/">Legal Archive</a>
+          <a href="/gov/about/">About This Portal</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <div class="copy">© 2026 THE LEGEND OF LEGIONA // MINISTRY OF TRANSPORT</div>
+        <div class="era">SKYXION: ALTAËR ERA // DEPT-04 // ALL SERVICES OPERATIONAL</div>
+      </div>
+      <div style="margin-top:25px;font-family:'DM Mono',monospace;font-size:9px;color:var(--text-dim);border-top:1px solid rgba(255,255,255,0.05);padding-top:15px;opacity:0.8;line-height:1.6;">
+        <strong>LEGAL DISCLAIMER:</strong> The Legend of Legiona (The LoL) is an independent community project within Minecraft.
+        The terms "Skyxion" and "Altaër" used within this project and era designation are not affiliated with, or associated with Kawaiisho.
+        This project is NOT AN OFFICIAL MINECRAFT PRODUCT. Not approved by or associated with Mojang AB or Microsoft Corporation.
+      </div>
+    </div>
+  </footer>
 
   <script src="/gov/assets/js/script.js" defer></script>
   <script type="module" src="/gov/assets/js/stats.js"></script>
