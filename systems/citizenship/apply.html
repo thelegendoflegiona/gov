@@ -19,33 +19,19 @@
 </head>
 <body>
 
+  <!-- TOPBAR -- loaded from /gov/assets/partials/topbar.html by partials.js.
+       Edit the topbar in that shared file, never here. -->
+  <div id="topbar-placeholder"></div>
+
+  <!-- NOTICE BANNER — sitewide admin announcements -->
+  <div class="notice-banner"></div>
+
+  <script src="/gov/assets/js/partials.js"></script>
+
+  <!-- NOTICE BAR — page-specific citizenship CTA, kept as-is -->
   <div class="notice-bar">
     CITIZENSHIP APPLICATION SUBMITTED? — TRACK YOUR PROGRESS //
     <a href="/gov/systems/citizenship/status">CHECK YOUR STATUS →</a>
-  </div>
-
-  <nav class="topnav">
-    <a href="/gov/" class="topnav-logo">THELOL.<span>GOV</span></a>
-    <ul class="topnav-links">
-      <li><a href="/main/">HUB</a></li>
-      <li><a href="/gov/">GOVERNMENT</a></li>
-      <li><a href="/gov/systems/citizenship/" class="active">CITIZENSHIP</a></li>
-      <li><a href="/gov/systems/id/">ID CARD</a></li>
-      <li><a href="/isc/">ISC</a></li>
-      <li><a href="/gov/systems/archives/">ARCHIVES</a></li>
-    </ul>
-    <button class="hamburger" id="burger" aria-label="Toggle menu">
-      <span></span><span></span><span></span>
-    </button>
-  </nav>
-
-  <div class="mobile-menu" id="mobileNav">
-    <a href="/main/">THE LOL</a>
-    <a href="/gov/">GOVERNMENT</a>
-    <a href="/gov/systems/citizenship/" class="active">CITIZENSHIP</a>
-    <a href="/gov/systems/id/">IDENTITY CARD</a>
-    <a href="/isc/">ISC</a>
-    <a href="/gov/systems/archives/">ARCHIVES</a>
   </div>
 
   <div style="padding: 16px 28px; border-bottom: 1px solid var(--border-solid);">
@@ -257,19 +243,6 @@
   </footer>
 
   <script>
-    const burger = document.getElementById('burger');
-    const mobileNav = document.getElementById('mobileNav');
-    burger.addEventListener('click', () => {
-      burger.classList.toggle('open');
-      mobileNav.classList.toggle('open');
-    });
-    mobileNav.querySelectorAll('a').forEach(a => {
-      a.addEventListener('click', () => {
-        burger.classList.remove('open');
-        mobileNav.classList.remove('open');
-      });
-    });
-
     (function () {
       const params = new URLSearchParams(window.location.search);
       const t = params.get('type');
