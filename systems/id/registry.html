@@ -4,7 +4,23 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Citizen Registry — National ID Portal · The Legend of Legiona</title>
+  <meta name="description" content="Look up official citizen registry records for The Legend of Legiona's National ID system." />
+  <link rel="canonical" href="https://thelegendoflegiona.github.io/gov/systems/id/registry" />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Citizen Registry — National ID Portal · The Legend of Legiona" />
+  <meta property="og:description" content="Look up official citizen registry records for The Legend of Legiona's National ID system." />
+  <meta property="og:url" content="https://thelegendoflegiona.github.io/gov/systems/id/registry" />
+  <meta property="og:site_name" content="The Legend of Legiona" />
+  <meta property="og:image" content="https://thelegendoflegiona.github.io/gov/assets/images/logo.png" />
+  <meta property="og:image:width" content="500" />
+  <meta property="og:image:height" content="500" />
+  <meta property="og:image:type" content="image/png" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Citizen Registry — National ID Portal · The Legend of Legiona" />
+  <meta name="twitter:description" content="Look up official citizen registry records for The Legend of Legiona's National ID system." />
+  <meta name="twitter:image" content="https://thelegendoflegiona.github.io/gov/assets/images/logo.png" />
   <link rel="icon" type="image/png" href="/gov/assets/images/logo.png"/>
+  <meta name="theme-color" content="#27ae60" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link rel="preload" as="style"
@@ -59,14 +75,19 @@
 </head>
 <body>
 
-  <!-- TOPBAR -- loaded from /gov/assets/partials/topbar.html by partials.js.
-       Edit the topbar in that shared file, never here. -->
-  <div id="topbar-placeholder"></div>
+  <!-- TOPBAR -->
+  <div id="topbar">
+    <div class="topbar-inner">
+      <a href="/main/">HUB</a>
+      <a href="/gov/" class="active">GOVERNMENT</a>
+      <a href="/gov/systems/citizenship/">CITIZENSHIP</a>
+      <a href="/gov/systems/archives/">ARCHIVES</a>
+      <a href="/isc/">ISC</a>
+    </div>
+  </div>
 
   <!-- NOTICE BANNER -->
   <div class="notice-banner"></div>
-
-  <script src="/gov/assets/js/partials.js"></script>
 
   <!-- NAV -->
   <div class="nav-wrapper">
@@ -200,9 +221,44 @@
     </div>
   </div>
 
-  <!-- FOOTER -- loaded from /gov/assets/partials/footer.html by partials.js.
-       Edit the footer in that shared file, never here. -->
-  <div id="footer-placeholder"></div>
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-top">
+        <div class="footer-brand">
+          <div class="name">The Legend of <em>Legiona</em></div>
+          <p>Official National ID Portal of The LoL. The Citizen Registry is publicly accessible. All verified citizens are listed upon ID issuance by The Black House.</p>
+        </div>
+        <div class="footer-col">
+          <h5>ID Portal</h5>
+          <a href="/gov/systems/id/">Portal Home</a>
+          <a href="/gov/systems/id/registry">Registry</a>
+          <a href="/gov/systems/id/id-card">ID Card</a>
+          <a href="/gov/systems/id/admin/">Admin Console</a>
+        </div>
+        <div class="footer-col">
+          <h5>Government</h5>
+          <a href="/gov/">Gov Home</a>
+          <a href="/gov/systems/citizenship/">Citizenship</a>
+          <a href="/gov/systems/archives/">Legal Archive</a>
+          <a href="/isc/">ISC</a>
+        </div>
+        <div class="footer-col">
+          <h5>Network</h5>
+          <a href="/main/">The LoL Hub</a>
+          <a href="/gov/about/">About The LoL</a>
+          <a href="/gov/systems/citizenship/apply">Apply for Citizenship</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <div class="copy">© 2026 THE LEGEND OF LEGIONA // NATIONAL ID PORTAL</div>
+        <div class="era">SKYXION: ALTAËR ERA // THE BLACK HOUSE</div>
+      </div>
+      <div class="disclaimer">
+        <strong>LEGAL DISCLAIMER:</strong> The Legend of Legiona (The LoL) is an independent community project within Minecraft. The terms "Skyxion" and "Altaër" are not affiliated with Kawaiisho. NOT AN OFFICIAL MINECRAFT PRODUCT. Not approved by or associated with Mojang AB or Microsoft Corporation.
+      </div>
+    </div>
+  </footer>
 
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/12.12.1/firebase-app.js";
