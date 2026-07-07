@@ -1,18 +1,4 @@
-    // ── Hamburger
-    const burger = document.getElementById('burger');
-    const mobileNav = document.getElementById('mobileNav');
-    burger.addEventListener('click', () => {
-      burger.classList.toggle('open');
-      mobileNav.classList.toggle('open');
-    });
-    mobileNav.querySelectorAll('a').forEach(a => {
-      a.addEventListener('click', () => {
-        burger.classList.remove('open');
-        mobileNav.classList.remove('open');
-      });
-    });
-
-    // ── Active section nav highlight on scroll
+// ── Active section nav highlight on scroll
     const sections = document.querySelectorAll('section[id], div[id]');
     const snavLinks = document.querySelectorAll('.snav a');
     window.addEventListener('scroll', () => {
