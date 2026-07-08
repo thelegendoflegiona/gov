@@ -307,12 +307,14 @@
       while (!window._nisReady && attempts < 30) { await new Promise(r => setTimeout(r, 100)); attempts++; }
       if (!window._nisReady) { ignResult.style.display = 'none'; ignBlocked = false; return; }
       try {
-        const { collection, query, where, getDocs } = window._nisQuery;
-        const q = query(collection(window._nisDB, 'citizens'), where('username', '==', username));
-        const snap = await getDocs(q);
-        if (snap.empty) { ignResult.style.display = 'none'; ignBlocked = false; ignFoundRecord = null; ignField.classList.remove('ign-blocked'); return; }
-        const docData = snap.docs[0].data();
-        const docId   = snap.docs[0].id;
+        const { doc, getDoc } = window._nisQuery;
+        // Looks up citizen_usernames/{lowercased username} — a minimal
+        // public index of { id, status }, NOT the private citizens
+        // collection (which is admin-only). A single getDoc, not a query.
+        const snap = await getDoc(doc(window._nisDB, 'citizen_usernames', username.toLowerCase()));
+        if (!snap.exists()) { ignResult.style.display = 'none'; ignBlocked = false; ignFoundRecord = null; ignField.classList.remove('ign-blocked'); return; }
+        const docData = snap.data();
+        const docId   = docData.id;
         const status  = (docData.status || 'active').toLowerCase();
         ignFoundRecord = { ...docData, id: docId };
         if (status === 'active' || status === 'suspended') {
@@ -331,8 +333,7 @@
                 <br><br>If this is you, use the links below to view your ID card or submit a renewal. If this is not you, contact the Government — username conflicts must be resolved before applying.
               </p>
               <div class="ign-check-actions">
-                <a href="/gov/systems/id/id-card?id=${encodeURIComponent(docId)}" class="ign-check-btn ign-check-btn-gold" target="_blank">View My ID Card →</a>
-                <a href="/gov/systems/id/registry?id=${encodeURIComponent(docId)}" class="ign-check-btn ign-check-btn-ghost" target="_blank">Check Registry</a>
+                <a href="/gov/systems/id/registry?id=${encodeURIComponent(docId)}" class="ign-check-btn ign-check-btn-gold" target="_blank">Check Registry</a>
                 <a href="/gov/systems/citizenship/apply?type=renew" class="ign-check-btn ign-check-btn-ghost">Submit Renewal →</a>
               </div>
             </div>`;
@@ -457,7 +458,7 @@
 
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/12.12.1/firebase-app.js";
-    import { getFirestore, collection, getDocs, query, where, doc, setDoc } from "https://www.gstatic.com/firebasejs/12.12.1/firebase-firestore.js";
+    import { getFirestore, doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/12.12.1/firebase-firestore.js";
     const firebaseConfig = {
       apiKey: "AIzaSyAgrLJDO8F6yyVLFubiZdRGiEl5ICRSAdQ",
       authDomain: "the-legend-of-legiona-the-lol.firebaseapp.com",
@@ -470,7 +471,7 @@
     const app = initializeApp(firebaseConfig);
     const db  = getFirestore(app);
     window._nisDB    = db;
-    window._nisQuery = { collection, query, where, getDocs };
+    window._nisQuery = { doc, getDoc };
     window._nisWrite = { doc, setDoc };
     window._nisReady = true;
   </script>
