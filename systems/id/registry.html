@@ -3,12 +3,12 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Citizen Registry — National ID Portal · The Legend of Legiona</title>
-  <meta name="description" content="Look up official citizen registry records for The Legend of Legiona's National ID system." />
+  <title>Quick Verify — National ID Portal · The Legend of Legiona</title>
+  <meta name="description" content="Publicly verify whether a The LoL ID number is a currently registered citizenship record." />
   <link rel="canonical" href="https://thelegendoflegiona.github.io/gov/systems/id/registry" />
   <meta property="og:type" content="website" />
-  <meta property="og:title" content="Citizen Registry — National ID Portal · The Legend of Legiona" />
-  <meta property="og:description" content="Look up official citizen registry records for The Legend of Legiona's National ID system." />
+  <meta property="og:title" content="Quick Verify — National ID Portal · The Legend of Legiona" />
+  <meta property="og:description" content="Publicly verify whether a The LoL ID number is a currently registered citizenship record." />
   <meta property="og:url" content="https://thelegendoflegiona.github.io/gov/systems/id/registry" />
   <meta property="og:site_name" content="The Legend of Legiona" />
   <meta property="og:image" content="https://thelegendoflegiona.github.io/gov/assets/images/logo.png" />
@@ -16,8 +16,8 @@
   <meta property="og:image:height" content="500" />
   <meta property="og:image:type" content="image/png" />
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Citizen Registry — National ID Portal · The Legend of Legiona" />
-  <meta name="twitter:description" content="Look up official citizen registry records for The Legend of Legiona's National ID system." />
+  <meta name="twitter:title" content="Quick Verify — National ID Portal · The Legend of Legiona" />
+  <meta name="twitter:description" content="Publicly verify whether a The LoL ID number is a currently registered citizenship record." />
   <meta name="twitter:image" content="https://thelegendoflegiona.github.io/gov/assets/images/logo.png" />
   <link rel="icon" type="image/png" href="/gov/assets/images/logo.png"/>
   <meta name="theme-color" content="#27ae60" />
@@ -32,7 +32,7 @@
   </noscript>
   <link rel="stylesheet" href="/gov/assets/css/style.css">
   <style>
-    /* ── PAGE-SPECIFIC: REGISTRY RESULT CARD ── */
+    /* ── PAGE-SPECIFIC: QUICK VERIFY RESULT CARD ── */
     .result-card { border:1px solid var(--border-solid); background:var(--bg-3); overflow:hidden; }
     .result-card-header { background:var(--bg-2); border-bottom:1px solid var(--border-solid); padding:24px 32px; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:16px; }
     .result-card-header-left { display:flex; flex-direction:column; gap:4px; }
@@ -40,6 +40,7 @@
     .result-verified-badge.active    { color:var(--emerald-l); }
     .result-verified-badge.revoked   { color:var(--red); }
     .result-verified-badge.suspended { color:var(--gold); }
+    .result-verified-badge.not_found { color:var(--text-dim); }
     .result-verified-dot { width:6px; height:6px; border-radius:50%; }
     .result-verified-badge.active    .result-verified-dot { background:var(--emerald-l); animation:pulse 2s infinite; }
     .result-verified-badge.revoked   .result-verified-dot { background:var(--red); }
@@ -47,30 +48,23 @@
     .result-id-display { font-family:var(--font-mono); font-size:26px; letter-spacing:0.08em; color:#fff; }
     .result-id-display .dim { color:var(--text-dim); }
     .result-id-seq { color:var(--emerald-l); }
-    .view-card-btn { display:inline-flex; align-items:center; gap:8px; background:transparent; border:1px solid var(--emerald); color:var(--emerald-l); font-family:var(--font-mono); font-size:9px; letter-spacing:0.15em; text-transform:uppercase; padding:10px 20px; cursor:pointer; transition:all 0.2s; }
-    .view-card-btn:hover { background:var(--emerald-dim); }
-    .result-grid { display:grid; grid-template-columns:repeat(3,1fr); border-top:1px solid var(--border-solid); }
-    .result-field { padding:28px 32px; border-right:1px solid var(--border-solid); border-bottom:1px solid var(--border-solid); }
-    .result-field:nth-child(3n) { border-right:none; }
+    .result-grid { display:grid; grid-template-columns:1fr; border-top:1px solid var(--border-solid); }
+    .result-field { padding:28px 32px; border-bottom:1px solid var(--border-solid); }
     .result-field-label { font-family:var(--font-mono); font-size:8px; letter-spacing:0.2em; color:var(--text-dim); text-transform:uppercase; margin-bottom:8px; }
     .result-field-val { font-family:var(--font-body); font-size:15px; font-weight:500; color:#fff; }
-    .result-field-val.mono    { font-family:var(--font-mono); font-size:13px; letter-spacing:0.06em; }
     .result-field-val.emerald { color:var(--emerald-l); }
     .result-field-val.gold    { color:var(--gold); }
     .result-field-val.red     { color:var(--red); }
     .result-field-val.muted   { color:var(--text-muted); }
-    .result-bio { padding:28px 32px; border-top:1px solid var(--border-solid); }
-    .result-bio-label { font-family:var(--font-mono); font-size:8px; letter-spacing:0.2em; color:var(--text-dim); text-transform:uppercase; margin-bottom:10px; }
-    .result-bio-text { font-family:var(--font-body); font-size:13px; color:var(--text-mid); font-weight:300; line-height:1.65; max-width:640px; }
-    .result-bio-text.empty { font-style:italic; color:var(--text-dim); }
+    .result-privacy-note { padding:20px 32px; border-top:1px solid var(--border-solid); font-family:var(--font-mono); font-size:11px; line-height:1.6; color:var(--text-dim); }
+    .result-privacy-note strong { color:var(--text-mid); }
     .result-footer { padding:16px 32px; border-top:1px solid var(--border-solid); background:var(--bg-2); display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:12px; }
     .result-footer-note, .result-footer-ts { font-family:var(--font-mono); font-size:9px; letter-spacing:0.1em; color:var(--text-dim); }
     /* page-top meta badges */
     .page-top-inner { display:flex; align-items:flex-end; justify-content:space-between; gap:24px; flex-wrap:wrap; }
     .page-top-meta { display:flex; flex-direction:column; align-items:flex-end; gap:6px; }
     .meta-badge { font-family:var(--font-mono); font-size:8px; letter-spacing:0.15em; color:var(--text-dim); border:1px solid var(--border-solid); padding:6px 12px; }
-    @media(max-width:900px){ .result-grid{grid-template-columns:1fr 1fr;} }
-    @media(max-width:600px){ .result-grid{grid-template-columns:1fr;} .result-field{border-right:none;} }
+    .recent-item-name { display:none; } /* no personal data kept in session history anymore */
   </style>
 </head>
 <body>
@@ -81,6 +75,7 @@
       <a href="/main/">HUB</a>
       <a href="/gov/" class="active">GOVERNMENT</a>
       <a href="/gov/systems/citizenship/">CITIZENSHIP</a>
+      <a href="/gov/systems/id/">IDENTITY CARD</a>
       <a href="/gov/systems/archives/">ARCHIVES</a>
       <a href="/isc/">ISC</a>
     </div>
@@ -95,9 +90,8 @@
       <div class="nav-logo">THELOL.GOV // ID PORTAL</div>
       <ul class="nav-links">
         <li><a href="/gov/systems/id/">ID HOME</a></li>
-        <li><a href="/gov/systems/id/registry" class="active">REGISTRY</a></li>
-        <li><a href="/gov/systems/id/id-card">ID CARD</a></li>
-        <li><a href="/gov/systems/id/admin/">ADMIN</a></li>
+        <li><a href="/gov/systems/id/registry" class="active">QUICK VERIFY</a></li>
+        <li><a href="/gov/systems/id/id-card">MY ID CARD</a></li>
         <li><a href="/gov/">GOV HOME</a></li>
       </ul>
       <button class="hamburger" onclick="toggleMenu()" aria-label="Menu">
@@ -107,9 +101,8 @@
     <div class="mobile-menu" id="mobileMenu">
       <a href="/main/" onclick="toggleMenu()">Hub</a>
       <a href="/gov/systems/id/" onclick="toggleMenu()">ID Home</a>
-      <a href="/gov/systems/id/registry" onclick="toggleMenu()">Registry</a>
-      <a href="/gov/systems/id/id-card" onclick="toggleMenu()">ID Card</a>
-      <a href="/gov/systems/id/admin/" onclick="toggleMenu()">Admin Console</a>
+      <a href="/gov/systems/id/registry" onclick="toggleMenu()">Quick Verify</a>
+      <a href="/gov/systems/id/id-card" onclick="toggleMenu()">My ID Card</a>
       <a href="/gov/" onclick="toggleMenu()">Government</a>
       <a href="/isc/" onclick="toggleMenu()">ISC</a>
     </div>
@@ -122,13 +115,13 @@
       <span>/</span>
       <a href="/gov/systems/id/">National ID Portal</a>
       <span>/</span>
-      <span>Registry</span>
+      <span>Quick Verify</span>
     </div>
     <div class="page-top-inner">
       <div>
         <div class="page-eyebrow">Public Verification · Open Access</div>
-        <h1 class="page-h1">Citizen Registry</h1>
-        <p class="page-desc">Enter a The LoL ID to verify citizenship status, tier, and registration date. All verified citizens of The Legend of Legiona appear in this registry.</p>
+        <h1 class="page-h1">Quick Verify</h1>
+        <p class="page-desc">Enter a The LoL ID to check whether it is a currently registered citizen and its citizenship status. No personal information — username, tier, or notes — is shown here. Citizens can view their own full ID Card by signing in.</p>
       </div>
       <div class="page-top-meta">
         <span class="meta-badge">THELOLGOV · NIS-REG-2026</span>
@@ -158,7 +151,7 @@
         <svg width="48" height="48" viewBox="0 0 48 48" fill="none"><rect x="1" y="1" width="46" height="46" stroke="#2a2a2a" stroke-width="1"/><rect x="8" y="14" width="32" height="2" fill="#2a2a2a"/><rect x="8" y="20" width="24" height="2" fill="#2a2a2a"/><rect x="8" y="26" width="28" height="2" fill="#2a2a2a"/><rect x="8" y="32" width="16" height="2" fill="#2a2a2a"/><circle cx="36" cy="36" r="8" stroke="#3d6b52" stroke-width="1.5" opacity="0.4"/><line x1="42" y1="42" x2="46" y2="46" stroke="#3d6b52" stroke-width="1.5" opacity="0.4"/></svg>
       </div>
       <div class="state-idle-title">Enter a The LoL ID to begin</div>
-      <div class="state-idle-sub">// Awaiting query — all active citizens are searchable</div>
+      <div class="state-idle-sub">// Awaiting query — checks registration status only</div>
     </div>
 
     <div class="state-loading" id="stateLoading">
@@ -184,22 +177,12 @@
               <span class="dim">THELOL-</span><span id="resIdYear"></span><span class="dim">-</span><span class="result-id-seq" id="resIdSeq"></span>
             </div>
           </div>
-          <a id="viewCardBtn" href="#" class="view-card-btn">
-            <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><rect x="0.5" y="2.5" width="11" height="7" stroke="currentColor" stroke-width="1"/><rect x="2" y="4.5" width="3" height="3" fill="currentColor" opacity="0.5"/><rect x="6" y="4.5" width="4" height="1" fill="currentColor" opacity="0.4"/></svg>
-            View ID Card →
-          </a>
         </div>
         <div class="result-grid">
-          <div class="result-field"><div class="result-field-label">Minecraft Username</div><div class="result-field-val" id="resUsername">—</div></div>
           <div class="result-field"><div class="result-field-label">Citizenship Status</div><div class="result-field-val" id="resStatus">—</div></div>
-          <div class="result-field"><div class="result-field-label">Citizenship Tier</div><div class="result-field-val" id="resTier">—</div></div>
-          <div class="result-field"><div class="result-field-label">Issuance Date</div><div class="result-field-val mono" id="resIssued">—</div></div>
-          <div class="result-field"><div class="result-field-label">Territory</div><div class="result-field-val muted" id="resTerritory">—</div></div>
-          <div class="result-field"><div class="result-field-label">Wallet Linked</div><div class="result-field-val" id="resWallet">—</div></div>
         </div>
-        <div class="result-bio">
-          <div class="result-bio-label">Citizen Note (Public)</div>
-          <div class="result-bio-text" id="resBio">—</div>
+        <div class="result-privacy-note">
+          <strong>This is all Quick Verify shows.</strong> Username, tier, issuance date, and other details are private and only visible to the citizen via account sign-in — this keeps the registry from being scraped for personal data.
         </div>
         <div class="result-footer">
           <span class="result-footer-note">// Record served by THELOLGOV-NIS · The Black House</span>
@@ -227,14 +210,13 @@
       <div class="footer-top">
         <div class="footer-brand">
           <div class="name">The Legend of <em>Legiona</em></div>
-          <p>Official National ID Portal of The LoL. The Citizen Registry is publicly accessible. All verified citizens are listed upon ID issuance by The Black House.</p>
+          <p>Official National ID Portal of The LoL. Quick Verify checks registration status only. Full citizen records are private.</p>
         </div>
         <div class="footer-col">
           <h5>ID Portal</h5>
           <a href="/gov/systems/id/">Portal Home</a>
-          <a href="/gov/systems/id/registry">Registry</a>
-          <a href="/gov/systems/id/id-card">ID Card</a>
-          <a href="/gov/systems/id/admin/">Admin Console</a>
+          <a href="/gov/systems/id/registry">Quick Verify</a>
+          <a href="/gov/systems/id/id-card">My ID Card</a>
         </div>
         <div class="footer-col">
           <h5>Government</h5>
@@ -290,17 +272,13 @@
       revoked:   { label:'REVOKED · CITIZENSHIP ENDED', cls:'revoked',   valCls:'red',     valText:'Revoked'   },
       suspended: { label:'SUSPENDED · UNDER REVIEW',    cls:'suspended', valCls:'gold',    valText:'Suspended' },
     };
-    const TIER_CFG = {
-      citizen:  { label:'Citizen',          cls:'citizen'  },
-      senior:   { label:'Senior Citizen',   cls:'senior'   },
-      elder:    { label:'Elder',            cls:'elder'    },
-      founding: { label:'Founding Citizen', cls:'founding' },
-    };
 
+    // Session-only, ID + status. No names — nothing personal ever
+    // enters this page's memory in the first place.
     const session = [];
-    function addRecent(id, username) {
+    function addRecent(id, status) {
       if(session.find(r=>r.id===id)) return;
-      session.unshift({id,username,ts:new Date()});
+      session.unshift({id,status,ts:new Date()});
       const list=document.getElementById('recentList'), empty=document.getElementById('recentEmpty');
       if(empty) empty.style.display='none';
       list.innerHTML='';
@@ -308,30 +286,24 @@
         const div=document.createElement('div'); div.className='recent-item';
         div.onclick=()=>{ inp.value=r.id.replace('THELOL-',''); lookupID(); window.scrollTo({top:0,behavior:'smooth'}); };
         const ts=r.ts.toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'});
-        div.innerHTML=`<span class="recent-item-id">${r.id}</span><span class="recent-item-name">${r.username||'—'}</span><span class="recent-item-ts">${ts}</span>`;
+        const cfg=STATUS_CFG[r.status]||STATUS_CFG.active;
+        div.innerHTML=`<span class="recent-item-id">${r.id}</span><span class="recent-item-ts">${cfg.valText} · ${ts}</span>`;
         list.appendChild(div);
       });
     }
 
     function renderResult(id, data) {
       const parts=id.split('-'), year=parts[1]||'????', seq=parts[2]||'?????';
-      const status=(data.status||'active').toLowerCase(), tier=(data.tier||'citizen').toLowerCase();
-      const sCfg=STATUS_CFG[status]||STATUS_CFG.active, tCfg=TIER_CFG[tier]||TIER_CFG.citizen;
+      const status=(data.status||'active').toLowerCase();
+      const sCfg=STATUS_CFG[status]||STATUS_CFG.active;
       const badge=document.getElementById('resBadge'); badge.className=`result-verified-badge ${sCfg.cls}`;
       document.getElementById('resBadgeText').textContent=sCfg.label;
       document.getElementById('resIdYear').textContent=year;
       document.getElementById('resIdSeq').textContent=seq;
-      document.getElementById('viewCardBtn').href=`/gov/systems/id/id-card?id=${encodeURIComponent(id)}`;
-      document.getElementById('resUsername').textContent=data.username||'—';
       const sEl=document.getElementById('resStatus'); sEl.textContent=sCfg.valText; sEl.className=`result-field-val ${sCfg.valCls}`;
-      document.getElementById('resTier').innerHTML=`<span class="tier-badge ${tCfg.cls}">${tCfg.label}</span>`;
-      document.getElementById('resIssued').textContent=data.issuedDate||'—';
-      document.getElementById('resTerritory').textContent=data.territory||'Mainland Legiona';
-      const wEl=document.getElementById('resWallet'); wEl.textContent=data.walletLinked?'Linked':'Not Linked'; wEl.className=`result-field-val ${data.walletLinked?'emerald':'muted'}`;
-      const bioEl=document.getElementById('resBio'); bioEl.textContent=data.publicNote||'No public note on record.'; bioEl.className=`result-bio-text${data.publicNote?'':' empty'}`;
       document.getElementById('resFooterTs').textContent=`Queried: ${new Date().toUTCString()}`;
       showState('stateResult');
-      addRecent(id, data.username);
+      addRecent(id, status);
       window.statsTrackEvent?.('registry_searches');
     }
 
@@ -346,7 +318,9 @@
       if(!window._fbReady||!window._db){ showError('ERROR · DB UNAVAILABLE','Database Not Configured','The registry database is not connected.'); return; }
       try {
         const {doc,getDoc}=window._firetop;
-        const snap=await getDoc(doc(window._db,'citizens',fullID));
+        // NOTE: reads from citizens_public — only { status } lives here.
+        // Requires the Firestore split migration + rules to be deployed first.
+        const snap=await getDoc(doc(window._db,'citizens_public',fullID));
         if(!snap.exists()){ showError('ERROR · 404 NOT FOUND','No Record Found',`"${fullID}" does not exist in the registry.`); return; }
         renderResult(fullID,snap.data());
       } catch(err){ showError('ERROR · QUERY FAILED','Registry Unavailable',`${err.message}`); }
