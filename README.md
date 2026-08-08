@@ -90,11 +90,12 @@ security boundary is Firebase Auth plus Firestore security rules. See
 The canonical repository is:
 
 ```text
-https://github.com/faizzzlol/faizzzlol.github.io
+https://github.com/thelegendoflegiona/gov
 ```
 
-The live site is served via GitHub Pages. To publish, commit to the canonical
-repository and push. GitHub Pages will rebuild automatically.
+The live site is served via GitHub Pages under `thelegendoflegiona.github.io`.
+To publish, commit to the canonical repository and push. GitHub Pages will
+rebuild automatically.
 
 Recommended local test command before committing:
 

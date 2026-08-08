@@ -51,7 +51,17 @@ every page that uses the topbar.
 |--------|-------|-------|
 | 1 | Government | Absolute `/gov/#section` anchors for cross-page use; relative `#section` on `gov/index.html` only |
 | 2 | Agencies | `/isc/`, `/isc/national/`, `/isc/search/` |
-| 3 | Documents | `/gov/systems/id/`, `/gov/systems/archives/`, `/gov/about/` |
+| 3 | Documents | `/gov/systems/id/`, `/gov/systems/archives/`, `/gov/finance/`, `/gov/about/` |
+
+### Shared partials
+
+Topbar and footer markup live in `assets/partials/topbar.html` and
+`assets/partials/footer.html`, loaded by `assets/js/partials.js`. Edit the
+partial files, never hand-copy the markup into a page. Exceptions:
+`systems/id/registry.html` and `systems/id/id-card.html` keep a
+task-specific footer (Quick Verify / My ID Card links) instead of the
+canonical one — intentional, not drift. `systems/dashboard/index.html` uses
+the shared topbar partial but has no public footer (admin console).
 
 ### Fonts
 
@@ -61,7 +71,12 @@ Playfair Display, DM Mono, Outfit — loaded via CDN. Do not substitute.
 
 Gold accent: `#C9A84C` (`var(--gold)`). Pure dark backgrounds. The ISC portal
 uses its own gold `#c6a664` within the classified terminal aesthetic — do not
-mix the two palettes across portals.
+mix the two palettes across portals. `systems/dashboard/index.html` links
+the shared stylesheet and only keeps local `:root` tokens that have no exact
+canonical equivalent (dashboard-only shades, or shades that differ from the
+canonical value on purpose) — don't reintroduce a duplicate `--gold`,
+`--emerald`, `--emerald-l`, `--emerald-dim`, `--gold-border`, or `--text`
+definition there.
 
 ### Links
 
@@ -82,12 +97,9 @@ prohibited on all public-facing content.
 
 ## Known Open Bugs
 
-- **loadActiveBanner() not wired into public pages.** Announcements created
-  through the admin dashboard announcement manager do not surface on public
-  `/gov/` pages because `loadActiveBanner()` is not called in public page
-  scripts. Fix: import and call `loadActiveBanner()` in the shared assets
-  script included on each public page, or wire it directly into each page's
-  inline script.
+None currently tracked. (`loadActiveBanner()` is wired into `stats.js`'s
+`initStats()`, which every public page loads, so dashboard announcements
+surface automatically — this was fixed in the June 2026 performance audit.)
 
 ---
 
@@ -104,10 +116,8 @@ prohibited on all public-facing content.
 ### Add An Announcement
 
 Use the dashboard announcement tools when possible. If editing static content,
-keep the announcement short and make sure the link is valid.
-
-Note: until the `loadActiveBanner()` bug is resolved, announcements created
-in the dashboard manager will not appear on public pages automatically.
+keep the announcement short and make sure the link is valid. Announcements
+surface automatically on public pages via `loadActiveBanner()`.
 
 ### Update Citizenship Flow
 

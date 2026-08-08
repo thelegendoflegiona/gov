@@ -15,20 +15,28 @@
     <link rel="stylesheet"
           href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=DM+Mono:wght@300;400;500&family=Outfit:wght@300;400;500;600;700&display=swap">
   </noscript>
+  <link rel="stylesheet" href="/gov/assets/css/style.css">
   <style>
+    /* Local palette/type overrides specific to the admin console.
+       Tokens that exactly duplicate /gov/assets/css/style.css (--gold,
+       --gold-border, --emerald, --emerald-l, --emerald-dim, --text, and
+       the font stacks) were removed from here in favor of the shared
+       stylesheet — see MAINTENANCE.md. Everything below is either a
+       dashboard-only color/size or a deliberately different shade, kept
+       local under its existing name to avoid touching ~750 call sites. */
     :root {
       --bg: #0c0c0c; --surface: #111111; --card: #171717; --card-h: #1c1c1c;
       --border: #252525;
-      --gold: #c9a84c; --gold-l: #e0be6f; --gold-dim: rgba(201,168,76,0.10); --gold-border: rgba(201,168,76,0.30);
-      --emerald: #3d6b52; --emerald-l: #4e8f6b; --emerald-dim: rgba(61,107,82,0.12); --emerald-b: rgba(61,107,82,0.30);
+      --gold-l: #e0be6f; --gold-dim: rgba(201,168,76,0.10);
+      --emerald-b: rgba(61,107,82,0.30);
       --amber: #c9943a; --amber-l: #e0aa52; --amber-dim: rgba(201,148,58,0.10); --amber-b: rgba(201,148,58,0.30);
       --blue: #3a70a8; --blue-l: #5490c8; --blue-dim: rgba(58,112,168,0.10); --blue-b: rgba(58,112,168,0.30);
       --red: #8b3a3a; --red-l: #c0392b; --red-dim: rgba(139,58,58,0.12); --red-b: rgba(139,58,58,0.30);
       --orange-l: #e07a34; --orange-dim: rgba(181,98,42,0.12); --orange-b: rgba(181,98,42,0.30);
-      --text: #e8e2d9; --muted: #7a7570; --dim: #4a4540; --white: #ffffff;
-      --fD: 'Playfair Display', Georgia, serif;
-      --fM: 'DM Mono', 'Courier New', monospace;
-      --fB: 'Outfit', sans-serif;
+      --muted: #7a7570; --dim: #4a4540; --white: #ffffff;
+      --fD: var(--font-display);
+      --fM: var(--font-mono);
+      --fB: var(--font-body);
     }
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     html { scroll-behavior: smooth; }
@@ -69,12 +77,9 @@
     #mainContent.visible { display: block; }
 
     /* ── NETBAR ── */
-    .netbar { height: 30px; background: #080808; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: center; overflow-x: auto; overflow-y: hidden; scrollbar-width: none; position: sticky; top: 0; z-index: 1000; white-space: nowrap; }
-    .netbar::-webkit-scrollbar { display: none; }
-    .netbar a { font-family: var(--fM); font-size: 9px; letter-spacing: 0.12em; color: var(--muted); padding: 0 14px; border-right: 1px solid var(--border); transition: color 0.2s; text-transform: uppercase; }
-    .netbar a:first-child { border-left: 1px solid var(--border); }
-    .netbar a:hover { color: var(--gold); }
-    .netbar a.active { color: var(--emerald-l); }
+    /* .netbar rules removed — dashboard now uses the shared #topbar /
+       .topbar-inner styling from /gov/assets/css/style.css via the
+       shared partial. See MAINTENANCE.md. */
 
     /* ── HEADER ── */
     .site-header { background: var(--surface); border-bottom: 1px solid var(--border); padding: 16px 36px; display: flex; align-items: center; justify-content: space-between; gap: 14px; }
@@ -537,14 +542,9 @@
 <!-- ═══ MAIN CONTENT ═══ -->
 <div id="mainContent">
 
-  <nav class="netbar">
-    <a href="/main/">HUB</a>
-    <a href="/gov/" class="active">GOVERNMENT</a>
-    <a href="/gov/systems/citizenship/">CITIZENSHIP</a>
-    <a href="/gov/systems/id/">IDENTITY CARD</a>
-    <a href="/gov/systems/archives/">ARCHIVES</a>
-    <a href="/isc/">ISC</a>
-  </nav>
+  <!-- TOPBAR (loaded from assets/partials/topbar.html) -->
+  <div id="topbar-placeholder"></div>
+  <script src="/gov/assets/js/partials.js"></script>
 
   <header class="site-header">
     <div class="hdr-brand">
