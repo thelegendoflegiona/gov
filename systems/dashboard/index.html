@@ -1085,7 +1085,7 @@
               </div>
               <div class="f-field">
                 <div class="f-label">Console Version</div>
-                <div style="font-family:var(--fM);font-size:10px;color:var(--muted);margin-top:4px;">v2.0.0 — 2026 · Skyxion: Altaër Era</div>
+                <div style="font-family:var(--fM);font-size:10px;color:var(--muted);margin-top:4px;">v2.0.0 — 2026 · Kawaiisho: Season 3</div>
               </div>
               <button class="btn-lock" style="margin-top:8px;padding:10px 20px;font-size:9px;" onclick="logout()">LOCK SESSION ×</button>
             </div>
@@ -1185,8 +1185,8 @@
         <p style="font-family:var(--fM);font-size:8px;letter-spacing:0.12em;color:var(--dim);margin-bottom:10px;">PRESET REJECTION REASONS:</p>
         <div class="reject-presets">
           <button class="preset-chip" onclick="appendPreset('Application did not meet the eligibility requirements for the current era.')">Eligibility not met</button>
-          <button class="preset-chip" onclick="appendPreset('Applicant is not an active player on the Skyxion server at this time.')">Not active on server</button>
-          <button class="preset-chip" onclick="appendPreset('Unresolved issues with Skyxion server administration (Kawaiisho) were found.')">Server issues found</button>
+          <button class="preset-chip" onclick="appendPreset('Applicant is not an active player on the Kawaiisho server at this time.')">Not active on server</button>
+          <button class="preset-chip" onclick="appendPreset('Unresolved issues with Kawaiisho server administration (Kawaiisho) were found.')">Server issues found</button>
           <button class="preset-chip" onclick="appendPreset('A prior citizenship revocation was found without a formal pardon.')">Prior revocation</button>
           <button class="preset-chip" onclick="appendPreset('Known hostile intent toward The LoL or its citizens was identified.')">Hostile intent</button>
         </div>
@@ -1443,7 +1443,7 @@ async function testWebhook() {
           title: '🧪 Test — The LoL Admin Console',
           description: 'Discord webhook integration is configured and working.',
           color: 0x4e8f6b,
-          fields: [{ name: 'Status', value: 'Connected', inline: true }, { name: 'Era', value: 'Skyxion: Altaër', inline: true }],
+          fields: [{ name: 'Status', value: 'Connected', inline: true }, { name: 'Era', value: 'Kawaiisho: Season 3', inline: true }],
           footer: { text: 'THELOLGOV Admin Console · The Black House' },
           timestamp: new Date().toISOString()
         }]
@@ -1590,7 +1590,7 @@ async function loadDashboard() {
       ).join('');
     }
 
-    const citSnap = await getDocs(collection(window._db, 'citizens'));
+    const citSnap = await getDocs(collection(window._db, 'citizens_private'));
     let nisTotal=0, nisActive=0, nisRevoked=0, nisSuspended=0;
     const recentCits = [];
     citSnap.forEach(d => {
@@ -1929,7 +1929,9 @@ async function approveAndIssueID() {
       const lastSeq=cSnap.exists()?(cSnap.data().lastSequence||0):0, newSeq=lastSeq+1;
       newID=`THELOL-${year}-${String(newSeq).padStart(5,'0')}`;
       tx.set(cRef,{lastSequence:newSeq,lastYear:String(year)});
-      tx.set(doc(db,'citizens',newID),{username:ign,tier,issuedDate:today,territory,status:'active',platform,walletLinked:false,publicNote:pubNote,issuedYear:year});
+      tx.set(doc(db,'citizens_private',newID),{username:ign,tier,issuedDate:today,territory,status:'active',platform,walletLinked:false,publicNote:pubNote,issuedYear:year});
+      tx.set(doc(db,'citizens_public',newID),{status:'active'});
+      tx.set(doc(db,'citizen_usernames',ign.toLowerCase()),{id:newID,status:'active'});
       tx.update(doc(db,'applications',ref),{status:'approved',thelol_id:newID,processed:today,public_note:pubNote,admin_note:admNote});
     });
     await logCitizenAction(newID, ign, 'issued', '', 'active', `Approved & issued via application ${ref}`);
@@ -2027,7 +2029,9 @@ async function issueID() {
       const lastSeq=cSnap.exists()?(cSnap.data().lastSequence||0):0, newSeq=lastSeq+1;
       newID=`THELOL-${year}-${String(newSeq).padStart(5,'0')}`;
       tx.set(cRef,{lastSequence:newSeq,lastYear:String(year)});
-      tx.set(doc(db,'citizens',newID),{username,tier,issuedDate:issued,territory,status,platform,walletLinked:false,publicNote:note||'',issuedYear:year});
+      tx.set(doc(db,'citizens_private',newID),{username,tier,issuedDate:issued,territory,status,platform,walletLinked:false,publicNote:note||'',issuedYear:year});
+      tx.set(doc(db,'citizens_public',newID),{status});
+      tx.set(doc(db,'citizen_usernames',username.toLowerCase()),{id:newID,status});
     });
     await logCitizenAction(newID, username, 'issued', '', status, 'Manually issued via Issue ID tab');
     await sendWebhook('manualIssue', { 'National ID': newID, 'IGN': username, 'Tier': tier, 'Territory': territory, 'Issued': issued });
@@ -2063,7 +2067,7 @@ async function loadAllCitizens() {
   body.innerHTML='<tr><td colspan="7" class="tbl-loading">// Querying citizen registry...</td></tr>';
   try {
     const { collection, getDocs } = window._fire;
-    const snap=await getDocs(collection(window._db,'citizens'));
+    const snap=await getDocs(collection(window._db,'citizens_private'));
     allCitizens=[];
     snap.forEach(d=>allCitizens.push({id:d.id,...d.data()}));
     allCitizens.sort((a,b)=>a.id.localeCompare(b.id));
@@ -2114,7 +2118,9 @@ async function quickCitStatus(id, newStatus) {
   const prevStatus = c?.status || '';
   try {
     const { doc, updateDoc } = window._fire;
-    await updateDoc(doc(window._db,'citizens',id),{status:newStatus});
+    await updateDoc(doc(window._db,'citizens_private',id),{status:newStatus});
+    await updateDoc(doc(window._db,'citizens_public',id),{status:newStatus});
+    if (c?.username) { await updateDoc(doc(window._db,'citizen_usernames',c.username.toLowerCase()),{status:newStatus}); }
     if (c) c.status=newStatus;
     filterCitizens(); loadDashboard();
     if (newStatus === 'revoked') {
@@ -2181,8 +2187,16 @@ async function saveEdit() {
   fb.textContent='// Saving...'; fb.className='edit-fb ok show';
   const prevStatus = allCitizens.find(x=>x.id===id)?.status || '';
   try {
-    const { doc, updateDoc } = window._fire;
-    await updateDoc(doc(window._db,'citizens',id),{username,status,tier,territory:territory||'Mainland Legiona',issuedDate:issued,walletLinked:walletStr==='true',publicNote:note});
+    const { doc, updateDoc, setDoc, deleteDoc } = window._fire;
+    const oldUsername = allCitizens.find(x=>x.id===id)?.username || '';
+    await updateDoc(doc(window._db,'citizens_private',id),{username,status,tier,territory:territory||'Mainland Legiona',issuedDate:issued,walletLinked:walletStr==='true',publicNote:note});
+    await updateDoc(doc(window._db,'citizens_public',id),{status});
+    if (oldUsername && oldUsername.toLowerCase() !== username.toLowerCase()) {
+      await deleteDoc(doc(window._db,'citizen_usernames',oldUsername.toLowerCase()));
+      await setDoc(doc(window._db,'citizen_usernames',username.toLowerCase()),{id,status});
+    } else {
+      await updateDoc(doc(window._db,'citizen_usernames',username.toLowerCase()),{id,status});
+    }
     const c=allCitizens.find(x=>x.id===id);
     if(c) Object.assign(c,{username,status,tier,territory:territory||'Mainland Legiona',issuedDate:issued,walletLinked:walletStr==='true',publicNote:note});
     if (prevStatus !== status) {
