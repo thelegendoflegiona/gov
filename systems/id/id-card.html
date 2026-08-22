@@ -126,6 +126,9 @@
     .signin-gate-desc { font-family:var(--font-body); font-size:13px; color:var(--text-mid); line-height:1.65; margin-bottom:24px; }
     .signin-gate-note { font-family:var(--font-mono); font-size:9px; letter-spacing:0.1em; color:var(--text-dim); text-transform:uppercase; border-top:1px solid var(--border-solid); padding-top:18px; margin-top:8px; }
     .signin-gate-actions { display:flex; gap:12px; justify-content:center; flex-wrap:wrap; }
+    .signin-gate-err { font-family:var(--font-mono); font-size:11px; color:var(--red); min-height:14px; margin-top:2px; }
+    .claim-input-row { display:flex; gap:10px; justify-content:center; flex-wrap:wrap; margin-bottom:10px; }
+    .claim-input-row .search-input { max-width:220px; text-align:center; }
 
     /* ── PRINT ── */
     @media print {
@@ -217,30 +220,48 @@
   <!-- CARD SECTION -->
   <div class="card-section">
 
-    <!-- SIGN-IN GATE — this is the only state this page shows today.
-         There is no citizen login system yet, so there's nothing to sign
-         in to. The card-rendering markup/CSS/JS below is kept intact and
-         ready to wire up once account sign-in ships: it will fetch
-         citizens_private/{id} for the signed-in citizen's own ownerUid
-         match, no ID input box, no lookup-by-ID for anyone. -->
+    <!-- SIGN-IN GATE — shown when no one is signed in. -->
     <div class="signin-gate" id="signinGate">
       <div class="signin-gate-icon">
         <svg width="40" height="40" viewBox="0 0 40 40" fill="none"><rect x="1" y="1" width="38" height="38" stroke="#2a2a2a"/><rect x="12" y="17" width="16" height="14" stroke="#3d6b52" stroke-width="1.2"/><path d="M15 17v-4a5 5 0 0 1 10 0v4" stroke="#3d6b52" stroke-width="1.2"/><circle cx="20" cy="23" r="1.6" fill="#3d6b52"/></svg>
       </div>
-      <div class="signin-gate-title">Sign-in coming soon</div>
-      <p class="signin-gate-desc">Digital ID cards used to be viewable by anyone who typed in a valid ID number. That's been changed — full citizen details (username, tier, wallet status) are now private. Account sign-in for citizens is in development, and this page will let you view your own card the moment it ships.</p>
+      <div class="signin-gate-title">Sign in to view your card</div>
+      <p class="signin-gate-desc">Digital ID cards used to be viewable by anyone who typed in a valid ID number. That's been changed — full citizen details (username, tier, wallet status) are now private and tied to your own account.</p>
       <div class="signin-gate-actions">
-        <a href="/gov/systems/id/registry" class="action-btn primary">Check Registry Status →</a>
-        <a href="/gov/systems/citizenship/status" class="action-btn secondary">Check Application Status →</a>
+        <button type="button" class="action-btn primary" onclick="window._idSignIn && window._idSignIn()">Sign in with Google →</button>
+        <a href="/gov/systems/id/registry" class="action-btn secondary">Check Registry Status →</a>
       </div>
+      <div class="signin-gate-err" id="signinErr"></div>
       <div class="signin-gate-note">// Need your card urgently? Contact The Black House via the Admin Console.</div>
     </div>
 
+    <!-- CLAIM GATE — shown once signed in if this Google account isn't
+         linked to a citizen record yet (one-time). Enter the citizen ID
+         from your application confirmation; it's checked against
+         citizens_private/{id} and, if unclaimed, gets your uid attached
+         as ownerUid so future visits skip straight to the card. -->
+    <div class="signin-gate" id="claimGate" style="display:none">
+      <div class="signin-gate-icon">
+        <svg width="40" height="40" viewBox="0 0 40 40" fill="none"><rect x="1" y="1" width="38" height="38" stroke="#2a2a2a"/><rect x="12" y="17" width="16" height="14" stroke="#3d6b52" stroke-width="1.2"/><path d="M15 17v-4a5 5 0 0 1 10 0v4" stroke="#3d6b52" stroke-width="1.2"/><circle cx="20" cy="23" r="1.6" fill="#3d6b52"/></svg>
+      </div>
+      <div class="signin-gate-title">Link your citizen ID</div>
+      <p class="signin-gate-desc">This account isn't linked to a citizen record yet. Enter the ID from your citizenship approval (format THELOL-YYYY-#####) to link it — this only needs to happen once.</p>
+      <div class="claim-input-row">
+        <input class="search-input" id="claimIdInput" type="text" placeholder="THELOL-2026-00001" maxlength="17" autocomplete="off" spellcheck="false" />
+      </div>
+      <div class="signin-gate-actions">
+        <button type="button" class="action-btn primary" onclick="window._claimId && window._claimId(document.getElementById('claimIdInput').value)">Link Account →</button>
+        <button type="button" class="action-btn secondary" onclick="window._idSignOut && window._idSignOut()">Sign in with a different account</button>
+      </div>
+      <div class="signin-gate-err" id="claimErr"></div>
+      <div class="signin-gate-note">// Don't have your ID handy? Check <a href="/gov/systems/citizenship/status" style="color:inherit;">Application Status</a> or contact The Black House via the Admin Console.</div>
+    </div>
+
     <!-- ─────────────────────────────────────────────────────────────
-         PHASE 2 SCAFFOLDING — inert until sign-in exists.
-         Nothing below is currently reachable by any user action, and
-         no automatic ?id= lookup runs anymore (that was the mechanism
-         that used to expose arbitrary citizens' cards).
+         CARD STATES — driven by auth + Firestore below. No automatic
+         ?id= lookup runs (that was the mechanism that used to expose
+         arbitrary citizens' cards); a card only loads for the
+         signed-in citizen's own linked record.
     ────────────────────────────────────────────────────────────────── -->
     <div class="state-loading" id="stateLoading" style="display:none">
       <div class="loader"></div>
@@ -275,7 +296,7 @@
           <div class="id-card-body">
             <div class="id-card-left">
               <div class="id-card-nation">
-                <div class="id-card-nation-label">Skyxion · Altaër Era</div>
+                <div class="id-card-nation-label">Kawaiisho · Season 3</div>
                 <div class="id-card-nation-name">The Legend of Legiona</div>
               </div>
               <div class="id-card-avatar">
@@ -324,7 +345,7 @@
                   <div class="id-card-field"><div class="id-card-field-label">Wallet Status</div><div class="id-card-field-val" id="cardWallet">—</div></div>
                 </div>
                 <div class="id-card-field-row">
-                  <div class="id-card-field"><div class="id-card-field-label">Server Era</div><div class="id-card-field-val" style="font-size:8.5px;letter-spacing:0.05em;">SKYXION: ALTAËR ERA</div></div>
+                  <div class="id-card-field"><div class="id-card-field-label">Server Era</div><div class="id-card-field-val" style="font-size:8.5px;letter-spacing:0.05em;">KAWAIISHO: SEASON 3</div></div>
                   <div class="id-card-field"><div class="id-card-field-label">Issuing Authority</div><div class="id-card-field-val gold" style="font-size:8.5px;">The Black House</div></div>
                 </div>
                 <div class="id-card-field-row">
@@ -396,10 +417,10 @@
       </div>
       <div class="footer-bottom">
         <div class="copy">© 2026 THE LEGEND OF LEGIONA // NATIONAL ID PORTAL</div>
-        <div class="era">SKYXION: ALTAËR ERA // THE BLACK HOUSE</div>
+        <div class="era">KAWAIISHO S3 // THE BLACK HOUSE</div>
       </div>
       <div class="disclaimer">
-        <strong>LEGAL DISCLAIMER:</strong> The Legend of Legiona (The LoL) is an independent community project within Minecraft. The terms "Skyxion" and "Altaër" are not affiliated with Kawaiisho. NOT AN OFFICIAL MINECRAFT PRODUCT. Not approved by or associated with Mojang AB or Microsoft Corporation.
+        <strong>LEGAL DISCLAIMER:</strong> The Legend of Legiona (The LoL) is an independent community project within Minecraft. The terms "Kawaiisho" are not affiliated with Kawaiisho. NOT AN OFFICIAL MINECRAFT PRODUCT. Not approved by or associated with Mojang AB or Microsoft Corporation.
       </div>
     </div>
   </footer>
@@ -407,13 +428,20 @@
   <script>
     function toggleMenu() { document.getElementById('mobileMenu').classList.toggle('open'); }
 
-    // ── PHASE 2 SCAFFOLDING ──────────────────────────────────────────
-    // Everything below is unused today — no button or auto-lookup calls
-    // it. Kept ready so that once citizen sign-in exists, this file just
-    // needs: (1) a Firebase Auth check, (2) fetch citizens_private/{id}
-    // where ownerUid === the signed-in uid, (3) call renderCard(id, data).
-    // The old public "type any ID, load any card" flow is intentionally
-    // gone — do not reintroduce an ID input box here.
+    function showState(id) {
+      ['signinGate','claimGate','stateLoading','stateError','stateResult'].forEach(x => {
+        const el = document.getElementById(x);
+        if (!el) return;
+        el.style.display = (x === id) ? (id === 'stateResult' ? 'flex' : 'block') : 'none';
+      });
+    }
+
+    function showLoadError(code, msg, sub) {
+      document.getElementById('errCode').textContent = code;
+      document.getElementById('errMsg').textContent = msg;
+      document.getElementById('errSub').textContent = sub || '';
+      showState('stateError');
+    }
 
     const STATUS_CFG = {
       active:    { text:'REVOKED', chip:'active',    bar:'',           tierCard:'Citizen'  },
@@ -463,10 +491,9 @@
       if(data.username){ img.crossOrigin='anonymous'; img.src=(!data.platform||data.platform==='java')?`https://tabavatars.net/avatar/?username=${encodeURIComponent(data.username)}&type=helm`:`https://tabavatars.net/avatar/?username=${encodeURIComponent(data.username)}&type=helm&platform=bedrock`; img.onload=()=>{img.style.display='block';ph.style.display='none';}; img.onerror=()=>{img.style.display='none';ph.style.display='flex';}; }
       document.getElementById('registryLink').href=`/gov/systems/id/registry?id=${encodeURIComponent(id)}`;
       document.getElementById('actionMeta').textContent=`Retrieved: ${new Date().toUTCString()}`;
-      document.getElementById('signinGate').style.display='none';
-      document.getElementById('stateResult').style.display='flex';
+      showState('stateResult');
     }
-    window.renderCard = renderCard; // exposed for Phase 2 wiring
+    window.renderCard = renderCard;
 
     function statsPrint(){ window.statsTrackEvent?.('id_card_prints'); window.print(); }
 
@@ -489,6 +516,98 @@
       if(year&&seq&&year!=='????'){ const cid=`THELOL-${year}-${seq}`; navigator.clipboard.writeText(cid).then(()=>{ const btn=evt?.target?.closest('button'),meta=document.getElementById('actionMeta'); if(!btn) return; const orig=btn.innerHTML; btn.textContent='Copied'; meta.textContent=`Copied ${cid} to clipboard`; setTimeout(()=>{btn.innerHTML=orig;},1600); }); }
     }
     window.copyID=copyID;
+  </script>
+
+  <!-- ═══ FIREBASE AUTH + CARD LOOKUP ═══ -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.12.1/firebase-app.js";
+    import {
+      getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged
+    } from "https://www.gstatic.com/firebasejs/12.12.1/firebase-auth.js";
+    import {
+      getFirestore, doc, getDoc, setDoc, collection, query, where, getDocs
+    } from "https://www.gstatic.com/firebasejs/12.12.1/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey:            "AIzaSyAgrLJDO8F6yyVLFubiZdRGiEl5ICRSAdQ",
+      authDomain:        "the-legend-of-legiona-the-lol.firebaseapp.com",
+      projectId:         "the-legend-of-legiona-the-lol",
+      storageBucket:     "the-legend-of-legiona-the-lol.firebasestorage.app",
+      messagingSenderId: "29247096448",
+      appId:             "1:29247096448:web:370f536ad630c088b94865",
+      measurementId:     "G-VX3M8X2P43"
+    };
+
+    const app      = initializeApp(firebaseConfig);
+    const auth     = getAuth(app);
+    const db       = getFirestore(app);
+    const provider = new GoogleAuthProvider();
+
+    window._idSignIn = () => {
+      document.getElementById('signinErr').textContent = '';
+      signInWithPopup(auth, provider).catch(e => {
+        document.getElementById('signinErr').textContent = 'Sign-in failed — please try again.';
+        console.warn('[ID] sign-in failed:', e.message);
+      });
+    };
+    window._idSignOut = () => signOut(auth);
+
+    // Step (1): Firebase Auth check — react to sign-in state.
+    onAuthStateChanged(auth, user => {
+      if (user) loadCitizenForUser(user);
+      else showState('signinGate');
+    });
+
+    // Step (2): fetch citizens_private/{id} where ownerUid === signed-in uid.
+    async function loadCitizenForUser(user) {
+      showState('stateLoading');
+      try {
+        const q = query(collection(db, 'citizens_private'), where('ownerUid', '==', user.uid));
+        const snap = await getDocs(q);
+        if (snap.empty) { showState('claimGate'); return; }
+        const d = snap.docs[0];
+        // Step (3): call renderCard(id, data).
+        renderCard(d.id, d.data());
+      } catch (e) {
+        showLoadError('LOAD-ERR', 'Unable to Load Card', e.message);
+      }
+    }
+
+    // One-time account linking: enter the citizen ID once to attach this
+    // uid as ownerUid on that record. Only succeeds if the record exists
+    // and has no ownerUid yet (enforced again by firestore.rules).
+    window._claimId = async function (raw) {
+      const errEl = document.getElementById('claimErr');
+      const id = String(raw || '').trim().toUpperCase();
+      if (!/^THELOL-\d{4}-\d{5}$/.test(id)) {
+        errEl.textContent = 'Enter your ID as THELOL-YYYY-#####.';
+        return;
+      }
+      if (!auth.currentUser) { errEl.textContent = 'Please sign in again.'; showState('signinGate'); return; }
+      errEl.textContent = '';
+      showState('stateLoading');
+      try {
+        const ref  = doc(db, 'citizens_private', id);
+        const snap = await getDoc(ref);
+        if (!snap.exists()) {
+          showState('claimGate');
+          errEl.textContent = 'No record found for that ID.';
+          return;
+        }
+        const data = snap.data();
+        if (data.ownerUid && data.ownerUid !== auth.currentUser.uid) {
+          showState('claimGate');
+          errEl.textContent = 'This ID is already linked to another account.';
+          return;
+        }
+        if (!data.ownerUid) {
+          await setDoc(ref, { ownerUid: auth.currentUser.uid }, { merge: true });
+        }
+        renderCard(id, { ...data, ownerUid: auth.currentUser.uid });
+      } catch (e) {
+        showLoadError('CLAIM-ERR', 'Unable to Link Account', e.message);
+      }
+    };
   </script>
   <script type="module" src="/gov/assets/js/stats.js"></script>
 </body>
