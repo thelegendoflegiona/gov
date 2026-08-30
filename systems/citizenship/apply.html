@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Apply for Citizenship — The Legend of Legiona</title>
   <link rel="icon" type="image/png" href="/gov/assets/images/logo.png" />
-  <meta name="description" content="Submit your official citizenship application or renewal for The Legend of Legiona on Skyxion.">
+  <meta name="description" content="Submit your official citizenship application or renewal for The Legend of Legiona on Kawaiisho.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="preload" as="style"
@@ -47,7 +47,7 @@
   <main class="page">
 
     <div class="page-hd">
-      <span class="page-tag">THELOL.GOV // CITIZENSHIP APPLICATION // ALTAËR ERA</span>
+      <span class="page-tag">THELOL.GOV // CITIZENSHIP APPLICATION // KAWAIISHO: SEASON 3</span>
       <h1>Citizenship <em>Application</em></h1>
       <p>Complete this form to apply for or renew your citizenship in The Legend of Legiona. All fields are required. Ensure your information is accurate — false declarations are immediate grounds for rejection and potential ban from future applications.</p>
     </div>
@@ -89,7 +89,7 @@
         <button class="type-btn selected" data-type="apply" onclick="selectType('apply')">
           <span class="type-btn-tag">TYPE-01 // NEW</span>
           <h3>New Application</h3>
-          <p>First time applying for citizenship in The LoL during this Skyxion era.</p>
+          <p>First time applying for citizenship in The LoL during this Kawaiisho season.</p>
         </button>
         <button class="type-btn" data-type="renew" onclick="selectType('renew')">
           <span class="type-btn-tag">TYPE-02 // RENEWAL</span>
@@ -143,15 +143,15 @@
             </label>
             <label class="decl-item">
               <input type="checkbox" class="decl-check" name="decl_active">
-              <span class="decl-text"><strong>I confirm I am an active player on the Skyxion server</strong> during the current ALTAËR ERA.</span>
+              <span class="decl-text"><strong>I confirm I am an active player on the Kawaiisho server</strong> during the current SEASON 3.</span>
             </label>
             <label class="decl-item">
               <input type="checkbox" class="decl-check" name="decl_clean">
-              <span class="decl-text"><strong>I confirm I have no active bans, suspensions, or unresolved issues</strong> with Skyxion server administration (Kawaiisho).</span>
+              <span class="decl-text"><strong>I confirm I have no active bans, suspensions, or unresolved issues</strong> with Kawaiisho server administration.</span>
             </label>
             <label class="decl-item">
               <input type="checkbox" class="decl-check" name="decl_rules">
-              <span class="decl-text"><strong>I agree to follow all Skyxion server rules</strong> at all times as a condition of my citizenship.</span>
+              <span class="decl-text"><strong>I agree to follow all Kawaiisho server rules</strong> at all times as a condition of my citizenship.</span>
             </label>
             <label class="decl-item">
               <input type="checkbox" class="decl-check" name="decl_chaos">
@@ -159,7 +159,7 @@
             </label>
             <label class="decl-item">
               <input type="checkbox" class="decl-check" name="decl_respect">
-              <span class="decl-text"><strong>I agree to respect all other nations and squads</strong> and to practice mutual tolerance toward all Skyxion players.</span>
+              <span class="decl-text"><strong>I agree to respect all other nations and squads</strong> and to practice mutual tolerance toward all Kawaiisho players.</span>
             </label>
             <label class="decl-item">
               <input type="checkbox" class="decl-check" name="decl_opinion">
@@ -210,7 +210,7 @@
       <div class="footer-grid">
         <div class="footer-brand">
           <h3>The Legend of <em>Legiona</em></h3>
-          <p>Official citizenship portal of The LoL — a sovereign nation on Skyxion Minecraft server, est. 2021. Egalitarian governance. Open to all active players.</p>
+          <p>Official citizenship portal of The LoL — a sovereign nation on Kawaiisho Minecraft server, est. 2021. Egalitarian governance. Open to all active players.</p>
         </div>
         <div class="footer-col">
           <h4>Citizenship</h4>
@@ -232,11 +232,11 @@
       </div>
       <div class="footer-bottom">
         <div class="copy">© 2026 THE LEGEND OF LEGIONA // CITIZENSHIP PORTAL</div>
-        <div class="era">SKYXION: ALTAËR ERA // THELOL.GOV</div>
+        <div class="era">KAWAIISHO: SEASON 3 // THELOL.GOV</div>
       </div>
       <p class="disclaimer">
         <strong>LEGAL DISCLAIMER:</strong> The Legend of Legiona (The LoL) is an independent community project within Minecraft.
-        The terms "Skyxion" and "Altaër" used within this project and era designation are not affiliated with, or associated with Kawaiisho.
+        "Kawaiisho: Season 3" refers to the current season of the Minecraft server this community plays on and is used for reference only — The Legend of Legiona is not officially affiliated with, endorsed by, or associated with Kawaiisho.
         This project is NOT AN OFFICIAL MINECRAFT PRODUCT. Not approved by or associated with Mojang AB or Microsoft Corporation.
       </p>
     </div>
@@ -386,7 +386,7 @@
           ref: data.ref, status: 'pending', ign: data.ign, callName: data.callName,
           type: data.type, contact: data.contact, contactMethod: data.contactMethod,
           submitted: new Date().toISOString().split('T')[0], processed: '',
-          era: 'SKYXION: ALTAËR ERA', thelol_id: '', public_note: '', admin_note: '',
+          era: 'KAWAIISHO: SEASON 3', thelol_id: '', public_note: '', admin_note: '',
         });
       } catch (e) { console.warn('[NIS] Application Firestore write failed:', e.message); }
     }
@@ -413,7 +413,7 @@
       fd.append('Minecraft IGN',    ign);
       fd.append('Contact Method',   contactMethodVal === 'discord' ? 'Discord' : 'WhatsApp');
       fd.append('Contact Details',  contact);
-      fd.append('Era',              'SKYXION: ALTAËR ERA');
+      fd.append('Era',              'KAWAIISHO: SEASON 3');
       fd.append('_subject',         `[${type === 'renew' ? 'RENEWAL' : 'NEW APPLICATION'}] The LoL Citizenship — ${callName} (${ign}) // ${ref}`);
 
       try {
