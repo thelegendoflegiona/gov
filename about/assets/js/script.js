@@ -55,7 +55,7 @@ All three are signatories of the <a href="https://drive.google.com/file/d/1yzijC
 <strong>First Election (6 May 2023)</strong> — UltraX2020 and the PHRTL party won The LoL's first democratic election, becoming the 2nd President.<br><br>
 <strong>Crisis Era (2023)</strong> — Internal strife: The LoL City sign was bombed, the TLCC was attacked with TNT. UltraX2020 eventually resigned, returning power to Faiz4224.<br><br>
 <strong>Rebuilding (Nov 2023)</strong> — Faiz4224 resumed leadership. TLIO (now ISC) was established. Infrastructure expanded.<br><br>
-<strong>Skyxion: Altaër Era (Current)</strong> — TLIO reborn as the ISC, full citizenship system live, National ID Portal launched.<br><br>
+<strong>Kawaiisho: Season 3 (Current)</strong> — TLIO reborn as the ISC, full citizenship system live, National ID Portal launched.<br><br>
 <a href="/gov/#history">→ Full timeline on Government Home</a>`,
     chips: ['The first election', 'UltraX2020 crisis', 'What is the ISC?', 'Current era']
   },
@@ -101,7 +101,7 @@ It is also catalogued in the <a href="/gov/systems/archives/">Legal Archive</a> 
 <strong>DEPT-02 — Office of National Justice</strong> — Internal disputes &amp; national law enforcement. <em>Coming soon.</em><br><br>
 <strong>DEPT-03 — Ministry of Lore &amp; Archives</strong> — National history &amp; document preservation. <em>Coming soon.</em><br><br>
 <strong>DEPT-04 — Public Works Division</strong> — Infrastructure: TLSRL, TLCC, farms. <em>Coming soon.</em><br><br>
-<strong>DEPT-05 — Bureau of External Relations</strong> — Diplomatic ties across Skyxion. <em>Coming soon.</em><br><br>
+<strong>DEPT-05 — Bureau of External Relations</strong> — Diplomatic ties across Kawaiisho. <em>Coming soon.</em><br><br>
 <strong>DEPT-06 — The LoL Communications</strong> — National broadcasting &amp; news. <em>Coming soon.</em><br><br>
 <a href="/gov/#departments">→ View all departments on Government Home</a>`,
     chips: ['What is the ISC?', 'The Black House', 'Navigate the portal', 'Government home']
@@ -130,12 +130,12 @@ Documents use the reference format <code>ISC-YYYY-###</code>.<br><br>
   },
 
   citizenship: {
-    text: `Citizenship in The Legend of Legiona is the formal declaration of membership and allegiance within The LoL's sovereign territory on Skyxion.<br><br>
+    text: `Citizenship in The Legend of Legiona is the formal declaration of membership and allegiance within The LoL's sovereign territory on Kawaiisho.<br><br>
 Key facts:<br>
 • <strong>Temporary</strong> — era-bound; expires automatically on server reset<br>
 • <strong>Renewable</strong> — past citizens in good standing may submit a renewal<br>
 • <strong>Revocable</strong> — The Black House may revoke at any time, without notice<br><br>
-Applications for the <strong>Skyxion: Altaër Era</strong> are currently open.<br><br>
+Applications for <strong>Kawaiisho: Season 3</strong> are currently open.<br><br>
 <a href="/gov/systems/citizenship/">→ Citizenship Portal</a><br>
 <a href="/gov/systems/citizenship/apply">→ Apply Now</a><br>
 <a href="/gov/systems/citizenship/status">→ Check Application Status</a>`,
@@ -144,7 +144,7 @@ Applications for the <strong>Skyxion: Altaër Era</strong> are currently open.<b
 
   apply: {
     text: `To apply for citizenship in The Legend of Legiona:<br><br>
-<strong>Step 1</strong> — Confirm you're eligible: 16+ IRL, active Skyxion player, clean server record<br>
+<strong>Step 1</strong> — Confirm you're eligible: 16+ IRL, active Kawaiisho player, clean server record<br>
 <strong>Step 2</strong> — Complete the form: call name, Minecraft IGN (case-sensitive), contact details<br>
 <strong>Step 3</strong> — Accept all declarations honestly — false information means instant rejection<br>
 <strong>Step 4</strong> — Submit and save your reference number (<code>THELOL-CTZN-YYYY-####</code>)<br>
@@ -157,7 +157,7 @@ Applications for the <strong>Skyxion: Altaër Era</strong> are currently open.<b
   renew: {
     text: `If you were previously a citizen of The Legend of Legiona, you can submit a <strong>renewal application</strong>.<br><br>
 Renewals follow the same process as new applications but are treated as a separate type — your history with The LoL is taken into consideration during review.<br><br>
-You'll need your Minecraft IGN and contact details. Make sure you're currently active on the Skyxion server in the Altaër Era.<br><br>
+You'll need your Minecraft IGN and contact details. Make sure you're currently active on the Kawaiisho server in Season 3.<br><br>
 <a href="/gov/systems/citizenship/apply?type=renew">→ Submit Renewal Application</a>`,
     chips: ['Check application status', 'Citizen rights', 'Citizenship Act', 'Citizenship Portal']
   },
@@ -172,7 +172,7 @@ If approved, your <strong>The LoL National ID</strong> will also appear on the s
   rights: {
     text: `The <strong>Citizen Rights &amp; Responsibilities Charter</strong> (DOC-008, 29 March 2026) enumerates the fundamental rights and duties of all The LoL citizens.<br><br>
 Key obligations include:<br>
-• Following all Skyxion server rules at all times<br>
+• Following all Kawaiisho server rules at all times<br>
 • Not causing chaos, griefing, or hostility<br>
 • Respecting all other nations and squads<br>
 • Practising mutual tolerance and inclusion<br>
@@ -185,7 +185,7 @@ Key obligations include:<br>
   revocation: {
     text: `The <strong>Citizenship Revocation &amp; Suspension Ordinance</strong> (DOC-009, 29 March 2026) defines the conditions under which citizenship can be ended.<br><br>
 The Office of the President holds the <strong>unconditional right</strong> to revoke citizenship at any time, from anywhere, without prior notice. Grounds include:<br>
-• Violation of Skyxion server rules<br>
+• Violation of Kawaiisho server rules<br>
 • Acts of hostility or terrorism against The LoL or its citizens<br>
 • Conduct deemed unbecoming of a citizen<br>
 • Any act threatening The LoL's stability, reputation, or integrity<br><br>
@@ -388,7 +388,7 @@ const INTENTS = [
   },
   {
     id: 'history',
-    patterns: ['history','historical','timeline','past','origin','beginning','the sus','sus era','renamed','renaming','early','2021','2023','old days','background','story','altaer','altaër','current era','skyxion era','when was','how did','what happened','tell me about the lol','whatsapp','whatsapp group']
+    patterns: ['history','historical','timeline','past','origin','beginning','the sus','sus era','renamed','renaming','early','2021','2023','old days','background','story','altaer','altaër','current era','skyxion era','kawaiisho','kawaiisho season 3','season 3','when was','how did','what happened','tell me about the lol','whatsapp','whatsapp group']
   },
   {
     id: 'proclamation',
