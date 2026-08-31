@@ -27,6 +27,7 @@
   <div class="notice-banner"></div>
 
   <script src="/gov/assets/js/partials.js"></script>
+  <script src="/gov/assets/js/avatar.js"></script>
 
   <!-- NOTICE BAR — page-specific citizenship CTA, kept as-is -->
   <div class="notice-bar">
@@ -269,12 +270,21 @@
       const actionsHTML = config.actions.map(a => `<a href="${a.href}" class="action-btn ${a.primary ? 'action-btn-primary' : 'action-btn-ghost'}">${a.label}</a>`).join('');
       const nisHTML     = buildNisBlock(entry);
 
+      const avatarHTML = entry.ign ? `
+            <div class="mc-avatar" id="statusAvatar" style="margin-right:14px;">
+              <img class="mc-avatar-img" alt="">
+              <span class="mc-avatar-ph">${(entry.ign||'?')[0]}</span>
+            </div>` : '';
+
       panel.innerHTML = `
         <div class="result-card ${config.cardClass}">
           <div class="result-top">
-            <div>
-              <div class="result-ref">${entry.ref || '—'}</div>
-              <div class="result-title">Citizenship Application</div>
+            <div style="display:flex; align-items:center;">
+              ${avatarHTML}
+              <div>
+                <div class="result-ref">${entry.ref || '—'}</div>
+                <div class="result-title">Citizenship Application</div>
+              </div>
             </div>
             <div class="status-badge ${config.badgeClass}">
               <span class="dot"></span>${config.label}
@@ -291,6 +301,8 @@
             </div>
           </div>
         </div>`;
+
+      if (entry.ign) mcSetAvatar(document.getElementById('statusAvatar'), entry.ign, entry.platform || 'java');
 
       panel.classList.add('show');
       how.style.display = 'none';
