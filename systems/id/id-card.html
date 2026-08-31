@@ -237,20 +237,22 @@
 
     <!-- CLAIM GATE — shown once signed in if this Google account isn't
          linked to a citizen record yet (one-time). Enter the citizen ID
-         from your application confirmation; it's checked against
-         citizens_private/{id} and, if unclaimed, gets your uid attached
-         as ownerUid so future visits skip straight to the card. -->
+         AND the one-time claim code from the approval DM. The ID alone is
+         not enough — citizens_private/{id} is never read before ownership
+         is proven, so this is a direct write attempt: firestore.rules
+         checks the code server-side and only then attaches ownerUid. -->
     <div class="signin-gate" id="claimGate" style="display:none">
       <div class="signin-gate-icon">
         <svg width="40" height="40" viewBox="0 0 40 40" fill="none"><rect x="1" y="1" width="38" height="38" stroke="#2a2a2a"/><rect x="12" y="17" width="16" height="14" stroke="#3d6b52" stroke-width="1.2"/><path d="M15 17v-4a5 5 0 0 1 10 0v4" stroke="#3d6b52" stroke-width="1.2"/><circle cx="20" cy="23" r="1.6" fill="#3d6b52"/></svg>
       </div>
       <div class="signin-gate-title">Link your citizen ID</div>
-      <p class="signin-gate-desc">This account isn't linked to a citizen record yet. Enter the ID from your citizenship approval (format THELOL-YYYY-#####) to link it — this only needs to happen once.</p>
+      <p class="signin-gate-desc">This account isn't linked to a citizen record yet. Enter the ID and the one-time claim code from your citizenship approval to link it — this only needs to happen once.</p>
       <div class="claim-input-row">
         <input class="search-input" id="claimIdInput" type="text" placeholder="THELOL-2026-00001" maxlength="17" autocomplete="off" spellcheck="false" />
+        <input class="search-input" id="claimCodeInput" type="text" placeholder="Claim code" maxlength="8" autocomplete="off" spellcheck="false" style="text-transform:uppercase;" />
       </div>
       <div class="signin-gate-actions">
-        <button type="button" class="action-btn primary" onclick="window._claimId && window._claimId(document.getElementById('claimIdInput').value)">Link Account →</button>
+        <button type="button" class="action-btn primary" onclick="window._claimId && window._claimId(document.getElementById('claimIdInput').value, document.getElementById('claimCodeInput').value)">Link Account →</button>
         <button type="button" class="action-btn secondary" onclick="window._idSignOut && window._idSignOut()">Sign in with a different account</button>
       </div>
       <div class="signin-gate-err" id="claimErr"></div>
@@ -525,7 +527,7 @@
       getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged
     } from "https://www.gstatic.com/firebasejs/12.12.1/firebase-auth.js";
     import {
-      getFirestore, doc, getDoc, setDoc, collection, query, where, getDocs
+      getFirestore, doc, getDoc, setDoc, updateDoc, collection, query, where, getDocs
     } from "https://www.gstatic.com/firebasejs/12.12.1/firebase-firestore.js";
 
     const firebaseConfig = {
@@ -573,39 +575,46 @@
       }
     }
 
-    // One-time account linking: enter the citizen ID once to attach this
-    // uid as ownerUid on that record. Only succeeds if the record exists
-    // and has no ownerUid yet (enforced again by firestore.rules).
-    window._claimId = async function (raw) {
+    // One-time account linking. IMPORTANT: this never reads
+    // citizens_private/{id} before ownership is established — an unclaimed
+    // record's PII must not be visible to anyone who merely guesses the
+    // (sequential, guessable) ID. Instead this is a direct write attempt:
+    // the ID + claim code are sent as the update, and firestore.rules
+    // checks claimCodeGuess against the stored claimCode server-side,
+    // only allowing the write (and therefore the claim) if it matches. A
+    // wrong ID or wrong code both surface as the same permission-denied
+    // error, so neither can be probed separately.
+    window._claimId = async function (rawId, rawCode) {
       const errEl = document.getElementById('claimErr');
-      const id = String(raw || '').trim().toUpperCase();
+      const id = String(rawId || '').trim().toUpperCase();
+      const code = String(rawCode || '').trim().toUpperCase();
       if (!/^THELOL-\d{4}-\d{5}$/.test(id)) {
         errEl.textContent = 'Enter your ID as THELOL-YYYY-#####.';
+        return;
+      }
+      if (!code) {
+        errEl.textContent = 'Enter the claim code from your approval DM.';
         return;
       }
       if (!auth.currentUser) { errEl.textContent = 'Please sign in again.'; showState('signinGate'); return; }
       errEl.textContent = '';
       showState('stateLoading');
       try {
-        const ref  = doc(db, 'citizens_private', id);
+        const ref = doc(db, 'citizens_private', id);
+        await updateDoc(ref, {
+          ownerUid: auth.currentUser.uid,
+          claimCode: null,
+          claimCodeGuess: code
+        });
+        // Write succeeded, so the code was correct and we now own this
+        // record — reading it is allowed from here on.
         const snap = await getDoc(ref);
-        if (!snap.exists()) {
-          showState('claimGate');
-          errEl.textContent = 'No record found for that ID.';
-          return;
-        }
-        const data = snap.data();
-        if (data.ownerUid && data.ownerUid !== auth.currentUser.uid) {
-          showState('claimGate');
-          errEl.textContent = 'This ID is already linked to another account.';
-          return;
-        }
-        if (!data.ownerUid) {
-          await setDoc(ref, { ownerUid: auth.currentUser.uid }, { merge: true });
-        }
-        renderCard(id, { ...data, ownerUid: auth.currentUser.uid });
+        renderCard(id, snap.data());
       } catch (e) {
-        showLoadError('CLAIM-ERR', 'Unable to Link Account', e.message);
+        // permission-denied covers: wrong ID, wrong code, already-claimed
+        // record, or record doesn't exist — deliberately indistinguishable.
+        showState('claimGate');
+        errEl.textContent = 'That ID and code don\'t match an unclaimed record. Double-check both, or contact The Black House.';
       }
     };
   </script>
