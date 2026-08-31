@@ -27,6 +27,7 @@
   <div class="notice-banner"></div>
 
   <script src="/gov/assets/js/partials.js"></script>
+  <script src="/gov/assets/js/avatar.js"></script>
 
   <!-- NOTICE BAR — page-specific citizenship CTA, kept as-is -->
   <div class="notice-bar">
@@ -112,7 +113,13 @@
           <div class="field" id="fieldIGN">
             <label for="ign">Minecraft IGN (Username) <span class="req">*</span></label>
             <p class="field-note">Your exact Minecraft username / Gamertag. <strong>This is case-sensitive</strong> — type it exactly as it appears in-game.</p>
-            <input type="text" id="ign" name="ign" placeholder="e.g. Faiz4224" maxlength="16" autocomplete="on" spellcheck="false">
+            <div style="display:flex; align-items:center; gap:12px;">
+              <input type="text" id="ign" name="ign" placeholder="e.g. Faiz4224" maxlength="16" autocomplete="on" spellcheck="false" style="flex:1;">
+              <div class="mc-avatar" id="ignAvatar" style="display:none;">
+                <img class="mc-avatar-img" alt="">
+                <span class="mc-avatar-ph">?</span>
+              </div>
+            </div>
             <div id="ignCheckResult" style="display:none; margin-top:10px;"></div>
             <span class="field-error">Minecraft IGN is required.</span>
           </div>
@@ -352,12 +359,21 @@
       } catch (err) { ignResult.style.display = 'none'; ignBlocked = false; }
     }
 
+    const ignAvatar = document.getElementById('ignAvatar');
+    function updateIgnAvatar() {
+      const val = ignInput.value.trim();
+      if (val.length >= 3) { ignAvatar.style.display = 'inline-flex'; mcSetAvatar(ignAvatar, val, 'java', val[0]); }
+      else { ignAvatar.style.display = 'none'; }
+    }
+
     ignInput.addEventListener('input', () => {
       clearTimeout(ignCheckTimer); ignField.classList.remove('ign-blocked'); ignBlocked = false; ignResult.style.display = 'none';
       const val = ignInput.value.trim();
+      updateIgnAvatar();
       if (val.length >= 3) ignCheckTimer = setTimeout(() => checkIgnExists(val), 600);
     });
     ignInput.addEventListener('blur', () => { clearTimeout(ignCheckTimer); const val = ignInput.value.trim(); if (val.length >= 3) checkIgnExists(val); });
+    updateIgnAvatar();
 
     function genRef() {
       const year = new Date().getFullYear();
