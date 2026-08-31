@@ -278,6 +278,11 @@
 
     <div class="state-result" id="stateResult" style="display:none">
 
+      <div class="revoked-banner" id="adminPreviewBanner" style="display:none; border-color:#c9a84c; background:rgba(201,168,76,0.08);">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="1" y="3" width="14" height="10" rx="1" stroke="#c9a84c"/><path d="M4 6h8M4 8h5" stroke="#c9a84c" stroke-width="1.2"/></svg>
+        <span class="revoked-banner-text" style="color:#c9a84c;">ADMIN PREVIEW — viewing this record via admin access, not signed in as this citizen.</span>
+      </div>
+
       <div class="revoked-banner" id="revokedBanner">
         <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="0.5" y="0.5" width="15" height="15" stroke="#c0392b"/><line x1="4" y1="4" x2="12" y2="12" stroke="#c0392b" stroke-width="1.5"/><line x1="12" y1="4" x2="4" y2="12" stroke="#c0392b" stroke-width="1.5"/></svg>
         <span class="revoked-banner-text" id="revokedText">NOTICE: This citizenship has been revoked. This card is no longer valid.</span>
@@ -462,6 +467,7 @@
     function makeVerifyCode(id) { return 'NIS-'+String(hashID(id)).slice(0,6).padStart(6,'0'); }
 
     function renderCard(id, data) {
+      document.getElementById('adminPreviewBanner').style.display = 'none';
       const parts=id.split('-'), year=parts[1]||'????', seq=parts[2]||'?????';
       const status=(data.status||'active').toLowerCase(), tier=(data.tier||'citizen').toLowerCase();
       const sCfg=STATUS_CFG[status]||STATUS_CFG.active, tCfg=TIER_CFG[tier]||TIER_CFG.citizen;
@@ -554,10 +560,46 @@
     };
     window._idSignOut = () => signOut(auth);
 
+    // Admin preview: if the dashboard embeds this page with ?id=..., an
+    // ADMIN (checked server-side via isAdmin(), not just "someone's typed
+    // it into the URL") gets a direct read-only view of that citizen's
+    // card. A non-admin visiting with ?id= is silently dropped into their
+    // normal personal flow instead — arbitrary lookup by a regular citizen
+    // was exactly what the Phase 2 rebuild removed, and this doesn't
+    // reopen it.
+    const previewId = new URLSearchParams(location.search).get('id');
+
+    async function checkIsAdmin(uid) {
+      try {
+        const snap = await getDoc(doc(db, 'admins', uid));
+        return snap.exists();
+      } catch (e) { return false; }
+    }
+
+    async function loadCitizenForAdminPreview(id) {
+      showState('stateLoading');
+      try {
+        const snap = await getDoc(doc(db, 'citizens_private', id));
+        if (!snap.exists()) {
+          showLoadError('PREVIEW-404', 'Record Not Found', `No citizen record exists for ${id}.`);
+          return;
+        }
+        renderCard(id, snap.data());
+        document.getElementById('adminPreviewBanner').style.display = 'flex';
+      } catch (e) {
+        showLoadError('PREVIEW-ERR', 'Unable to Load Preview', e.message);
+      }
+    }
+
     // Step (1): Firebase Auth check — react to sign-in state.
-    onAuthStateChanged(auth, user => {
-      if (user) loadCitizenForUser(user);
-      else showState('signinGate');
+    onAuthStateChanged(auth, async user => {
+      if (!user) { showState('signinGate'); return; }
+      if (previewId) {
+        const admin = await checkIsAdmin(user.uid);
+        if (admin) { loadCitizenForAdminPreview(previewId); return; }
+        // Signed in but not an admin — ?id= is ignored, fall through below.
+      }
+      loadCitizenForUser(user);
     });
 
     // Step (2): fetch citizens_private/{id} where ownerUid === signed-in uid.
