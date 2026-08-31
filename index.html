@@ -329,19 +329,28 @@
     <h2 class="section-title">The Three <em>Founders</em></h2>
     <div class="founders-grid">
       <div class="founder-card">
-        <div class="founder-avatar">F</div>
+        <div class="mc-avatar mc-avatar-lg" data-mc-avatar data-mc-username="Faiz4224">
+          <img class="mc-avatar-img" alt="">
+          <span class="mc-avatar-ph">F</span>
+        </div>
         <h4>Faiz</h4>
         <div class="role">First President // Founding Leader</div>
         <p>Whose unwavering resolve and ingenuity laid the foundation of this great nation. Leader through both prosperity and crisis.</p>
       </div>
       <div class="founder-card">
-        <div class="founder-avatar">I</div>
+        <div class="mc-avatar mc-avatar-lg" data-mc-avatar data-mc-username="Imii_Kun">
+          <img class="mc-avatar-img" alt="">
+          <span class="mc-avatar-ph">I</span>
+        </div>
         <h4>Imii</h4>
         <div class="role">Co-Founder // Visionary</div>
         <p>A pillar of strength whose dedication to the cause helped forge the bonds of unity that sustain the people of Legiona.</p>
       </div>
       <div class="founder-card">
-        <div class="founder-avatar">D</div>
+        <div class="mc-avatar mc-avatar-lg" data-mc-avatar data-mc-username="ItzDynozz">
+          <img class="mc-avatar-img" alt="">
+          <span class="mc-avatar-ph">D</span>
+        </div>
         <h4>Dyno</h4>
         <div class="role">Co-Founder // Strategist</div>
         <p>Whose wisdom and determination illuminated the path toward the nation's glorious future from its earliest days.</p>
@@ -356,5 +365,13 @@
        user interaction so it is never needed before the DOM is ready anyway. -->
   <script src="/gov/assets/js/script.js" defer></script>
   <script type="module" src="/gov/assets/js/stats.js"></script>
+  <script src="/gov/assets/js/avatar.js" defer></script>
+  <script defer>
+    document.addEventListener('DOMContentLoaded', function () {
+      document.querySelectorAll('[data-mc-avatar]').forEach(function (el) {
+        mcSetAvatar(el, el.dataset.mcUsername, el.dataset.mcPlatform || 'java');
+      });
+    });
+  </script>
 </body>
 </html>
