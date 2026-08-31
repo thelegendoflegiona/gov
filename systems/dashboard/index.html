@@ -546,6 +546,7 @@
   <!-- TOPBAR (loaded from assets/partials/topbar.html) -->
   <div id="topbar-placeholder"></div>
   <script src="/gov/assets/js/partials.js"></script>
+  <script src="/gov/assets/js/avatar.js"></script>
 
   <header class="site-header">
     <div class="hdr-brand">
@@ -705,11 +706,17 @@
               <div class="f-row">
                 <div class="f-field">
                   <label class="f-label">Minecraft Username *</label>
-                  <input class="f-input" id="f_username" type="text" placeholder="e.g. Faiz4224" maxlength="30" />
+                  <div style="display:flex; align-items:center; gap:10px;">
+                    <input class="f-input" id="f_username" type="text" placeholder="e.g. Faiz4224" maxlength="30" style="flex:1;" oninput="updateIssueAvatar()" />
+                    <div class="mc-avatar" id="f_usernameAvatar" style="display:none;">
+                      <img class="mc-avatar-img" alt="">
+                      <span class="mc-avatar-ph">?</span>
+                    </div>
+                  </div>
                 </div>
                 <div class="f-field">
                   <label class="f-label">Platform *</label>
-                  <select class="f-select" id="f_platform">
+                  <select class="f-select" id="f_platform" onchange="updateIssueAvatar()">
                     <option value="java">Java Edition</option>
                     <option value="bedrock">Bedrock Edition</option>
                   </select>
@@ -803,10 +810,10 @@
       <div class="table-wrap">
         <table class="app-table">
           <thead><tr>
-            <th>The LoL ID</th><th>Username</th><th>Status</th><th>Tier</th>
+            <th></th><th>The LoL ID</th><th>Username</th><th>Status</th><th>Tier</th>
             <th>Issued</th><th>Territory</th><th>Actions</th>
           </tr></thead>
-          <tbody id="citizenTableBody"><tr><td colspan="7" class="tbl-loading">// Loading citizen registry...</td></tr></tbody>
+          <tbody id="citizenTableBody"><tr><td colspan="8" class="tbl-loading">// Loading citizen registry...</td></tr></tbody>
         </table>
       </div>
     </div>
@@ -1210,7 +1217,15 @@
     <div class="modal-body-edit">
       <input type="hidden" id="edit_id" />
       <div class="f-row">
-        <div class="f-field"><label class="f-label">Minecraft Username</label><input class="f-input" id="edit_username" type="text" /></div>
+        <div class="f-field"><label class="f-label">Minecraft Username</label>
+          <div style="display:flex; align-items:center; gap:10px;">
+            <input class="f-input" id="edit_username" type="text" style="flex:1;" oninput="updateEditAvatar()" />
+            <div class="mc-avatar" id="edit_usernameAvatar" style="display:none;">
+              <img class="mc-avatar-img" alt="">
+              <span class="mc-avatar-ph">?</span>
+            </div>
+          </div>
+        </div>
         <div class="f-field"><label class="f-label">Status</label><select class="f-select" id="edit_status"><option value="active">Active</option><option value="suspended">Suspended</option><option value="revoked">Revoked</option></select></div>
       </div>
       <div class="f-row">
@@ -1615,11 +1630,13 @@ async function loadDashboard() {
     else {
       rEl.innerHTML = recentCits.slice(0,6).map(c =>
         `<div class="dash-row" style="cursor:default">
+          <div class="mc-avatar mc-avatar-xs" data-mc-row data-mc-username="${(c.username||'').replace(/"/g,'&quot;')}" data-mc-platform="${c.platform||'java'}" style="margin-right:8px;"><img class="mc-avatar-img" alt=""><span class="mc-avatar-ph">${(c.username||'?')[0]}</span></div>
           <span class="dash-row-id">${c.id}</span>
           <span class="dash-row-name">${c.username||'—'}</span>
           <span class="dash-row-date">${c.issuedDate||'—'}</span>
         </div>`
       ).join('');
+      rEl.querySelectorAll('[data-mc-row]').forEach(el => mcSetAvatar(el, el.dataset.mcUsername, el.dataset.mcPlatform));
     }
   } catch(e) { showToast('Dashboard load error: '+e.message,'err'); }
 }
@@ -2075,8 +2092,17 @@ function clearIssueForm() {
   document.getElementById('f_tier').value='citizen';
   document.getElementById('f_status').value='active';
   document.getElementById('issueFeedback').className='issue-fb';
+  updateIssueAvatar();
 }
 window.clearIssueForm = clearIssueForm;
+
+function updateIssueAvatar() {
+  const val = document.getElementById('f_username').value.trim();
+  const wrap = document.getElementById('f_usernameAvatar');
+  if (val.length >= 3) { wrap.style.display = 'inline-flex'; mcSetAvatar(wrap, val, document.getElementById('f_platform').value, val[0]); }
+  else { wrap.style.display = 'none'; }
+}
+window.updateIssueAvatar = updateIssueAvatar;
 
 /* ════════════════════════════════
    CITIZENS
@@ -2085,7 +2111,7 @@ let allCitizens = [];
 
 async function loadAllCitizens() {
   const body=document.getElementById('citizenTableBody');
-  body.innerHTML='<tr><td colspan="7" class="tbl-loading">// Querying citizen registry...</td></tr>';
+  body.innerHTML='<tr><td colspan="8" class="tbl-loading">// Querying citizen registry...</td></tr>';
   try {
     const { collection, getDocs } = window._fire;
     const snap=await getDocs(collection(window._db,'citizens_private'));
@@ -2095,7 +2121,7 @@ async function loadAllCitizens() {
     filterCitizens();
     logAct('ok',`LOADED citizens (${allCitizens.length} records)`);
   } catch(e) {
-    body.innerHTML=`<tr><td colspan="7" class="tbl-loading" style="color:var(--red-l)">// ERROR: ${e.message}</td></tr>`;
+    body.innerHTML=`<tr><td colspan="8" class="tbl-loading" style="color:var(--red-l)">// ERROR: ${e.message}</td></tr>`;
   }
 }
 window.loadAllCitizens = loadAllCitizens;
@@ -2110,7 +2136,7 @@ function filterCitizens() {
   });
   document.getElementById('citizenCount').textContent=`${filtered.length} citizen${filtered.length!==1?'s':''}`;
   const body=document.getElementById('citizenTableBody');
-  if (!filtered.length) { body.innerHTML='<tr><td colspan="7" class="tbl-empty">// No citizens match this filter</td></tr>'; return; }
+  if (!filtered.length) { body.innerHTML='<tr><td colspan="8" class="tbl-empty">// No citizens match this filter</td></tr>'; return; }
   body.innerHTML=filtered.map(c=>{
     const status=(c.status||'active').toLowerCase(), tier=(c.tier||'citizen').toLowerCase();
     const tierLabel={citizen:'Citizen',senior:'Senior',elder:'Elder',founding:'Founding'}[tier]||tier;
@@ -2121,6 +2147,7 @@ function filterCitizens() {
     else if (status==='revoked') { actions+=`<button class="act-pill reinstate" onclick="quickCitStatus('${c.id}','active')">Reinstate</button>`; }
     actions+=`<button class="act-pill delete" onclick="deleteCitizenFull('${c.id}')">Delete</button>`;
     return `<tr>
+      <td class="td-avatar"><div class="mc-avatar mc-avatar-xs" data-mc-row data-mc-username="${(c.username||'').replace(/"/g,'&quot;')}" data-mc-platform="${c.platform||'java'}"><img class="mc-avatar-img" alt=""><span class="mc-avatar-ph">${(c.username||'?')[0]}</span></div></td>
       <td class="td-id-nis">${c.id}</td>
       <td class="td-ign">${c.username||'—'}</td>
       <td><span class="status-pill ${status}">${status}</span></td>
@@ -2130,6 +2157,7 @@ function filterCitizens() {
       <td><div class="td-actions">${actions}</div></td>
     </tr>`;
   }).join('');
+  body.querySelectorAll('[data-mc-row]').forEach(el => mcSetAvatar(el, el.dataset.mcUsername, el.dataset.mcPlatform));
 }
 window.filterCitizens = filterCitizens;
 
@@ -2210,6 +2238,7 @@ function openEditModal(id) {
   document.getElementById('editModalTitle').textContent=id;
   document.getElementById('edit_id').value=id;
   document.getElementById('edit_username').value=c.username||'';
+  document.getElementById('edit_username').dataset.mcPlatform=c.platform||'java';
   document.getElementById('edit_status').value=c.status||'active';
   document.getElementById('edit_tier').value=c.tier||'citizen';
   document.getElementById('edit_territory').value=c.territory||'';
@@ -2218,9 +2247,19 @@ function openEditModal(id) {
   document.getElementById('edit_note').value=c.publicNote||'';
   document.getElementById('editFeedback').className='edit-fb';
   loadCitizenHistory(id);
+  updateEditAvatar();
   document.getElementById('editModal').classList.add('open');
 }
 window.openEditModal = openEditModal;
+
+function updateEditAvatar() {
+  const input = document.getElementById('edit_username');
+  const val = input.value.trim();
+  const wrap = document.getElementById('edit_usernameAvatar');
+  if (val.length >= 3) { wrap.style.display = 'inline-flex'; mcSetAvatar(wrap, val, input.dataset.mcPlatform || 'java', val[0]); }
+  else { wrap.style.display = 'none'; }
+}
+window.updateEditAvatar = updateEditAvatar;
 
 function closeEditModal() { document.getElementById('editModal').classList.remove('open'); }
 window.closeEditModal = closeEditModal;
