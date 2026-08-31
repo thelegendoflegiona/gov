@@ -2139,10 +2139,10 @@ async function quickCitStatus(id, newStatus) {
   const c = allCitizens.find(x=>x.id===id);
   const prevStatus = c?.status || '';
   try {
-    const { doc, updateDoc } = window._fire;
+    const { doc, updateDoc, setDoc } = window._fire;
     await updateDoc(doc(window._db,'citizens_private',id),{status:newStatus});
     await updateDoc(doc(window._db,'citizens_public',id),{status:newStatus});
-    if (c?.username) { await updateDoc(doc(window._db,'citizen_usernames',c.username.toLowerCase()),{status:newStatus}); }
+    if (c?.username) { await setDoc(doc(window._db,'citizen_usernames',c.username.toLowerCase()),{id,status:newStatus},{merge:true}); }
     if (c) c.status=newStatus;
     filterCitizens(); loadDashboard();
     if (newStatus === 'revoked') {
@@ -2248,7 +2248,10 @@ async function saveEdit() {
       await deleteDoc(doc(window._db,'citizen_usernames',oldUsername.toLowerCase()));
       await setDoc(doc(window._db,'citizen_usernames',username.toLowerCase()),{id,status});
     } else {
-      await updateDoc(doc(window._db,'citizen_usernames',username.toLowerCase()),{id,status});
+      // setDoc+merge, not updateDoc: some pre-migration citizens never got a
+      // citizen_usernames doc backfilled, and updateDoc throws "no document
+      // to update" on those instead of creating one.
+      await setDoc(doc(window._db,'citizen_usernames',username.toLowerCase()),{id,status},{merge:true});
     }
     const c=allCitizens.find(x=>x.id===id);
     if(c) Object.assign(c,{username,status,tier,territory:territory||'Mainland Legiona',issuedDate:issued,walletLinked:walletStr==='true',publicNote:note});
@@ -2376,12 +2379,20 @@ async function loadCitizenHistory(citizenId) {
   if (!thread) return;
   thread.innerHTML = '<div class="cit-history-empty">// Loading...</div>';
   try {
-    const { collection, getDocs, query, where, orderBy } = window._fire;
-    const q = query(collection(window._db, 'citizen_logs'), where('citizenId', '==', citizenId), orderBy('timestamp', 'desc'));
+    const { collection, getDocs, query, where } = window._fire;
+    // No orderBy here deliberately — where()+orderBy() on different fields
+    // needs a composite index that isn't deployed, and failed with
+    // "query requires an index" for every citizen. Sorting client-side
+    // avoids needing to manage a Firestore index for this at all.
+    const q = query(collection(window._db, 'citizen_logs'), where('citizenId', '==', citizenId));
     const snap = await getDocs(q);
     if (snap.empty) { thread.innerHTML = '<div class="cit-history-empty">// No history recorded yet</div>'; return; }
+    const docs = snap.docs.slice().sort((a, b) => {
+      const ta = a.data().timestamp || '', tb = b.data().timestamp || '';
+      return ta < tb ? 1 : ta > tb ? -1 : 0; // newest first
+    });
     let html = '';
-    snap.forEach(d => {
+    docs.forEach(d => {
       const l = d.data();
       const ts = l.timestamp ? new Date(l.timestamp).toLocaleString('en-GB', { dateStyle:'short', timeStyle:'short' }) : '—';
       const arrow = (l.prevStatus && l.newStatus) ? `${l.prevStatus} → ${l.newStatus}` : '';
