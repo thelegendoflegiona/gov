@@ -1911,6 +1911,15 @@ function appendPreset(text) {
 }
 window.appendPreset = appendPreset;
 
+function genClaimCode() {
+  // 8 chars from an unambiguous alphabet, drawn with crypto.getRandomValues
+  // (not Math.random) — this is a security-relevant secret, not a UI id.
+  const alphabet = 'ABCDEFGHJKMNPQRSTUVWXYZ23456789'; // no 0/O/1/I/L
+  const bytes = new Uint8Array(8);
+  crypto.getRandomValues(bytes);
+  return Array.from(bytes, b => alphabet[b % alphabet.length]).join('');
+}
+
 async function approveAndIssueID() {
   if (!currentApp) return;
   const ref=currentApp.ref||currentApp._id, ign=currentApp.ign||'';
@@ -1924,23 +1933,33 @@ async function approveAndIssueID() {
     const { doc, runTransaction } = window._fire;
     const db=window._db, year=new Date().getFullYear(), today=new Date().toISOString().split('T')[0];
     let newID;
+    // One-time claim code: random, NOT derived from the sequential ID, so it
+    // can't be guessed the way THELOL-YYYY-##### can. Excludes ambiguous
+    // chars (0/O, 1/I/L). This is required (alongside the ID) to link a
+    // Google account to this record on id-card.html — see firestore.rules.
+    const claimCode = genClaimCode();
     await runTransaction(db, async tx => {
       const cRef=doc(db,'meta','counter'), cSnap=await tx.get(cRef);
       const lastSeq=cSnap.exists()?(cSnap.data().lastSequence||0):0, newSeq=lastSeq+1;
       newID=`THELOL-${year}-${String(newSeq).padStart(5,'0')}`;
       tx.set(cRef,{lastSequence:newSeq,lastYear:String(year)});
-      tx.set(doc(db,'citizens_private',newID),{username:ign,tier,issuedDate:today,territory,status:'active',platform,walletLinked:false,publicNote:pubNote,issuedYear:year});
+      tx.set(doc(db,'citizens_private',newID),{username:ign,tier,issuedDate:today,territory,status:'active',platform,walletLinked:false,publicNote:pubNote,issuedYear:year,claimCode});
       tx.set(doc(db,'citizens_public',newID),{status:'active'});
       tx.set(doc(db,'citizen_usernames',ign.toLowerCase()),{id:newID,status:'active'});
       tx.update(doc(db,'applications',ref),{status:'approved',thelol_id:newID,processed:today,public_note:pubNote,admin_note:admNote});
     });
     await logCitizenAction(newID, ign, 'issued', '', 'active', `Approved & issued via application ${ref}`);
+    // NOTE: the claim code is deliberately NOT included in this webhook call.
+    // sendWebhook() posts to a shared Discord channel — anyone in that
+    // channel would see it. The code is shown to the admin below instead;
+    // relay it to the applicant privately (DM via the Discord handle they
+    // gave on their application), not in a public channel.
     await sendWebhook('approveIssue', { 'Reference': ref, 'IGN': ign, 'National ID': newID, 'Tier': tier, 'Processed': today });
     const app=allApps.find(a=>(a.ref||a._id)===ref);
     if (app){app.status='approved';app.thelol_id=newID;app.processed=today;app.public_note=pubNote;app.admin_note=admNote;}
-    showModalFb('ok',`// SUCCESS — <strong style="color:var(--emerald-l)">${newID}</strong> issued to ${ign}. <a href="/gov/systems/id/id-card?id=${encodeURIComponent(newID)}" target="_blank" style="color:var(--gold);">View ID Card →</a>`);
+    showModalFb('ok',`// SUCCESS — <strong style="color:var(--emerald-l)">${newID}</strong> issued to ${ign}.<br>// Claim code (DM this to ${ign} privately — do NOT post in Discord): <strong style="color:var(--gold);cursor:pointer;" onclick="navigator.clipboard.writeText('${claimCode}');this.textContent='${claimCode} (copied)';" title="Click to copy">${claimCode}</strong><br><a href="/gov/systems/id/id-card?id=${encodeURIComponent(newID)}" target="_blank" style="color:var(--gold);">View ID Card →</a>`);
     logAct('ok',`APPROVED + ISSUED ${newID} → ${ign} (${ref})`);
-    showToast(`✓ ${newID} issued to ${ign}`, 'ok');
+    showToast(`✓ ${newID} issued to ${ign} — claim code shown above, DM it privately`, 'ok');
     loadDashboard(); filterApps(); loadNextID();
     trackAdminEvent('ids_issued'); trackAdminEvent('status_updates');
   } catch(e) { showModalFb('err',`// ERROR: ${e.message}`); showToast('Transaction failed','err'); }
