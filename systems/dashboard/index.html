@@ -217,6 +217,7 @@
     .act-pill.edit{color:var(--muted);border-color:var(--border)} .act-pill.edit:hover{border-color:var(--gold);color:var(--gold)}
     .act-pill.suspend{color:var(--orange-l);border-color:var(--orange-b)} .act-pill.suspend:hover{background:var(--orange-dim)}
     .act-pill.revoke{color:var(--red-l);border-color:var(--red-b)} .act-pill.revoke:hover{background:var(--red-dim)}
+    .act-pill.delete{color:#fff;border-color:var(--red-l);background:var(--red-l);} .act-pill.delete:hover{background:#a52a1e;border-color:#a52a1e;}
     .act-pill.preview{color:var(--blue-l);border-color:var(--blue-b)} .act-pill.preview:hover{background:var(--blue-dim)}
     .tbl-loading { text-align: center; padding: 48px; font-family: var(--fM); font-size: 9px; letter-spacing: 0.14em; color: var(--dim); }
     .tbl-empty { text-align: center; padding: 48px; font-family: var(--fM); font-size: 10px; letter-spacing: 0.1em; color: var(--dim); }
@@ -1232,6 +1233,7 @@
     <div class="modal-actions-edit">
       <button class="btn-save" onclick="saveEdit()">SAVE CHANGES</button>
       <button class="btn-action btn-cancel" onclick="closeEditModal()">Cancel</button>
+      <button class="btn-action" style="border-color:var(--red-b);color:var(--red-l);margin-left:auto;" onclick="changeCitizenId()">Change ID Number →</button>
     </div>
   </div>
 </div>
@@ -2117,6 +2119,7 @@ function filterCitizens() {
     if (status==='active') { actions+=`<button class="act-pill suspend" onclick="quickCitStatus('${c.id}','suspended')">Suspend</button><button class="act-pill revoke" onclick="quickCitStatus('${c.id}','revoked')">Revoke</button>`; }
     else if (status==='suspended') { actions+=`<button class="act-pill reinstate" onclick="quickCitStatus('${c.id}','active')">Reinstate</button><button class="act-pill revoke" onclick="quickCitStatus('${c.id}','revoked')">Revoke</button>`; }
     else if (status==='revoked') { actions+=`<button class="act-pill reinstate" onclick="quickCitStatus('${c.id}','active')">Reinstate</button>`; }
+    actions+=`<button class="act-pill delete" onclick="deleteCitizenFull('${c.id}')">Delete</button>`;
     return `<tr>
       <td class="td-id-nis">${c.id}</td>
       <td class="td-ign">${c.username||'—'}</td>
@@ -2153,6 +2156,37 @@ async function quickCitStatus(id, newStatus) {
   } catch(e) { showToast(`Error: ${e.message}`,'err'); }
 }
 window.quickCitStatus = quickCitStatus;
+
+// Permanent delete — unlike suspend/revoke (reversible via Reinstate), this
+// removes the citizen record entirely from citizens_private, citizens_public,
+// citizen_usernames, and (best-effort) the legacy citizens collection. There
+// is no undo, so this requires typing the exact ID rather than a plain
+// confirm() — cheap to misclick a button, much harder to mistype an ID.
+// The linked application record (in `applications`) is left alone; it's
+// historical/audit data, not part of the live citizen registry.
+async function deleteCitizenFull(id) {
+  const c = allCitizens.find(x=>x.id===id);
+  const typed = prompt(`This permanently deletes ${id}${c?.username?` (${c.username})`:''} and cannot be undone.\n\nType the ID exactly to confirm:`);
+  if (typed !== id) {
+    if (typed !== null) showToast('Delete cancelled — ID did not match', 'err');
+    return;
+  }
+  try {
+    const { doc, deleteDoc } = window._fire;
+    await deleteDoc(doc(window._db,'citizens_private',id));
+    await deleteDoc(doc(window._db,'citizens_public',id));
+    if (c?.username) { await deleteDoc(doc(window._db,'citizen_usernames',c.username.toLowerCase())); }
+    // Legacy collection: best-effort, ignore if it never had this doc.
+    try { await deleteDoc(doc(window._db,'citizens',id)); } catch(e) {}
+    await logCitizenAction(id, c?.username||'', 'deleted', c?.status||'', 'deleted', 'Permanently deleted via citizens table');
+    allCitizens = allCitizens.filter(x=>x.id!==id);
+    filterCitizens(); loadDashboard();
+    logAct('bad', `DELETED → ${id}`);
+    showToast(`${id} permanently deleted`, 'err');
+    trackAdminEvent('status_updates');
+  } catch(e) { showToast(`Error: ${e.message}`,'err'); }
+}
+window.deleteCitizenFull = deleteCitizenFull;
 
 /* ── ID Card Preview ── */
 function openIDPreview(id) {
@@ -2228,6 +2262,65 @@ async function saveEdit() {
   } catch(e) { fb.textContent=`// ERROR: ${e.message}`; fb.className='edit-fb err show'; }
 }
 window.saveEdit = saveEdit;
+
+// Re-key a citizen's ID number itself (THELOL-YYYY-##### is the Firestore
+// document key across citizens_private/citizens_public, so this isn't a
+// field edit — it moves the record to a new document, deletes the old one,
+// repoints citizen_usernames, and repoints any application that references
+// the old ID via thelol_id. Deliberately separate from saveEdit/the normal
+// Edit form, and deliberately harder to trigger than a single click, since
+// getting this wrong breaks lookups (id-card claim, status.html, Quick
+// Verify) for that citizen.
+async function changeCitizenId() {
+  const oldId = document.getElementById('edit_id').value;
+  const c = allCitizens.find(x=>x.id===oldId);
+  if (!c) return;
+  const fb = document.getElementById('editFeedback');
+  const raw = prompt(`Enter the new ID for ${oldId} (${c.username||'—'}).\n\nFormat: THELOL-YYYY-#####\n\nThis moves the record to a new document — the old ID (${oldId}) stops existing and cannot be looked up afterward.`);
+  if (!raw) return;
+  const newId = raw.trim().toUpperCase();
+  if (!/^THELOL-\d{4}-\d{5}$/.test(newId)) { fb.textContent='// New ID must match THELOL-YYYY-#####'; fb.className='edit-fb err show'; return; }
+  if (newId === oldId) { fb.textContent="// That's already the current ID"; fb.className='edit-fb err show'; return; }
+  if (!confirm(`Move ${oldId} → ${newId}?\n\nThis cannot be undone from here.`)) return;
+  fb.textContent='// Re-keying...'; fb.className='edit-fb ok show';
+  try {
+    const { doc, getDoc, deleteDoc, runTransaction, collection, query, where, getDocs } = window._fire;
+    const db = window._db;
+    // Refuse to clobber an existing record already at the new ID.
+    const clash = await getDoc(doc(db,'citizens_private',newId));
+    if (clash.exists()) { fb.textContent=`// ${newId} is already in use`; fb.className='edit-fb err show'; return; }
+    // Find any application(s) pointing at the old ID so they can be repointed
+    // in the same transaction (found outside the tx since 'where' queries
+    // aren't allowed inside one, but the writes below are transactional).
+    const appsSnap = await getDocs(query(collection(db,'applications'), where('thelol_id','==',oldId)));
+    await runTransaction(db, async tx => {
+      const privSnap = await tx.get(doc(db,'citizens_private',oldId));
+      if (!privSnap.exists()) throw new Error(`${oldId} no longer exists`);
+      const privData = privSnap.data();
+      const pubSnap = await tx.get(doc(db,'citizens_public',oldId));
+      const pubData = pubSnap.exists() ? pubSnap.data() : { status: privData.status || 'active' };
+      tx.set(doc(db,'citizens_private',newId), privData);
+      tx.set(doc(db,'citizens_public',newId), pubData);
+      tx.delete(doc(db,'citizens_private',oldId));
+      tx.delete(doc(db,'citizens_public',oldId));
+      if (privData.username) {
+        tx.set(doc(db,'citizen_usernames',privData.username.toLowerCase()), { id:newId, status: privData.status||'active' });
+      }
+      appsSnap.forEach(a => tx.update(doc(db,'applications',a.id), { thelol_id: newId }));
+    });
+    try { await deleteDoc(doc(db,'citizens',oldId)); } catch(e) {} // legacy collection, best-effort
+    await logCitizenAction(newId, c.username||'', 'id_changed', oldId, newId, `ID changed from ${oldId} to ${newId} via admin console`);
+    Object.assign(c, { id: newId });
+    document.getElementById('edit_id').value = newId;
+    document.getElementById('editModalTitle').textContent = newId;
+    filterCitizens(); loadDashboard(); loadCitizenHistory(newId);
+    fb.textContent = `// Done — now ${newId}`;
+    logAct('warn', `ID CHANGED ${oldId} → ${newId}`);
+    showToast(`${oldId} → ${newId}`, 'ok');
+    trackAdminEvent('status_updates');
+  } catch(e) { fb.textContent = `// ERROR: ${e.message}`; fb.className='edit-fb err show'; }
+}
+window.changeCitizenId = changeCitizenId;
 
 /* ════════════════════════════════
    ACTIVITY LOG
