@@ -12,25 +12,33 @@
  * paths/repos) means Firebase Auth's session is already shared between them —
  * no token exchange needed. This script just standardizes the role check.
  *
+ * IMPORTANT — this file takes NO Firebase imports of its own. Pass in the
+ * auth/db instances and doc/getDoc functions your page already imported.
+ * Reason: Firebase SDK modules are versioned by CDN URL — if this file
+ * imported its own copy of firebase-auth.js at a different version than
+ * your page uses, calling getAuth() here would look for a "default app" in
+ * the wrong module instance and throw "No Firebase App '[DEFAULT]' has been
+ * created" even though your page already initialized one correctly. Taking
+ * everything as parameters instead sidesteps version mismatches entirely.
+ *
  * USAGE (on any page you want gated):
  *   <script type="module">
+ *     import { initializeApp } from "https://www.gstatic.com/firebasejs/12.12.1/firebase-app.js";
+ *     import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.12.1/firebase-auth.js";
+ *     import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/12.12.1/firebase-firestore.js";
  *     import { requireRole } from "https://cdn.jsdelivr.net/gh/thelegendoflegiona/gov@main/assets/js/auth-guard.js";
- *     requireRole(["super-admin", "isc-officer"], { loginPath: "/gov/login/" });
- *   </script>
  *
- * Requires firebase-app already initialized on the page (same config both
- * portals already use) before this runs.
+ *     const app  = initializeApp({ ...your config... });
+ *     const auth = getAuth(app);
+ *     const db   = getFirestore(app);
+ *
+ *     requireRole(["super-admin", "isc-officer"], {
+ *       auth, db, onAuthStateChanged, doc, getDoc,
+ *       loginPath: "/gov/login/",
+ *       onAuthorized: (admin) => { ... },
+ *     });
+ *   </script>
  */
-
-import {
-  getAuth,
-  onAuthStateChanged,
-} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-import {
-  getFirestore,
-  doc,
-  getDoc,
-} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 /**
  * Gate the current page behind Firebase auth + a role check against
@@ -39,14 +47,27 @@ import {
  *
  * @param {string[]} allowedRoles - roles permitted on this page, e.g. ["super-admin","isc-officer"]
  * @param {object} opts
+ * @param {object} opts.auth - the page's already-initialized Firebase Auth instance
+ * @param {object} opts.db - the page's already-initialized Firestore instance
+ * @param {Function} opts.onAuthStateChanged - the onAuthStateChanged function from the SAME firebase-auth.js the page imported
+ * @param {Function} opts.doc - the doc() function from the SAME firebase-firestore.js the page imported
+ * @param {Function} opts.getDoc - the getDoc() function from the SAME firebase-firestore.js the page imported
  * @param {string} opts.loginPath - where to send unauthenticated users, with ?redirect= back here
  * @param {string} [opts.deniedPath] - where to send authenticated-but-wrong-role users (defaults to an inline message)
  * @param {(adminDoc: object) => void} [opts.onAuthorized] - callback once access is confirmed, receives the admin doc
  */
 export function requireRole(allowedRoles, opts) {
-  const { loginPath, deniedPath, onAuthorized } = opts;
-  const auth = getAuth();
-  const db = getFirestore();
+  const { auth, db, onAuthStateChanged, doc, getDoc, loginPath, deniedPath, onAuthorized } = opts;
+
+  if (!auth || !db || !onAuthStateChanged || !doc || !getDoc) {
+    console.error(
+      "auth-guard: requireRole() is missing required opts. Pass auth, db, " +
+      "onAuthStateChanged, doc, and getDoc from the SAME Firebase SDK " +
+      "version/module your page already imported. See the usage example " +
+      "at the top of auth-guard.js."
+    );
+    return;
+  }
 
   document.documentElement.setAttribute("data-auth-checking", "true");
 
@@ -108,10 +129,9 @@ export function requireRole(allowedRoles, opts) {
  * Convenience helper: fetch the current user's role without gating the page.
  * Useful for conditionally showing/hiding UI (e.g. "ISC" nav link only for
  * isc-officer/super-admin). Returns null if not signed in or not an admin.
+ * Same rule as requireRole: pass your page's own auth/db/doc/getDoc.
  */
-export async function getCurrentRole() {
-  const auth = getAuth();
-  const db = getFirestore();
+export async function getCurrentRole({ auth, db, doc, getDoc }) {
   const user = auth.currentUser;
   if (!user) return null;
   const adminSnap = await getDoc(doc(db, "admins", user.uid));
