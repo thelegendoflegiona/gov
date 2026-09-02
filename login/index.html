@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Staff Login — The Legend of Legiona</title>
+<meta name="robots" content="noindex, nofollow">
+
+<!-- Uses the canonical gov design tokens (--gold, --fh/--fb/--fm) and the
+     shared stylesheet, same as every other gov page. If this file lives in
+     the isc repo instead, swap the href below for the jsDelivr CDN path:
+     https://cdn.jsdelivr.net/gh/thelegendoflegiona/gov@main/assets/css/style.css -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=DM+Mono:wght@400;500&family=Outfit:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/gov/assets/css/style.css">
+
+<style>
+  /* Page-specific styles only — everything else inherits the shared stylesheet's :root tokens */
+  body.login-page {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--bg, #0a0a0a);
+    padding: 1.5rem;
+  }
+
+  .login-card {
+    width: 100%;
+    max-width: 400px;
+    border: 1px solid rgba(201, 168, 76, 0.25);
+    background: rgba(255, 255, 255, 0.02);
+    border-radius: 10px;
+    padding: 2.5rem 2rem;
+  }
+
+  .login-card__eyebrow {
+    font-family: var(--fm, 'DM Mono', monospace);
+    font-size: 0.7rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--gold, #C9A84C);
+    text-align: center;
+    margin-bottom: 0.5rem;
+  }
+
+  .login-card h1 {
+    font-family: var(--fh, 'Playfair Display', serif);
+    font-size: 1.5rem;
+    text-align: center;
+    margin: 0 0 0.35rem;
+    color: #f2f2f2;
+  }
+
+  .login-card__portal-tag {
+    font-family: var(--fm, 'DM Mono', monospace);
+    font-size: 0.75rem;
+    text-align: center;
+    color: rgba(255, 255, 255, 0.5);
+    margin-bottom: 2rem;
+  }
+
+  .login-field {
+    margin-bottom: 1.1rem;
+  }
+
+  .login-field label {
+    display: block;
+    font-family: var(--fm, 'DM Mono', monospace);
+    font-size: 0.7rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.55);
+    margin-bottom: 0.4rem;
+  }
+
+  .login-field input {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 0.7rem 0.85rem;
+    border-radius: 6px;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    background: rgba(255, 255, 255, 0.03);
+    color: #f2f2f2;
+    font-family: var(--fb, 'Outfit', sans-serif);
+    font-size: 0.9rem;
+  }
+
+  .login-field input:focus {
+    outline: none;
+    border-color: var(--gold, #C9A84C);
+  }
+
+  .login-submit {
+    width: 100%;
+    padding: 0.75rem;
+    border-radius: 6px;
+    border: 1px solid var(--gold, #C9A84C);
+    background: var(--gold, #C9A84C);
+    color: #14110a;
+    font-family: var(--fb, 'Outfit', sans-serif);
+    font-weight: 600;
+    font-size: 0.9rem;
+    cursor: pointer;
+    margin-top: 0.5rem;
+  }
+
+  .login-submit:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+
+  .login-error {
+    display: none;
+    font-family: var(--fm, 'DM Mono', monospace);
+    font-size: 0.78rem;
+    color: #e07b7b;
+    background: rgba(224, 123, 123, 0.08);
+    border: 1px solid rgba(224, 123, 123, 0.25);
+    border-radius: 6px;
+    padding: 0.6rem 0.75rem;
+    margin-bottom: 1.1rem;
+  }
+
+  .login-footnote {
+    text-align: center;
+    margin-top: 1.75rem;
+    font-family: var(--fm, 'DM Mono', monospace);
+    font-size: 0.68rem;
+    color: rgba(255, 255, 255, 0.35);
+  }
+</style>
+</head>
+<body class="login-page">
+
+<main class="login-card">
+  <p class="login-card__eyebrow">The Legend of Legiona</p>
+  <h1>Staff Login</h1>
+  <p class="login-card__portal-tag" id="portalTag">Government &amp; ISC Admin Access</p>
+
+  <p class="login-error" id="loginError"></p>
+
+  <form id="loginForm">
+    <div class="login-field">
+      <label for="email">Email</label>
+      <input type="email" id="email" name="email" autocomplete="username" required>
+    </div>
+    <div class="login-field">
+      <label for="password">Password</label>
+      <input type="password" id="password" name="password" autocomplete="current-password" required>
+    </div>
+    <button type="submit" class="login-submit" id="submitBtn">Sign In</button>
+  </form>
+
+  <p class="login-footnote">Not affiliated with Kawaiisho, Mojang, or Microsoft/Minecraft.</p>
+</main>
+
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+  import {
+    getAuth,
+    signInWithEmailAndPassword,
+  } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+  import {
+    getFirestore,
+    doc,
+    getDoc,
+  } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+  // Same Firebase config used across gov + isc — keep this in sync with the
+  // rest of the site rather than hardcoding a second copy long-term.
+  const firebaseConfig = {
+    projectId: "the-legend-of-legiona-the-lol",
+    appId: "1:29247096448:web:370f536ad630c088b94865",
+    // apiKey, authDomain, etc. — pull from your existing firebase-config.js
+    // rather than duplicating secrets across files.
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const db = getFirestore(app);
+
+  const form = document.getElementById("loginForm");
+  const errorEl = document.getElementById("loginError");
+  const submitBtn = document.getElementById("submitBtn");
+  const portalTag = document.getElementById("portalTag");
+
+  // Where to send the user back to after login. Both portals link here as
+  // e.g. /gov/login/?redirect=%2Fisc%2F or /gov/login/?redirect=%2Fgov%2Fsystems%2Fdashboard%2F
+  const params = new URLSearchParams(window.location.search);
+  const redirectPath = params.get("redirect") || "/gov/systems/dashboard/";
+
+  // Light UX touch: if we can tell from the redirect path which portal sent
+  // the user here, say so. Not a security boundary — just a label.
+  if (redirectPath.startsWith("/isc/")) {
+    portalTag.textContent = "ISC Portal Access";
+  } else if (redirectPath.includes("/dashboard/")) {
+    portalTag.textContent = "Government Admin Access";
+  }
+
+  function showError(message) {
+    errorEl.textContent = message;
+    errorEl.style.display = "block";
+  }
+
+  function hideError() {
+    errorEl.style.display = "none";
+  }
+
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    hideError();
+    submitBtn.disabled = true;
+    submitBtn.textContent = "Signing In…";
+
+    const email = document.getElementById("email").value.trim();
+    const password = document.getElementById("password").value;
+
+    try {
+      const cred = await signInWithEmailAndPassword(auth, email, password);
+
+      // Confirm this account is actually registered as an admin before
+      // sending them anywhere — otherwise a valid-but-non-admin Firebase
+      // account would bounce straight back out via the destination page's
+      // own requireRole() check anyway, but failing fast here is a better UX.
+      const adminSnap = await getDoc(doc(db, "admins", cred.user.uid));
+      if (!adminSnap.exists()) {
+        await auth.signOut();
+        showError("This account is not registered as an admin.");
+        submitBtn.disabled = false;
+        submitBtn.textContent = "Sign In";
+        return;
+      }
+
+      window.location.href = redirectPath;
+    } catch (err) {
+      console.error("Login failed:", err);
+      showError("Incorrect email or password.");
+      submitBtn.disabled = false;
+      submitBtn.textContent = "Sign In";
+    }
+  });
+</script>
+
+</body>
+</html>
