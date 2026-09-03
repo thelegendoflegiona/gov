@@ -4,11 +4,11 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Currency Converter — The Legend of Legiona</title>
-  <meta name="description" content="Official TL$ currency converter for The Legend of Legiona, a sovereign nation on the Kawaiisho Minecraft server." />
+  <meta name="description" content="Official TL$ currency converter for The Legend of Legiona. TL$ is pegged 1:1 to Kawaiisho's Skycoin under The LoL Dollar Act 2026." />
   <link rel="canonical" href="https://thelegendoflegiona.github.io/gov/finance/" />
   <meta property="og:type" content="website" />
   <meta property="og:title" content="Currency Converter — The Legend of Legiona" />
-  <meta property="og:description" content="Official TL$ currency converter for The Legend of Legiona, a sovereign nation on the Kawaiisho Minecraft server." />
+  <meta property="og:description" content="Official TL$ currency converter for The Legend of Legiona. TL$ is pegged 1:1 to Kawaiisho's Skycoin under The LoL Dollar Act 2026." />
   <meta property="og:url" content="https://thelegendoflegiona.github.io/gov/finance/" />
   <meta property="og:site_name" content="The Legend of Legiona" />
   <meta property="og:image" content="https://thelegendoflegiona.github.io/gov/assets/images/logo.png" />
@@ -17,7 +17,7 @@
   <meta property="og:image:type" content="image/png" />
   <meta name="twitter:card" content="summary" />
   <meta name="twitter:title" content="Currency Converter — The Legend of Legiona" />
-  <meta name="twitter:description" content="Official TL$ currency converter for The Legend of Legiona, a sovereign nation on the Kawaiisho Minecraft server." />
+  <meta name="twitter:description" content="Official TL$ currency converter for The Legend of Legiona. TL$ is pegged 1:1 to Kawaiisho's Skycoin under The LoL Dollar Act 2026." />
   <meta name="twitter:image" content="https://thelegendoflegiona.github.io/gov/assets/images/logo.png" />
   <link rel="icon" type="image/png" href="/gov/assets/images/logo.png" />
   <meta name="theme-color" content="#C9A84C" />
@@ -34,10 +34,11 @@
   <style>
     /* ── CONVERTER-SPECIFIC VARIABLES ────────────────────────────── */
 
-    /* ── ITEM IMAGES ── */
-    .item-img { image-rendering: pixelated; image-rendering: -moz-crisp-edges; display: inline-block; vertical-align: middle; flex-shrink: 0 }
-    .tls-badge { display: inline-flex; align-items: center; justify-content: center; width: 22px; height: 22px; background: var(--gold-dim); border: 1px solid rgba(201,168,76,0.35); color: var(--gold); font-family: 'DM Mono', monospace; font-size: 0.38rem; letter-spacing: 0.5px; font-weight: 500; flex-shrink: 0; vertical-align: middle; border-radius: 2px }
-    .tls-badge.lg { width: 40px; height: 40px; font-size: 0.65rem }
+    /* ── CURRENCY BADGES (no external item textures for SC/KC — styled text badges) ── */
+    .curr-badge { display: inline-flex; align-items: center; justify-content: center; border-radius: 50%; font-family: 'DM Mono', monospace; font-weight: 500; letter-spacing: 0.3px; flex-shrink: 0; vertical-align: middle; border: 1px solid }
+    .curr-badge.sc  { background: rgba(201,168,76,0.14);  color: #d8b25c; border-color: rgba(201,168,76,0.35) }
+    .curr-badge.kc  { background: rgba(45,212,218,0.12);  color: #2dd4da; border-color: rgba(45,212,218,0.35) }
+    .curr-badge.tls { background: var(--gold-dim); color: var(--gold); border-color: rgba(201,168,76,0.35) }
 
     /* ── LANGUAGE SWITCHER ── */
     .lang-switcher { display: flex; gap: 0; border: 1px solid var(--border); overflow: hidden; flex-shrink: 0; margin-right: 8px }
@@ -120,9 +121,18 @@
     .note { background: var(--gold-dim); border: 1px solid rgba(201,168,76,0.2); padding: 1rem 1.2rem; margin-top: 12px; font-size: 0.8rem; color: var(--text-mid); font-weight: 300; line-height: 1.8 }
     .note strong { color: var(--gold); font-weight: 500 }
 
+    /* ── RATE HISTORY ── */
+    .history-wrap { max-width: 1100px; margin: 0 auto 4rem; padding: 0 24px }
+    .history-table { width: 100%; border-collapse: collapse; background: var(--bg-2); border: 1px solid var(--border) }
+    .history-table th { text-align: left; font-family: 'DM Mono', monospace; font-size: 0.48rem; letter-spacing: 2px; color: var(--text-dim); padding: 12px 14px; border-bottom: 1px solid var(--border); font-weight: 500 }
+    .history-table td { padding: 12px 14px; font-size: 0.82rem; color: var(--text-mid); border-bottom: 1px solid var(--border); vertical-align: top }
+    .history-table tr:last-child td { border-bottom: none }
+    .history-rate { font-family: 'DM Mono', monospace; color: var(--gold); white-space: nowrap }
+
     /* ── RESPONSIVE ── */
     @media (max-width: 900px) { .conv-main { grid-template-columns: 1fr } }
     @media (max-width: 560px) { .conv-row { grid-template-columns: 1fr; gap: 8px } .conv-swap { display: none } .lang-switcher { display: none } }
+    @media (max-width: 700px) { .history-table { display: block; overflow-x: auto } }
   </style>
 </head>
 <body>
@@ -142,6 +152,7 @@
       <ul class="nav-links">
         <li><a href="#converter">Converter</a></li>
         <li><a href="#rates">Rates</a></li>
+        <li><a href="#history">Rate History</a></li>
         <li><a href="/gov/">← Back to Gov</a></li>
       </ul>
       <div class="lang-switcher" role="group" aria-label="Language">
@@ -155,6 +166,7 @@
     <div class="mobile-menu" id="mobileMenu">
       <a href="#converter" onclick="toggleMenu()">Converter</a>
       <a href="#rates" onclick="toggleMenu()">Rates</a>
+      <a href="#history" onclick="toggleMenu()">Rate History</a>
       <a href="/gov/" onclick="toggleMenu()">← Back to Gov</a>
     </div>
   </div>
@@ -167,7 +179,7 @@
         <span> / Finance</span>
       </div>
       <h1 data-i18n="header_title">Currency Converter</h1>
-      <p data-i18n="header_sub">Convert between Minecraft currencies and the TL Dollar (TL$), the official currency of The Legend of Legiona.</p>
+      <p data-i18n="header_sub">Convert between Skycoin (SC), Kawaii Credits (KC), and the TL Dollar (TL$) — official currency of The Legend of Legiona, pegged 1:1 to Skycoin under The LoL Dollar Act 2026.</p>
     </div>
   </div>
 
@@ -177,7 +189,7 @@
     <div class="converter">
       <div class="conv-hd">
         <span class="conv-hd-title" data-i18n="conv_title">Convert Currency</span>
-        <span class="conv-tag" data-i18n="conv_tag">FIXED RATES</span>
+        <span class="conv-tag" data-i18n="conv_tag">KAWAIISHO-PEGGED</span>
       </div>
       <div class="conv-body">
         <div class="conv-row">
@@ -241,12 +253,29 @@
       <div class="note" id="note-box"></div>
 
       <div class="panel-box">
-        <div class="pb-hd"><div class="pb-title" data-i18n="qr_title">QUICK REFERENCE</div></div>
+        <div class="pb-hd"><div class="pb-title" data-i18n="qr_title">SAMPLE STORE PRICES</div></div>
         <table class="rates-table" id="quick-table"></table>
       </div>
     </div>
 
   </div><!-- /conv-main -->
+
+  <!-- RATE HISTORY -->
+  <div class="history-wrap" id="history">
+    <div class="panel-box">
+      <div class="pb-hd"><div class="pb-title" data-i18n="history_title">RATE HISTORY</div></div>
+      <table class="history-table">
+        <thead>
+          <tr>
+            <th data-i18n="hist_col_date">EFFECTIVE DATE</th>
+            <th data-i18n="hist_col_rate">TL$ PEG</th>
+            <th data-i18n="hist_col_reason">REASON</th>
+          </tr>
+        </thead>
+        <tbody id="history-rows"></tbody>
+      </table>
+    </div>
+  </div>
 
   <!-- FOOTER (loaded from assets/partials/footer.html) -->
   <div id="footer-placeholder"></div>
@@ -266,9 +295,9 @@ const LANG = {
   en: {
     nav_page:           'CURRENCY CONVERTER',
     header_title:       'Currency Converter',
-    header_sub:         'Convert between Minecraft currencies and the TL Dollar (TL$), the official currency of The Legend of Legiona.',
+    header_sub:         'Convert between Skycoin (SC), Kawaii Credits (KC), and the TL Dollar (TL$) — official currency of The Legend of Legiona, pegged 1:1 to Skycoin under The LoL Dollar Act 2026.',
     conv_title:         'Convert Currency',
-    conv_tag:           'FIXED RATES',
+    conv_tag:           'KAWAIISHO-PEGGED',
     label_from:         'FROM',
     label_to:           'TO',
     label_amount:       'AMOUNT',
@@ -276,31 +305,33 @@ const LANG = {
     btn_convert:        'CONVERT →',
     multi_hd:           'ALL CURRENCIES',
     rates_title:        'EXCHANGE RATES (TL$ BASE)',
-    qr_title:           'QUICK REFERENCE',
+    qr_title:           'SAMPLE STORE PRICES',
+    history_title:      'RATE HISTORY',
+    hist_col_date:       'EFFECTIVE DATE',
+    hist_col_rate:       'TL$ PEG',
+    hist_col_reason:     'REASON',
     rate_label:         'RATE',
     note_html: `<strong>💡 About TL$</strong><br>
-      TL$ (TL Dollar) is the official currency of The Legend of Legiona on Kawaiisho: Season 3.
-      All prices in Paiz Shop are denominated in <strong>Diamonds ◆</strong>.`,
+      TL$ (The LoL Dollar) is the official currency of The Legend of Legiona on Kawaiisho: Season 3.
+      It is pegged <strong>1:1 to Skycoin (SC)</strong>, Kawaiisho's in-game currency, under
+      <strong>The LoL Dollar Act 2026</strong> (THELOLGOV-02-09-2026-0001). Kawaii Credits (KC) convert
+      to Skycoin in-game via <strong>/kc exchange &lt;KC&gt;</strong> at Kawaiisho's fixed rate of 10 SC per KC.`,
     qr_rows: [
-      ['1 Diamond',            '30 TL$'],
-      ['64 Diamonds (1 stack)', '1,920 TL$'],
-      ['1 Netherite Ingot',    '= 5 ◆'],
-      ['1 Emerald',            '≈ 0.33 ◆'],
-      ['100 TL$',              '≈ 3.33 ◆'],
+      ['Rail',                     '6 SC = 6 TL$'],
+      ['End Crystal',              '250 SC = 250 TL$'],
+      ['Enchanted Golden Apple',   '720 SC = 720 TL$'],
+      ['1 Kawaii Credit',          '10 SC = 10 TL$'],
     ],
-    c_diamond:   'Diamond',
-    c_netherite: 'Netherite Ingot',
-    c_emerald:   'Emerald',
-    c_gold:      'Gold Ingot',
-    c_iron:      'Iron Ingot',
-    c_tls:       'TL$ (TL Dollar)',
+    c_sc:   'Skycoin (SC)',
+    c_kc:   'Kawaii Credit (KC)',
+    c_tls:  'TL$ (TL Dollar)',
   },
   bm: {
     nav_page:           'PENUKAR MATA WANG',
     header_title:       'Penukar Mata Wang',
-    header_sub:         'Tukar antara mata wang Minecraft dan Dolar TL (TL$), mata wang rasmi The Legend of Legiona.',
+    header_sub:         'Tukar antara Skycoin (SC), Kawaii Credits (KC), dan Dolar TL (TL$) — mata wang rasmi The Legend of Legiona, dipatok 1:1 kepada Skycoin di bawah The LoL Dollar Act 2026.',
     conv_title:         'Tukar Mata Wang',
-    conv_tag:           'KADAR TETAP',
+    conv_tag:           'DIPATOK KEPADA KAWAIISHO',
     label_from:         'DARI',
     label_to:           'KE',
     label_amount:       'JUMLAH',
@@ -308,47 +339,52 @@ const LANG = {
     btn_convert:        'TUKAR →',
     multi_hd:           'SEMUA MATA WANG',
     rates_title:        'KADAR PERTUKARAN (ASAS TL$)',
-    qr_title:           'RUJUKAN PANTAS',
+    qr_title:           'CONTOH HARGA KEDAI',
+    history_title:      'SEJARAH KADAR',
+    hist_col_date:       'TARIKH BERKUATKUASA',
+    hist_col_rate:       'PATOKAN TL$',
+    hist_col_reason:     'SEBAB',
     rate_label:         'KADAR',
     note_html: `<strong>💡 Tentang TL$</strong><br>
-      TL$ (Dolar TL) adalah mata wang rasmi The Legend of Legiona di Kawaiisho: Season 3.
-      Semua harga di Paiz Shop ditetapkan dalam <strong>Berlian ◆</strong>.`,
+      TL$ (The LoL Dollar) adalah mata wang rasmi The Legend of Legiona di Kawaiisho: Season 3.
+      Ia dipatok <strong>1:1 kepada Skycoin (SC)</strong>, mata wang dalam permainan Kawaiisho, di bawah
+      <strong>The LoL Dollar Act 2026</strong> (THELOLGOV-02-09-2026-0001). Kawaii Credits (KC) boleh
+      ditukar kepada Skycoin dalam permainan melalui <strong>/kc exchange &lt;KC&gt;</strong> pada kadar
+      tetap Kawaiisho iaitu 10 SC bagi setiap KC.`,
     qr_rows: [
-      ['1 Berlian',               '30 TL$'],
-      ['64 Berlian (1 timbunan)', '1,920 TL$'],
-      ['1 Jongkong Netherite',    '= 5 ◆'],
-      ['1 Zamrud',                '≈ 0.33 ◆'],
-      ['100 TL$',                 '≈ 3.33 ◆'],
+      ['Rel (Rail)',                  '6 SC = 6 TL$'],
+      ['End Crystal',                 '250 SC = 250 TL$'],
+      ['Enchanted Golden Apple',      '720 SC = 720 TL$'],
+      ['1 Kawaii Credit',             '10 SC = 10 TL$'],
     ],
-    c_diamond:   'Berlian',
-    c_netherite: 'Jongkong Netherite',
-    c_emerald:   'Zamrud',
-    c_gold:      'Jongkong Emas',
-    c_iron:      'Jongkong Besi',
-    c_tls:       'TL$ (Dolar TL)',
+    c_sc:   'Skycoin (SC)',
+    c_kc:   'Kawaii Credit (KC)',
+    c_tls:  'TL$ (Dolar TL)',
   }
 };
 
 // ════════════════════════════════════════════════════════════
 //  CURRENCY DATA
+//  Source of truth: Treasury Control Sheet (TL$ Treasury Model).
+//  RATES = value of 1 unit of that currency, expressed in TL$.
+//  Peg: 1 TL$ = 1 SC (The LoL Dollar Act 2026, THELOLGOV-02-09-2026-0001).
+//  1 KC = 10 SC (Kawaiisho-set rate, not controlled by The LoL) => 1 KC = 10 TL$.
+//  Treasury updates this object by hand when the peg or the SC-per-KC
+//  rate changes; log every peg change in the HISTORY array and in the
+//  Rate History tab of the Treasury Model spreadsheet.
 // ════════════════════════════════════════════════════════════
-const BASE_URL = 'https://raw.githubusercontent.com/InventivetalentDev/minecraft-assets/1.21/assets/minecraft/textures/item/';
-const CURRENCY_KEYS = ['diamond','netherite','emerald','gold','iron','tls'];
-const CURRENCY_IMG  = {
-  diamond:   BASE_URL + 'diamond.png',
-  netherite: BASE_URL + 'netherite_ingot.png',
-  emerald:   BASE_URL + 'emerald.png',
-  gold:      BASE_URL + 'gold_ingot.png',
-  iron:      BASE_URL + 'iron_ingot.png',
-  tls:       null
-};
-const RATES = { diamond:30, netherite:150, emerald:10, gold:5, iron:1, tls:1 };
+const CURRENCY_KEYS = ['sc', 'kc', 'tls'];
+const RATES = { sc: 1, kc: 10, tls: 1 };
+
+const HISTORY = [
+  { date: '2026-09-02', rate: '1 TL$ = 1 SC', reason_en: 'Founding peg — established by The LoL Dollar Act 2026 (THELOLGOV-02-09-2026-0001).', reason_bm: 'Patokan asas — ditetapkan oleh The LoL Dollar Act 2026 (THELOLGOV-02-09-2026-0001).' },
+];
 
 // ════════════════════════════════════════════════════════════
 //  STATE
 // ════════════════════════════════════════════════════════════
 let currentLang = localStorage.getItem('thelol_currency_lang') || 'en';
-let fromKey = 'diamond';
+let fromKey = 'sc';
 let toKey   = 'tls';
 
 // ════════════════════════════════════════════════════════════
@@ -358,14 +394,10 @@ function t(key)           { return LANG[currentLang][key] || LANG['en'][key] || 
 function currencyName(key){ return t('c_' + key) }
 
 function iconHTML(key, size) {
-  const img = CURRENCY_IMG[key];
-  if (img) {
-    return `<img src="${img}" alt="${currencyName(key)}" class="item-img"
-      style="width:${size}px;height:${size}px"
-      onerror="this.outerHTML='<span class=tls-badge>?</span>'">`;
-  }
   const lg = size >= 36 ? ' lg' : '';
-  return `<span class="tls-badge${lg}">TL$</span>`;
+  const label = key === 'tls' ? 'TL$' : key.toUpperCase();
+  const fontSize = size >= 36 ? '0.62rem' : (size >= 26 ? '0.4rem' : '0.34rem');
+  return `<span class="curr-badge ${key}${lg}" style="width:${size}px;height:${size}px;font-size:${fontSize}">${label}</span>`;
 }
 
 function fmt(n) {
@@ -481,18 +513,30 @@ function buildRatesTable() {
 }
 
 // ════════════════════════════════════════════════════════════
-//  QUICK REFERENCE TABLE
+//  SAMPLE STORE PRICES TABLE
 // ════════════════════════════════════════════════════════════
 function buildQuickTable() {
-  const rows    = t('qr_rows');
-  const iconKeys = ['diamond','diamond','netherite','emerald',null];
-  document.getElementById('quick-table').innerHTML = rows.map(([label, val], i) => {
-    const ik   = iconKeys[i];
-    const cell = ik
-      ? `<td style="display:flex;align-items:center;gap:8px;padding:10px 14px;font-size:0.8rem;color:var(--text-mid)">${iconHTML(ik,18)}<span>${label}</span></td>`
-      : `<td style="padding:10px 14px;font-size:0.8rem;color:var(--text-mid)">${label}</td>`;
-    return `<tr>${cell}<td class="curr-val">${val}</td></tr>`;
-  }).join('');
+  const rows = t('qr_rows');
+  document.getElementById('quick-table').innerHTML = rows.map(([label, val]) =>
+    `<tr>
+      <td style="padding:10px 14px;font-size:0.8rem;color:var(--text-mid)">${label}</td>
+      <td class="curr-val">${val}</td>
+    </tr>`
+  ).join('');
+}
+
+// ════════════════════════════════════════════════════════════
+//  RATE HISTORY TABLE
+// ════════════════════════════════════════════════════════════
+function buildHistoryTable() {
+  const reasonField = currentLang === 'bm' ? 'reason_bm' : 'reason_en';
+  document.getElementById('history-rows').innerHTML = HISTORY.slice().reverse().map(h =>
+    `<tr>
+      <td>${h.date}</td>
+      <td class="history-rate">${h.rate}</td>
+      <td>${h[reasonField]}</td>
+    </tr>`
+  ).join('');
 }
 
 // ════════════════════════════════════════════════════════════
@@ -517,6 +561,7 @@ function applyTranslations() {
   updateTrigger('to');
   buildRatesTable();
   buildQuickTable();
+  buildHistoryTable();
   buildNote();
   convert();
 }
