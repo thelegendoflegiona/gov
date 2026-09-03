@@ -146,27 +146,6 @@ body.grain::before {
 .topbar-inner a:hover,
 .topbar-inner a.active { color: var(--gold); }
 
-/* ── Netbar (ID-pages style — same concept, green accent) ── */
-.netbar {
-  background: #0a0a0a;
-  border-bottom: 1px solid var(--border-solid);
-  height: 30px;
-  display: flex; align-items: center; justify-content: center;
-  padding: 0 24px; gap: 0;
-  overflow-x: auto; white-space: nowrap; scrollbar-width: none;
-  position: sticky; top: 0; z-index: 1000;
-}
-.netbar::-webkit-scrollbar { display: none; }
-.netbar a {
-  font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.12em;
-  color: var(--text-muted); padding: 0 14px;
-  border-right: 1px solid var(--border-solid);
-  transition: color 0.2s; text-transform: uppercase;
-}
-.netbar a:first-child { border-left: 1px solid var(--border-solid); }
-.netbar a:hover { color: var(--gold); }
-.netbar a.active { color: var(--emerald-l); }
-
 
 /* ════════════════════════════════════════════════════════════════
    § 4  SHARED: NOTICE BANNER
@@ -1603,7 +1582,6 @@ kbd { display: inline-block; font-family: var(--font-mono); font-size: 9px; lett
 }
 
 @media (max-width: 500px) {
-  .netbar a { padding: 0 10px; font-size: 8px; }
   .search-row    { flex-direction: column; }
   .search-row input { border-right: 1px solid var(--border-solid); border-bottom: none; }
   .lookup-row    { flex-direction: column; }
